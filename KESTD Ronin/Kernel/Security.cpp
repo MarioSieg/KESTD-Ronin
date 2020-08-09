@@ -10,26 +10,26 @@
 
 namespace kestd::kernel
 {
-	auto SecurityManager::LogIn(const User wanted, const Pin pin) noexcept -> bool
+	auto SecurityManager::logIn(const User wanted, const Pin pin) noexcept -> bool
 	{
-		++UserUpdates;
-		if (FailedAttempts >= MAX_ATTEMPTS)
+		++userUpdates;
+		if (failedAttempts >= MAX_ATTEMPTS)
 		{
-			IsLocked = true;
-			return !IsLocked;
+			isLocked = true;
+			return !isLocked;
 		}
-		if (GetCorrespondingPin(wanted) == pin)
+		if (getCorrespondingPin(wanted) == pin)
 		{
-			++SucceededAttempts;
-			Current = wanted;
+			++succeededAttempts;
+			current = wanted;
 			return true;
 		}
-		++FailedAttempts;
+		++failedAttempts;
 		return false;
 	}
 
-	auto SecurityManager::LogOff() noexcept
+	auto SecurityManager::logOff() noexcept
 	{
-		Current = User::Normal;
+		current = User::Normal;
 	}
 }

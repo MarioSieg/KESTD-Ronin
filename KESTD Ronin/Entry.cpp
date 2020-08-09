@@ -13,7 +13,7 @@ using namespace kestd::kernel;
 auto main() -> int
 {
 	const Kernel kernel = Kernel("TestGame", "KerboGames");
-	kernel.Startup();
-	kernel.Execute();
+	kernel.startup();
+	kernel.execute();
 	return 0;
 }

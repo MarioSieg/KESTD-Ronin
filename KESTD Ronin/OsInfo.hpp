@@ -50,23 +50,23 @@ namespace kestd
 		Sse2,
 		Sse3,
 		Ssse3,
-		Sse4a,
+		Sse4A,
 		Sse41,
 		Sse42,
 		Aes,
 		Avx,
 		Avx2,
 		Avx512,
-		Avx512_F,
-		Avx512_Cd,
-		Avx512_Pf,
-		Avx512_Er,
-		Avx512_Vl,
-		Avx512_Bw,
-		Avx512_Bq,
-		Avx512_Dq,
-		Avx512_Ifma,
-		Avx512_Vbmi,
+		Avx512F,
+		Avx512Cd,
+		Avx512Pf,
+		Avx512Er,
+		Avx512Vl,
+		Avx512Bw,
+		Avx512Bq,
+		Avx512Dq,
+		Avx512Ifma,
+		Avx512Vbmi,
 		Hle,
 		Bmi1,
 		Bmi2,
@@ -78,8 +78,8 @@ namespace kestd
 		Fma4,
 		Xop,
 		RdRand,
-		x64,
-		x87Fpu,
+		X64,
+		X87Fpu,
 	};
 
 	/// <summary>
@@ -98,10 +98,10 @@ namespace kestd
 	/// </summary>
 	struct Cache final
 	{
-		std::size_t Size = 0;
-		std::size_t LineSize = 0;
-		std::size_t Associativity = 0;
-		CacheType Type = CacheType::Data;
+		std::size_t size = 0;
+		std::size_t lineSize = 0;
+		std::size_t associativity = 0;
+		CacheType type = CacheType::Data;
 	};
 
 	/// <summary>
@@ -109,17 +109,17 @@ namespace kestd
 	/// </summary>
 	struct CpuInfo final
 	{
-		std::uint16_t Logical = 0;
-		std::uint16_t Physical = 0;
-		std::uint16_t Sockets = 0;
-		std::uint64_t Frequency = 0;
-		std::string Vendor = {};
-		std::string VendorId = {};
-		std::string ModelName = {};
-		Architecture Architecture = Architecture::Other;
-		Cache Caches[3] = {};
-		Endianness Endianness = Endianness::Little;
-		std::vector<InstructionSet> SupportedInstructionSets = {};
+		std::uint16_t logical = 0;
+		std::uint16_t physical = 0;
+		std::uint16_t sockets = 0;
+		std::uint64_t frequency = 0;
+		std::string vendor = {};
+		std::string vendorId = {};
+		std::string modelName = {};
+		Architecture architecture = Architecture::Other;
+		Cache caches[3] = {};
+		Endianness endianness = Endianness::Little;
+		std::vector<InstructionSet> supportedInstructionSets = {};
 
 		void query();
 	};
@@ -146,11 +146,11 @@ namespace kestd
 	/// </summary>
 	struct GpuInfo final
 	{
-		Vendor Vendor = Vendor::Other;
-		std::string Name = {};
-		std::size_t MemorySize = 0;
-		std::size_t CacheSize = 0;
-		std::size_t MaxFrequency = 0;
+		Vendor vendor = Vendor::Other;
+		std::string name = {};
+		std::size_t memorySize = 0;
+		std::size_t cacheSize = 0;
+		std::size_t maxFrequency = 0;
 	};
 
 	/// <summary>
@@ -158,7 +158,7 @@ namespace kestd
 	/// </summary>
 	struct GpuInfoCollection final
 	{
-		std::vector<GpuInfo> AllGpus = {};
+		std::vector<GpuInfo> allGpus = {};
 		void query();
 	};
 
@@ -168,29 +168,29 @@ namespace kestd
 	{
 		struct
 		{
-			std::uint64_t PhysicalAvailable = 0;
-			std::uint64_t PhysicalTotal = 0;
-			std::uint64_t VirtualAvailable = 0;
-			std::uint64_t VirtualTotal = 0;
-		} Memory;
+			std::uint64_t physicalAvailable = 0;
+			std::uint64_t physicalTotal = 0;
+			std::uint64_t virtualAvailable = 0;
+			std::uint64_t virtualTotal = 0;
+		} memory;
 
 		struct
 		{
-			std::uint32_t Major = 0;
-			std::uint32_t Minor = 0;
-			std::uint32_t Patch = 0;
-			std::uint32_t Build = 0;
-		} Kernel;
+			std::uint32_t major = 0;
+			std::uint32_t minor = 0;
+			std::uint32_t patch = 0;
+			std::uint32_t build = 0;
+		} kernel;
 
 		struct
 		{
-			std::string Name = {};
-			std::string FullName = {};
-			std::uint32_t Major = 0;
-			std::uint32_t Minor = 0;
-			std::uint32_t Patch = 0;
-			std::uint32_t Build = 0;
-		} Os;
+			std::string name = {};
+			std::string fullName = {};
+			std::uint32_t major = 0;
+			std::uint32_t minor = 0;
+			std::uint32_t patch = 0;
+			std::uint32_t build = 0;
+		} os;
 
 		void query();
 	};
@@ -199,8 +199,8 @@ namespace kestd
 
 	struct PlatformInfo final
 	{
-		CpuInfo CpuInfo;
-		GpuInfoCollection GpuInfos;
-		OsInfo OsInfo;
+		CpuInfo cpuInfo;
+		GpuInfoCollection gpuInfos;
+		OsInfo osInfo;
 	};
 }

@@ -12,8 +12,8 @@ namespace kestd
 {
 	Sys::Sys()
 	{
-		Platform.OsInfo.query();
-		Platform.CpuInfo.query();
-		Platform.GpuInfos.query();
+		platform.osInfo.query();
+		platform.cpuInfo.query();
+		platform.gpuInfos.query();
 	}
 }

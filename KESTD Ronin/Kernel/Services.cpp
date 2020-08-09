@@ -12,7 +12,7 @@
 
 namespace kestd::kernel
 {
-	void QueryLegacySubsystems(std::vector<std::unique_ptr<ISubsystem>>& services)
+	void queryLegacySubsystems(std::vector<std::unique_ptr<ISubsystem>>& services)
 	{
 		services.reserve(3);
 		services.emplace_back(std::make_unique<drivers::Winput>());

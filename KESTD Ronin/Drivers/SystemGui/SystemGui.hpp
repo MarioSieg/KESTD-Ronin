@@ -29,42 +29,42 @@ namespace kestd
 
 		struct FontRangeMerge final
 		{
-			const void* Data = nullptr;
-			std::size_t Size = 0;
-			ImWchar Ranges[3] = {};
+			const void* data = nullptr;
+			std::size_t size = 0;
+			ImWchar ranges[3] = {};
 		};
 
 		class SystemGui final
 		{
 		public:
-			void Initialize();
-			void BeginGui();
-			void EndGui();
-			void Shutdown() const;
-			void ApplyStyle(const Style sty);
+			void initialize();
+			void beginGui();
+			void endGui();
+			void shutdown() const;
+			void applyStyle(const Style sty);
 
 		private:
-			void InitializeInput();
-			void ShutdownInput();
-			void BeginInput();
-			void UpdateMouse();
-			void UpdateGamepads();
-			void InstallCallbackProcPtrs();
-			void InitializeRendering();
-			void ShutdownRendering() const;
-			void RenderDrawData() const;
+			void initializeInput();
+			void shutdownInput();
+			void beginInput();
+			void updateMouse();
+			void updateGamepads();
+			void installCallbackProcPtrs();
+			void initializeRendering();
+			void shutdownRendering() const;
+			void renderDrawData() const;
 
-			ImGuiContext* Context = nullptr;
-			ImFont* Font = nullptr;
-			FontRangeMerge FontRangeMerge = {};
-			std::int64_t Last = 0;
-			std::int32_t LastScroll = 0;
-			bgfx::VertexLayout Layout = {};
-			bgfx::ProgramHandle GuiProgram = {};
-			bgfx::ProgramHandle GuiImageProgram = {};
-			bgfx::UniformHandle TextureUniform = {};
-			bgfx::TextureHandle Texture = {};
-			bgfx::UniformHandle ImageLodEnabled = {};
+			ImGuiContext* context = nullptr;
+			ImFont* font = nullptr;
+			FontRangeMerge fontRangeMerge = {};
+			std::int64_t last = 0;
+			std::int32_t lastScroll = 0;
+			bgfx::VertexLayout layout = {};
+			bgfx::ProgramHandle guiProgram = {};
+			bgfx::ProgramHandle guiImageProgram = {};
+			bgfx::UniformHandle textureUniform = {};
+			bgfx::TextureHandle texture = {};
+			bgfx::UniformHandle imageLodEnabled = {};
 		};
 	}
 }

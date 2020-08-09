@@ -2,7 +2,7 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// Terminal.hpp
+// TerminalManager.hpp
 // 09.08.2020 01:59
 // =============================================================
 
@@ -14,8 +14,8 @@ namespace kestd
 	{
 		static constexpr auto MAX_COMMAND_LEN = 64;
 
-		bool DisplayTerminal = true;
-		bool AutoScroll = true;
-		bool AutoFocus = true;
+		bool displayTerminal = true;
+		bool autoScroll = true;
+		bool autoFocus = true;
 	};
 }

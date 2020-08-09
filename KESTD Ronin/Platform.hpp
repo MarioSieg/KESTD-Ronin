@@ -2,7 +2,7 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// Platform.hpp
+// PlatformData.hpp
 // 07.08.2020 02:30
 // =============================================================
 
@@ -64,7 +64,7 @@
 #	undef SYS_NAME
 #	define SYS_NAME "Mac"
 #else
-#error("(Platform.hpp) Unknown platform!")
+#error("(PlatformData.hpp) Unknown platform!")
 #endif
 
 #if defined(__GNUC__)
@@ -83,5 +83,5 @@
 #	undef COM_NAME
 #	define COM_NAME "Clang"
 #else
-#error("(Platform.hpp) Unknown compiler!")
+#error("(PlatformData.hpp) Unknown compiler!")
 #endif

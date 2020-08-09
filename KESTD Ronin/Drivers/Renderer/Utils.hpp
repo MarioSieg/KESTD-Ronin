@@ -6,10 +6,12 @@
 // 08.08.2020 20:46
 // =============================================================
 
+#pragma once
+
 #include <bgfx/bgfx.h>
 #include <cstdint>
 
-inline auto CheckAvailTransientBuffers(const uint32_t numVertices,
+inline auto checkAvailTransientBuffers(const uint32_t numVertices,
                                        const bgfx::VertexLayout& layout,
                                        const uint32_t numIndices)
 -> bool

@@ -14,36 +14,36 @@ namespace kestd::kernel
 {
 	ISubsystem::ISubsystem(std::string name,
 	                       const std::underlying_type<Event::Enum>::type events,
-	                       const bool is_legacy) noexcept
-		: Name(std::move(name)), SubscribedEvents(events), IsLegacy(is_legacy)
+	                       const bool isLegacy) noexcept
+		: name(std::move(name)), subscribedEvents(events), isLegacy(isLegacy)
 	{
 	}
 
-	auto ISubsystem::OnPreStartup(Sys&) -> bool
-	{
-		return true;
-	}
-
-	auto ISubsystem::OnPostStartup(Sys&) -> bool
+	auto ISubsystem::onPreStartup(Sys&) -> bool
 	{
 		return true;
 	}
 
-	auto ISubsystem::OnPreTick(Sys&) -> bool
+	auto ISubsystem::onPostStartup(Sys&) -> bool
 	{
 		return true;
 	}
 
-	auto ISubsystem::OnPostTick(Sys&) -> bool
+	auto ISubsystem::onPreTick(Sys&) -> bool
 	{
 		return true;
 	}
 
-	void ISubsystem::OnPreShutdown(Sys&)
+	auto ISubsystem::onPostTick(Sys&) -> bool
+	{
+		return true;
+	}
+
+	void ISubsystem::onPreShutdown(Sys&)
 	{
 	}
 
-	void ISubsystem::OnPostShutdown(Sys&)
+	void ISubsystem::onPostShutdown(Sys&)
 	{
 	}
 }

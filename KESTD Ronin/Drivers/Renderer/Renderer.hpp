@@ -13,14 +13,17 @@
 
 namespace kestd::drivers
 {
-	struct Renderer final : kernel::ISubsystem
+	class Renderer final : public kernel::ISubsystem
 	{
+	public:
 		Renderer();
-		auto OnPreStartup(Sys& sys) -> bool final;
-		auto OnPreTick(Sys& sys) -> bool final;
-		auto OnPostTick(Sys& sys) -> bool final;
-		void OnPreShutdown(Sys& sys) final;
 
-		RenderContext Context = {};
+	private:
+		auto onPreStartup(Sys& sys) -> bool override;
+		auto onPreTick(Sys& sys) -> bool override;
+		auto onPostTick(Sys& sys) -> bool override;
+		void onPreShutdown(Sys& sys) override;
+
+		RenderContext context = {};
 	};
 }

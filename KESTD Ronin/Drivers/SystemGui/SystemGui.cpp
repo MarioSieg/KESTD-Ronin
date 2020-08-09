@@ -13,32 +13,32 @@ namespace kestd::drivers
 {
 	extern Screen G_SCREEN;
 
-	void SystemGui::Initialize()
+	void SystemGui::initialize()
 	{
-		Context = ImGui::CreateContext();
+		context = ImGui::CreateContext();
 		ImGui::StyleColorsDark();
 		auto& io = ImGui::GetIO();
-		io.DisplaySize = ImVec2{static_cast<float>(G_SCREEN.Width), static_cast<float>(G_SCREEN.Height)};
+		io.DisplaySize = ImVec2{static_cast<float>(G_SCREEN.width), static_cast<float>(G_SCREEN.height)};
 		io.IniFilename = nullptr;
-		InitializeRendering();
-		InitializeInput();
-		InstallCallbackProcPtrs();
+		initializeRendering();
+		initializeInput();
+		installCallbackProcPtrs();
 	}
 
-	void SystemGui::BeginGui()
+	void SystemGui::beginGui()
 	{
-		BeginInput();
+		beginInput();
 		ImGui::NewFrame();
 	}
 
-	void SystemGui::EndGui()
+	void SystemGui::endGui()
 	{
 		ImGui::Render();
-		RenderDrawData();
+		renderDrawData();
 	}
 
-	void SystemGui::Shutdown() const
+	void SystemGui::shutdown() const
 	{
-		ImGui::DestroyContext(Context);
+		ImGui::DestroyContext(context);
 	}
 }

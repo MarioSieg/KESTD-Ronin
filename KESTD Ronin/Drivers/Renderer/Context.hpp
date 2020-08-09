@@ -20,14 +20,14 @@ namespace kestd::drivers
 	class RenderContext final
 	{
 	public:
-		auto Initialize() -> bool;
-		void Shutdown();
+		auto initialize() -> bool;
+		void shutdown();
 
-		void BeginGui();
-		void EndGui();
-		void Begin();
-		void End();
+		void beginGui();
+		void endGui();
+		void begin();
+		void end();
 
-		SystemGui SysGui = {};
+		SystemGui sysGui = {};
 	};
 }

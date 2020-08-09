@@ -14,13 +14,19 @@
 
 namespace kestd::drivers
 {
-	struct AutoTec final : kernel::ISubsystem
+	class AutoTec final : public kernel::ISubsystem
 	{
+	public:
 		AutoTec();
-		auto OnPostStartup(Sys&) -> bool override;
-		auto OnPostTick(Sys&) -> bool override;
-		void OnPostShutdown(Sys&) override;
-		void Terminal(Logger& logger, Terminal& terminal);
-		char TerminalBuffer[Terminal::MAX_COMMAND_LEN] = {};
+
+	private:
+		auto onPostStartup(Sys&) -> bool override;
+		auto onPostTick(Sys&) -> bool override;
+		void onPostShutdown(Sys&) override;
+
+		void terminal(Logger& logger, Terminal& terminal);
+		void menu();
+
+		char terminalBuffer[Terminal::MAX_COMMAND_LEN] = {};
 	};
 }

@@ -42,21 +42,21 @@ namespace kestd
 			auto operator =(ISubsystem&&) -> ISubsystem& = delete;
 			virtual ~ISubsystem() = default;
 
-			const std::string Name;
-			const std::underlying_type<Event::Enum>::type SubscribedEvents;
-			const bool IsLegacy;
+			const std::string name;
+			const std::underlying_type<Event::Enum>::type subscribedEvents;
+			const bool isLegacy;
 
 		protected:
 			explicit ISubsystem(std::string name,
 			                    const std::underlying_type<Event::Enum>::type events,
-			                    const bool is_legacy) noexcept;
+			                    const bool isLegacy) noexcept;
 
-			virtual auto OnPreStartup(Sys&) -> bool;
-			virtual auto OnPostStartup(Sys&) -> bool;
-			virtual auto OnPreTick(Sys&) -> bool;
-			virtual auto OnPostTick(Sys&) -> bool;
-			virtual void OnPreShutdown(Sys&);
-			virtual void OnPostShutdown(Sys&);
+			virtual auto onPreStartup(Sys&) -> bool;
+			virtual auto onPostStartup(Sys&) -> bool;
+			virtual auto onPreTick(Sys&) -> bool;
+			virtual auto onPostTick(Sys&) -> bool;
+			virtual void onPreShutdown(Sys&);
+			virtual void onPostShutdown(Sys&);
 		};
 	}
 }

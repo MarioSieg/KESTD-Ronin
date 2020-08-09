@@ -12,88 +12,88 @@
 
 namespace kestd::kernel
 {
-	extern void QueryLegacySubsystems(std::vector<std::unique_ptr<ISubsystem>>&);
+	extern void queryLegacySubsystems(std::vector<std::unique_ptr<ISubsystem>>&);
 
 	struct Kernel::Pimpl final
 	{
-		bool IsLocked = false;
-		volatile bool TrapFlag = false;
-		SystemState State = SystemState::Offline;
-		std::vector<std::unique_ptr<ISubsystem>> Systems = {};
-		std::tuple<std::string, std::string> Info = {};
-		SecurityManager SecurityManager;
-		Sys Sys = {};
+		bool isLocked = false;
+		volatile bool trapFlag = false;
+		SystemState state = SystemState::Offline;
+		std::vector<std::unique_ptr<ISubsystem>> systems = {};
+		std::tuple<std::string, std::string> info = {};
+		SecurityManager securityManager;
+		Sys sys = {};
 	};
 
-	auto Kernel::Startup(const User usr, const Pin pin) const -> bool
+	auto Kernel::startup(const User usr, const Pin pin) const -> bool
 	{
-		if (Core->Systems.empty() || Core->State != SystemState::Offline)
+		if (core->systems.empty() || core->state != SystemState::Offline)
 		{
 			return false;
 		}
 
-		if (!Core->SecurityManager.LogIn(usr, pin))
+		if (!core->securityManager.logIn(usr, pin))
 		{
 			return false;
 		}
 
-		Core->IsLocked = true;
+		core->isLocked = true;
 
 		// Dispatch OnPreStartup()
-		for (std::size_t i = 0; i < Core->Systems.size(); ++i)
+		for (std::size_t i = 0; i < core->systems.size(); ++i)
 		{
-			const auto& sys = Core->Systems[i];
-			if (sys->SubscribedEvents & Event::OnPreStartup != 0 && !sys->OnPreStartup(Core->Sys))
+			const auto& sys = core->systems[i];
+			if (sys->subscribedEvents & Event::OnPreStartup != 0 && !sys->onPreStartup(core->sys))
 			{
-				Core->Sys.Protocol & "[Kernel] Failed to dispatch 'OnPreStartup' on system: " + sys->Name;
+				core->sys.protocol & "[Kernel] Failed to dispatch 'OnPreStartup' on system: " + sys->name;
 				return false;
 			}
 		}
 
 		// Dispatch OnPostStartup()
-		for (std::size_t i = Core->Systems.size() - 1; i > 0; --i)
+		for (std::size_t i = core->systems.size() - 1; i > 0; --i)
 		{
-			const auto& sys = Core->Systems[i];
-			if ((sys->SubscribedEvents & Event::OnPostShutdown) != 0 && !sys->OnPostStartup(Core->Sys))
+			const auto& sys = core->systems[i];
+			if ((sys->subscribedEvents & Event::OnPostShutdown) != 0 && !sys->onPostStartup(core->sys))
 			{
-				Core->Sys.Protocol & "[Kernel] Failed to dispatch 'OnPostStartup' on system: " + sys->Name;
+				core->sys.protocol & "[Kernel] Failed to dispatch 'OnPostStartup' on system: " + sys->name;
 				return false;
 			}
 		}
 
-		Core->State = SystemState::Ready;
+		core->state = SystemState::Ready;
 
 		return true;
 	}
 
-	auto Kernel::Execute() const -> std::tuple<bool, uint32_t>
+	auto Kernel::execute() const -> std::tuple<bool, uint32_t>
 	{
-		if (Core->Systems.empty() || Core->State != SystemState::Ready)
+		if (core->systems.empty() || core->state != SystemState::Ready)
 		{
 			return std::make_tuple(false, 0);
 		}
 
-		Core->Systems.shrink_to_fit();
-		Core->TrapFlag = true;
+		core->systems.shrink_to_fit();
+		core->trapFlag = true;
 		uint32_t cycles = 0;
 
 		auto tick = [&]
 		{
 			// Dispatch OnPreTick()
-			for (std::size_t i = 0; i < Core->Systems.size(); ++i)
+			for (std::size_t i = 0; i < core->systems.size(); ++i)
 			{
-				const auto& sys = Core->Systems[i];
-				if ((sys->SubscribedEvents & Event::OnPreTick) != 0 && !sys->OnPreTick(Core->Sys))
+				const auto& sys = core->systems[i];
+				if ((sys->subscribedEvents & Event::OnPreTick) != 0 && !sys->onPreTick(core->sys))
 				{
 					return false;
 				}
 			}
 
 			// Dispatch OnPostTick()
-			for (std::size_t i = Core->Systems.size() - 1; i > 0; --i)
+			for (std::size_t i = core->systems.size() - 1; i > 0; --i)
 			{
-				const auto& sys = Core->Systems[i];
-				if ((sys->SubscribedEvents & Event::OnPostTick) != 0 && !sys->OnPostTick(Core->Sys))
+				const auto& sys = core->systems[i];
+				if ((sys->subscribedEvents & Event::OnPostTick) != 0 && !sys->onPostTick(core->sys))
 				{
 					return false;
 				}
@@ -101,73 +101,75 @@ namespace kestd::kernel
 			return true;
 		};
 
-		while (Core->TrapFlag && tick())
+		while (core->trapFlag && tick())
 		{
 			++cycles;
 		}
 
-		Core->State = SystemState::Ready;
+		core->state = SystemState::Ready;
 		return std::make_tuple(true, cycles);
 	}
 
-	auto Kernel::GetState() const noexcept -> SystemState
+	auto Kernel::getState() const noexcept -> SystemState
 	{
-		return Core->State;
+		return core->state;
 	}
 
-	auto Kernel::GetTrapFlag() const noexcept -> bool
+	auto Kernel::getTrapFlag() const noexcept -> bool
 	{
-		return Core->TrapFlag;
+		return core->trapFlag;
 	}
 
-	auto Kernel::Interrupt() const noexcept
+	auto Kernel::interrupt() const noexcept
 	{
-		Core->TrapFlag = false;
+		core->trapFlag = false;
 	}
 
-	auto Kernel::GetSystems() const noexcept -> const std::vector<std::unique_ptr<ISubsystem>>&
+	auto Kernel::getSystems() const noexcept -> const std::vector<std::unique_ptr<ISubsystem>>&
 	{
-		return Core->Systems;
+		return core->systems;
 	}
 
-	Kernel::Kernel(std::string&& appName, std::string&& companyName) : Core(std::make_unique<Pimpl>())
+	Kernel::Kernel(std::string&& appName, std::string&& companyName) : core(std::make_unique<Pimpl>())
 	{
-		Core->Info = std::make_tuple(std::move(appName), std::move(companyName));
-		QueryLegacySubsystems(Core->Systems);
-		Core->Sys.Protocol << "KESTD Ronin Game Engine (C) Copyright KerboGames(R), Germany 2020! All rights reserved!";
-		Core->Sys.Protocol << "[Kernel] Initializing native engine C++ runtime...";
-		Core->Sys.Protocol << "[Kernel] Engine Kernel Size: " + std::to_string(sizeof(Kernel) + sizeof(Pimpl)) + "B";
-		Core->Sys.Protocol << "[Kernel] Running on: " SYS_NAME;
-		Core->Sys.Protocol << "[Kernel] Compiled with: " COM_NAME;
-		Core->Sys.Protocol << Core->Sys.Platform.OsInfo;
-		Core->Sys.Protocol << Core->Sys.Platform.CpuInfo;
-		Core->Sys.Protocol << Core->Sys.Platform.GpuInfos;
+		core->info = std::make_tuple(std::move(appName), std::move(companyName));
+		queryLegacySubsystems(core->systems);
+		core->sys.protocol <<
+			"KESTD Ronin Game Engine (C) Copyright KerboGames(R), Germany 2020! All rights reserved!";
+		core->sys.protocol << "[Kernel] Initializing native engine C++ runtime...";
+		core->sys.protocol << "[Kernel] Engine Kernel Size: " + std::to_string(sizeof(Kernel) + sizeof(Pimpl)) +
+			"B";
+		core->sys.protocol << "[Kernel] Running on: " SYS_NAME;
+		core->sys.protocol << "[Kernel] Compiled with: " COM_NAME;
+		core->sys.protocol << core->sys.platform.osInfo;
+		core->sys.protocol << core->sys.platform.cpuInfo;
+		core->sys.protocol << core->sys.platform.gpuInfos;
 	}
 
 	Kernel::~Kernel()
 	{
-		if (Core->State != SystemState::Ready)
+		if (core->state != SystemState::Ready)
 		{
 			return;
 		}
 
 		// Dispatch OnPreShutdown()
-		for (std::size_t i = 0; i < Core->Systems.size(); ++i)
+		for (std::size_t i = 0; i < core->systems.size(); ++i)
 		{
-			const auto& sys = Core->Systems[i];
-			if ((sys->SubscribedEvents & Event::OnPreShutdown) != 0)
+			const auto& sys = core->systems[i];
+			if ((sys->subscribedEvents & Event::OnPreShutdown) != 0)
 			{
-				sys->OnPreShutdown(Core->Sys);
+				sys->onPreShutdown(core->sys);
 			}
 		}
 
 		// Dispatch OnPostShutdown()
-		for (std::size_t i = Core->Systems.size() - 1; i > 0; --i)
+		for (std::size_t i = core->systems.size() - 1; i > 0; --i)
 		{
-			const auto& sys = Core->Systems[i];
-			if ((sys->SubscribedEvents & Event::OnPostShutdown) != 0)
+			const auto& sys = core->systems[i];
+			if ((sys->subscribedEvents & Event::OnPostShutdown) != 0)
 			{
-				sys->OnPostShutdown(Core->Sys);
+				sys->onPostShutdown(core->sys);
 			}
 		}
 	}

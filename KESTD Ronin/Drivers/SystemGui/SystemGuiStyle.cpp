@@ -10,7 +10,7 @@
 
 namespace kestd::drivers
 {
-	void SystemGui::ApplyStyle(const Style sty)
+	void SystemGui::applyStyle(const Style sty)
 	{
 		auto& style = ImGui::GetStyle();
 		switch (sty)

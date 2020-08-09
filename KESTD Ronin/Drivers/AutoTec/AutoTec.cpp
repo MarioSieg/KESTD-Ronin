@@ -17,22 +17,24 @@ namespace kestd::drivers
 	{
 	}
 
-	auto AutoTec::OnPostStartup(Sys&) -> bool
+	auto AutoTec::onPostStartup(Sys&) -> bool
 	{
 		return true;
 	}
 
-	auto AutoTec::OnPostTick(Sys& sys) -> bool
+	auto AutoTec::onPostTick(Sys& sys) -> bool
 	{
-		if (sys.Terminal.DisplayTerminal)
+		if (sys.terminal.displayTerminal)
 		{
-			Terminal(sys.Protocol, sys.Terminal);
+			terminal(sys.protocol, sys.terminal);
 		}
 
+		menu();
+
 		return true;
 	}
 
-	void AutoTec::OnPostShutdown(Sys&)
+	void AutoTec::onPostShutdown(Sys&)
 	{
 	}
 }

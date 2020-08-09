@@ -17,84 +17,84 @@ namespace kestd
 {
 	Logger::Logger()
 	{
-		Buffer.reserve(AutoFlushThreshold);
+		buffer.reserve(autoFlushThreshold);
 	}
 
-	auto Logger::GetBuffer() const noexcept -> const std::vector<Message>&
+	auto Logger::getBuffer() const noexcept -> const std::vector<Message>&
 	{
-		return Buffer;
+		return buffer;
 	}
 
-	auto Logger::GetLogCount() const noexcept -> std::size_t
+	auto Logger::getLogCount() const noexcept -> std::size_t
 	{
-		return LogCount;
+		return logCount;
 	}
 
-	auto Logger::Flush() -> bool
+	auto Logger::flush() -> bool
 	{
-		std::ofstream handle(LogFile);
+		std::ofstream handle(logFile);
 		if (!handle)
 		{
 			return false;
 		}
 
-		for (const auto& msg : Buffer)
+		for (const auto& msg : buffer)
 		{
-			handle << msg.Msg << '\n';
+			handle << msg.msg << '\n';
 		}
 
-		Clear();
+		clear();
 
 		return true;
 	}
 
 	auto Logger::operator<<(std::string&& msg) -> Logger&
 	{
-		Log(std::move(msg));
+		log(std::move(msg));
 		return *this;
 	}
 
 	auto Logger::operator>>(std::string&& msg) -> Logger&
 	{
-		Log(std::move(msg), MessageType::Trace);
+		log(std::move(msg), MessageType::Trace);
 		return *this;
 	}
 
 	auto Logger::operator|(std::string&& msg) -> Logger&
 	{
-		Log(std::move(msg), MessageType::Warning);
+		log(std::move(msg), MessageType::Warning);
 		return *this;
 	}
 
 	auto Logger::operator&(std::string&& msg) -> Logger&
 	{
-		Log(std::move(msg), MessageType::Error);
+		log(std::move(msg), MessageType::Error);
 		return *this;
 	}
 
-	void Logger::Clear()
+	void Logger::clear()
 	{
-		Buffer.clear();
-		ErrorMessages = InfoMessages = TraceMessages = WarningMessages = 0;
-		LogCount = 0;
+		buffer.clear();
+		errorMessages = infoMessages = traceMessages = warningMessages = 0;
+		logCount = 0;
 	}
 
-	void Logger::Log(std::string&& msg, const MessageType type)
+	void Logger::log(std::string&& msg, const MessageType type)
 	{
 #ifndef NDEBUG
 		std::cout << msg << '\n';
 #endif
-		Buffer.emplace_back(
+		buffer.emplace_back(
 			Message
 			{
 				std::move(msg),
 				type,
 				std::chrono::system_clock::now(),
 			});
-		++LogCount;
-		if (AutoFlushThreshold && LogCount >= AutoFlushThreshold)
+		++logCount;
+		if (autoFlushThreshold && logCount >= autoFlushThreshold)
 		{
-			Flush();
+			flush();
 		}
 	}
 }

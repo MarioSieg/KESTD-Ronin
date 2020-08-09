@@ -3,7 +3,7 @@
 // KESTD-Ronin                                                                    
 // Mario
 // Sys.hpp
-// 07.08.2020 14:04
+// 09.08.2020 07:24
 // =============================================================
 
 #pragma once
@@ -31,21 +31,21 @@ namespace kestd
 		/// <summary>
 		/// The logger of the system.
 		/// </summary>
-		Logger Protocol = {};
+		Logger protocol = {};
 
 		/// <summary>
 		/// Contains platform info.
 		/// </summary>
-		PlatformInfo Platform = {};
+		PlatformInfo platform = {};
 
 		/// <summary>
 		/// Contains screen info.
 		/// </summary>
-		Screen Screen = {};
+		Screen screen = {};
 
 		/// <summary>
 		/// Represents the engine system terminal.
 		/// </summary>
-		Terminal Terminal = {};
+		Terminal terminal = {};
 	};
 }

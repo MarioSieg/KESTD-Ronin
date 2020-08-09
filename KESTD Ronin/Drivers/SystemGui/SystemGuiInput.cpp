@@ -21,7 +21,7 @@ namespace kestd::drivers
 	static bool G_MOUSE_PRESSED[ImGuiMouseButton_COUNT] = {};
 	GLFWcursor* G_CURSORS[ImGuiMouseCursor_COUNT] = {};
 
-	void SystemGui::InitializeInput()
+	void SystemGui::initializeInput()
 	{
 		auto& io = ImGui::GetIO();
 		io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
@@ -82,7 +82,7 @@ namespace kestd::drivers
 #endif
 	}
 
-	void SystemGui::ShutdownInput()
+	void SystemGui::shutdownInput()
 	{
 		for (auto*& cur : G_CURSORS)
 		{
@@ -91,7 +91,7 @@ namespace kestd::drivers
 		}
 	}
 
-	void MouseButtonCallback(GLFWwindow* const win, const int button, const int action, const int mods)
+	void mouseButtonCallback(GLFWwindow* const win, const int button, const int action, const int mods)
 	{
 		if (action == GLFW_PRESS && button >= 0 && button < static_cast<int>(sizeof G_MOUSE_PRESSED / sizeof *
 			G_MOUSE_PRESSED))
@@ -100,14 +100,14 @@ namespace kestd::drivers
 		}
 	}
 
-	void ScrollCallback(GLFWwindow* const win, const double x, const double y)
+	void scrollCallback(GLFWwindow* const win, const double x, const double y)
 	{
 		auto& io = ImGui::GetIO();
 		io.MouseWheelH += static_cast<float>(x);
 		io.MouseWheel += static_cast<float>(y);
 	}
 
-	void KeyCallback(GLFWwindow* const win, const int key, const int scancode, const int action, const int mods)
+	void keyCallback(GLFWwindow* const win, const int key, const int scancode, const int action, const int mods)
 	{
 		auto& io = ImGui::GetIO();
 		if (action == GLFW_PRESS)
@@ -134,7 +134,7 @@ namespace kestd::drivers
 		io.AddInputCharacter(c);
 	}
 
-	void SystemGui::BeginInput()
+	void SystemGui::beginInput()
 	{
 		int w, h;
 		int displayW, displayH;
@@ -149,11 +149,11 @@ namespace kestd::drivers
 		static float g_Time;
 		io.DeltaTime = g_Time > 0.0 ? static_cast<float>(currentTime - g_Time) : static_cast<float>(1.f / 60.f);
 		g_Time = currentTime;
-		UpdateMouse();
-		UpdateGamepads();
+		updateMouse();
+		updateGamepads();
 	}
 
-	void SystemGui::UpdateMouse()
+	void SystemGui::updateMouse()
 	{
 		auto* const win = static_cast<GLFWwindow *>(G_WIN);
 		auto& io = ImGui::GetIO();
@@ -178,9 +178,9 @@ namespace kestd::drivers
 			}
 			else
 			{
-				double mouse_x, mouse_y;
-				glfwGetCursorPos(win, &mouse_x, &mouse_y);
-				io.MousePos = ImVec2(static_cast<float>(mouse_x), static_cast<float>(mouse_y));
+				double mouseX, mouseY;
+				glfwGetCursorPos(win, &mouseX, &mouseY);
+				io.MousePos = ImVec2(static_cast<float>(mouseX), static_cast<float>(mouseY));
 			}
 		}
 
@@ -205,7 +205,7 @@ namespace kestd::drivers
 		}
 	}
 
-	void SystemGui::UpdateGamepads()
+	void SystemGui::updateGamepads()
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		memset(io.NavInputs, 0, sizeof io.NavInputs);
@@ -243,13 +243,13 @@ namespace kestd::drivers
 		}
 	}
 
-	void SystemGui::InstallCallbackProcPtrs()
+	void SystemGui::installCallbackProcPtrs()
 	{
 		// Install callbacks:
 		auto* const win = static_cast<GLFWwindow *>(G_WIN);
-		glfwSetMouseButtonCallback(win, MouseButtonCallback);
-		glfwSetScrollCallback(win, ScrollCallback);
-		glfwSetKeyCallback(win, KeyCallback);
+		glfwSetMouseButtonCallback(win, mouseButtonCallback);
+		glfwSetScrollCallback(win, scrollCallback);
+		glfwSetKeyCallback(win, keyCallback);
 		glfwSetCharCallback(win, CharCallback);
 	}
 }

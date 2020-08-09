@@ -68,40 +68,40 @@ namespace kestd::kernel
 		/// <param name="usr"></param>
 		/// <param name="pin"></param>
 		/// <returns></returns>
-		[[nodiscard]] auto Startup(const User usr = User::Normal, const Pin pin = Pin::Invalid) const -> bool;
+		[[nodiscard]] auto startup(const User usr = User::Normal, const Pin pin = Pin::Invalid) const -> bool;
 
 		/// <summary>
 		/// Executes the kernel and enters the game loop.
 		/// </summary>
 		/// <returns>The number of cycles before interrupt!</returns>
-		[[nodiscard]] auto Execute() const -> std::tuple<bool, uint32_t>;
+		[[nodiscard]] auto execute() const -> std::tuple<bool, uint32_t>;
 
 		/// <summary>
 		/// Returns the current state of the system.
 		/// </summary>
 		/// <returns></returns>
-		[[nodiscard]] auto GetState() const noexcept -> SystemState;
+		[[nodiscard]] auto getState() const noexcept -> SystemState;
 
 		/// <summary>
 		/// Returns the current trap flag of the system.
 		/// </summary>
 		/// <returns></returns>
-		[[nodiscard]] auto GetTrapFlag() const noexcept -> bool;
+		[[nodiscard]] auto getTrapFlag() const noexcept -> bool;
 
 		/// <summary>
 		/// Returns all registered subsystems.
 		/// </summary>
 		/// <returns></returns>
-		[[nodiscard]] auto GetSystems() const noexcept -> const std::vector<std::unique_ptr<ISubsystem>>&;
+		[[nodiscard]] auto getSystems() const noexcept -> const std::vector<std::unique_ptr<ISubsystem>>&;
 
 		/// <summary>
 		/// Interrupts execution, ending the application.
 		/// </summary>
 		/// <returns></returns>
-		auto Interrupt() const noexcept;
+		auto interrupt() const noexcept;
 
 	private:
 		struct Pimpl;
-		std::unique_ptr<Pimpl> Core;
+		std::unique_ptr<Pimpl> core;
 	};
 }

@@ -21,28 +21,28 @@ namespace kestd::drivers
 	{
 	}
 
-	auto Renderer::OnPreStartup(Sys& sys) -> bool
+	auto Renderer::onPreStartup(Sys& sys) -> bool
 	{
-		G_SCREEN = sys.Screen;
-		return Context.Initialize();
+		G_SCREEN = sys.screen;
+		return context.initialize();
 	}
 
-	auto Renderer::OnPreTick(Sys& sys) -> bool
+	auto Renderer::onPreTick(Sys& sys) -> bool
 	{
-		Context.BeginGui();
+		context.beginGui();
 		return true;
 	}
 
-	auto Renderer::OnPostTick(Sys& sys) -> bool
+	auto Renderer::onPostTick(Sys& sys) -> bool
 	{
-		Context.EndGui();
-		Context.Begin();
-		Context.End();
+		context.endGui();
+		context.begin();
+		context.end();
 		return true;
 	}
 
-	void Renderer::OnPreShutdown(Sys& sys)
+	void Renderer::onPreShutdown(Sys& sys)
 	{
-		Context.Shutdown();
+		context.shutdown();
 	}
 }

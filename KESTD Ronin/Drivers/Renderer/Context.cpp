@@ -19,7 +19,7 @@ namespace kestd::drivers
 	extern void* G_NWH;
 	extern Screen G_SCREEN;
 
-	auto RenderContext::Initialize() -> bool
+	auto RenderContext::initialize() -> bool
 	{
 		if (!G_NWH)
 		{
@@ -28,8 +28,8 @@ namespace kestd::drivers
 
 		Init initData;
 		initData.type = RendererType::Direct3D11;
-		initData.resolution.width = G_SCREEN.Width;
-		initData.resolution.height = G_SCREEN.Height;
+		initData.resolution.width = G_SCREEN.width;
+		initData.resolution.height = G_SCREEN.height;
 		initData.resolution.reset = BGFX_RESET_MSAA_X16;
 		initData.platformData.nwh = G_NWH;
 		initData.platformData.ndt = G_NDT;
@@ -48,36 +48,36 @@ namespace kestd::drivers
 		             0
 		);
 
-		setViewRect(0, 0, 0, G_SCREEN.Width, G_SCREEN.Height);
+		setViewRect(0, 0, 0, G_SCREEN.width, G_SCREEN.height);
 
-		SysGui.Initialize();
-		SysGui.ApplyStyle(Style::Dark);
+		sysGui.initialize();
+		sysGui.applyStyle(Style::Dark);
 
 		return true;
 	}
 
-	void RenderContext::BeginGui()
+	void RenderContext::beginGui()
 	{
-		SysGui.BeginGui();
+		sysGui.beginGui();
 	}
 
-	void RenderContext::EndGui()
+	void RenderContext::endGui()
 	{
-		SysGui.EndGui();
+		sysGui.endGui();
 	}
 
-	void RenderContext::Begin()
+	void RenderContext::begin()
 	{
-		touch(0);
+		bgfx::touch(0);
 	}
 
-	void RenderContext::End()
+	void RenderContext::end()
 	{
-		frame();
+		bgfx::frame();
 	}
 
-	void RenderContext::Shutdown()
+	void RenderContext::shutdown()
 	{
-		shutdown();
+		bgfx::shutdown();
 	}
 }

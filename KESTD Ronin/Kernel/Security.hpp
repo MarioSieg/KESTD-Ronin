@@ -45,7 +45,7 @@ namespace kestd::kernel
 	/// <param name="a"></param>
 	/// <param name="b"></param>
 	/// <returns></returns>
-	constexpr auto IsPrestigious(const User a, const User b) -> bool
+	constexpr auto isPrestigious(const User a, const User b) -> bool
 	{
 		return a > b;
 	}
@@ -55,16 +55,15 @@ namespace kestd::kernel
 	/// </summary>
 	/// <param name="user"></param>
 	/// <returns></returns>
-	constexpr auto GetUserPrivilegesName(const User user) -> std::string_view
+	constexpr auto getUserPrivilegesName(const User user) -> std::string_view
 	{
-		using enum User;
 		switch (user)
 		{
 			default:
-			case Normal: return "NoPrivileges";
-			case Service: return "ServicePrivileges";
-			case Admin: return "AdminPrivileges";
-			case Root: return "RootDeveloperPrivileges";
+			case User::Normal: return "NoPrivileges";
+			case User::Service: return "ServicePrivileges";
+			case User::Admin: return "AdminPrivileges";
+			case User::Root: return "RootDeveloperPrivileges";
 		}
 	}
 
@@ -84,7 +83,7 @@ namespace kestd::kernel
 	/// </summary>
 	/// <param name="usr"></param>
 	/// <returns></returns>
-	constexpr auto GetCorrespondingPin(const User usr) -> Pin
+	constexpr auto getCorrespondingPin(const User usr) -> Pin
 	{
 		switch (usr)
 		{
@@ -109,27 +108,27 @@ namespace kestd::kernel
 		/// <summary>
 		/// Number of succeeded login attempts.
 		/// </summary>
-		uint16_t SucceededAttempts = 0;
+		uint16_t succeededAttempts = 0;
 
 		/// <summary>
 		/// Number of succeeded failed attempts.
 		/// </summary>
-		uint16_t FailedAttempts = 0;
+		uint16_t failedAttempts = 0;
 
 		/// <summary>
 		/// Number of user role or name changes.
 		/// </summary>
-		uint16_t UserUpdates = 0;
+		uint16_t userUpdates = 0;
 
 		/// <summary>
 		/// Is this manager currently locked?
 		/// </summary>
-		bool IsLocked = false;
+		bool isLocked = false;
 
 		/// <summary>
 		/// Current user role.
 		/// </summary>
-		User Current = User::Normal;
+		User current = User::Normal;
 
 		/// <summary>
 		/// Try to login into the system with higher user privileges.
@@ -137,12 +136,12 @@ namespace kestd::kernel
 		/// <param name="wanted"></param>
 		/// <param name="pin"></param>
 		/// <returns></returns>
-		auto LogIn(const User wanted, const Pin pin) noexcept -> bool;
+		auto logIn(const User wanted, const Pin pin) noexcept -> bool;
 
 		/// <summary>
 		/// Log off into normal user mode.
 		/// </summary>
 		/// <returns></returns>
-		auto LogOff() noexcept;
+		auto logOff() noexcept;
 	};
 }

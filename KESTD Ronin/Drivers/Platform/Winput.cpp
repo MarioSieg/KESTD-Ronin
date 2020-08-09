@@ -34,7 +34,7 @@ namespace kestd::drivers
 	{
 	}
 
-	auto Winput::OnPreStartup(Sys& sys) -> bool
+	auto Winput::onPreStartup(Sys& sys) -> bool
 	{
 		if (!glfwInit())
 		{
@@ -42,6 +42,7 @@ namespace kestd::drivers
 		}
 
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+		glfwWindowHint(GLFW_NATIVE_CONTEXT_API, GLFW_NO_API);
 		glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
 		auto* const monitor = glfwGetPrimaryMonitor();
@@ -56,54 +57,56 @@ namespace kestd::drivers
 			return false;
 		}
 
-		auto* const window = glfwCreateWindow(videoMode->width,
-		                                      videoMode->width,
+		auto* const win = glfwCreateWindow(videoMode->width,
+		                                      videoMode->height,
 		                                      "KESTD Ronin Engine",
 		                                      nullptr,
 		                                      nullptr);
-		if (!window)
+		if (!win)
 		{
 			return false;
 		}
+		//glfwSetWindowMonitor(win, monitor, 0, 0, videoMode->width, videoMode->height, 144);
 
 		int width, height;
-		glfwGetFramebufferSize(window, &width, &height);
+		glfwGetFramebufferSize(win, &width, &height);
 
-		sys.Screen.Width = static_cast<std::uint16_t>(width);
-		sys.Screen.Height = static_cast<std::uint16_t>(height);
+		sys.screen.width = static_cast<std::uint16_t>(width);
+		sys.screen.height = static_cast<std::uint16_t>(height);
 
-		Window = window;
-		G_WIN = window;
+		window = win;
+		G_WIN = win;
 
 
 #if SYS_LINUX
 		G_NDT = glfwGetX11Display();
-		G_NWH = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(glfwGetX11Window(Window)));
+		G_NWH = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(glfwGetX11Window(win)));
 #elif SYS_WINDOWS
-		G_NWH = glfwGetWin32Window(Window);
+		G_NWH = glfwGetWin32Window(win);
 #elif SYS_MAC
-		G_NWH = glfwGetCocoaWindow(Window);
+		G_NWH = glfwGetCocoaWindow(win);
 #endif
 
 		return true;
 	}
 
-	auto Winput::OnPostStartup(Sys& sys) -> bool
+	auto Winput::onPostStartup(Sys& sys) -> bool
 	{
-		glfwShowWindow(Window);
-		glfwFocusWindow(Window);
+		glfwShowWindow(window);
+		glfwFocusWindow(window);
 		return true;
 	}
 
-	auto Winput::OnPreTick(Sys& sys) -> bool
+	auto Winput::onPreTick(Sys& sys) -> bool
 	{
 		glfwPollEvents();
-		return !glfwWindowShouldClose(Window);
+		//glfwWaitEvents();
+		return !glfwWindowShouldClose(window);
 	}
 
-	void Winput::OnPreShutdown(Sys& sys)
+	void Winput::onPreShutdown(Sys& sys)
 	{
-		glfwDestroyWindow(Window);
+		glfwDestroyWindow(window);
 		glfwTerminate();
 		G_NDT = G_NWH = G_WIN = nullptr;
 	}

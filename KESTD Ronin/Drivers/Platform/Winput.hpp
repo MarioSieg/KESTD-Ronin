@@ -13,13 +13,16 @@
 
 namespace kestd::drivers
 {
-	struct Winput final : kernel::ISubsystem
+	class Winput final : public kernel::ISubsystem
 	{
+	public:
 		Winput();
-		auto OnPreStartup(Sys& sys) -> bool override;
-		auto OnPostStartup(Sys& sys) -> bool override;
-		auto OnPreTick(Sys& sys) -> bool override;
-		void OnPreShutdown(Sys& sys) override;
-		GLFWwindow* Window = nullptr;
+
+	private:
+		auto onPreStartup(Sys& sys) -> bool override;
+		auto onPostStartup(Sys& sys) -> bool override;
+		auto onPreTick(Sys& sys) -> bool override;
+		void onPreShutdown(Sys& sys) override;
+		GLFWwindow* window = nullptr;
 	};
 }
