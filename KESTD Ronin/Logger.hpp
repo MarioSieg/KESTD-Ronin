@@ -1,8 +1,10 @@
+// =============================================================
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
-// KESTD Ronin
+// KESTD-Ronin                                                                    
 // Mario
 // Logger.hpp
 // 07.08.2020 02:30
+// =============================================================
 
 #pragma once
 
@@ -99,7 +101,7 @@ namespace kestd
 		/// <summary>
 		/// Initialize a new logger with n capacity.
 		/// </summary>
-		Logger(const std::size_t cap);
+		Logger();
 
 		/// <summary>
 		/// Returns the current buffer.

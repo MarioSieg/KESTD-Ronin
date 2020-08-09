@@ -1,8 +1,10 @@
+// =============================================================
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
-// KESTD Ronin
+// KESTD-Ronin                                                                    
 // Mario
 // OsInfo.cpp
 // 07.08.2020 12:53
+// =============================================================
 
 #include "OsInfo.hpp"
 #include "Logger.hpp"

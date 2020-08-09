@@ -1,8 +1,10 @@
+// =============================================================
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
-// KESTD Ronin
+// KESTD-Ronin                                                                    
 // Mario
-// InternalShaders.cpp
+// Embedded.cpp
 // 08.08.2020 01:22
+// =============================================================
 
 #include <cstdint>
 #include "Embedded.hpp"

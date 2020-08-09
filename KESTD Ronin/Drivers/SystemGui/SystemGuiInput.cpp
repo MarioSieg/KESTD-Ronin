@@ -1,8 +1,16 @@
+// =============================================================
+// © Copyright KerboGames®, Germany 2020! All rights reserved!
+// KESTD-Ronin                                                                    
+// Mario
+// SystemGuiInput.cpp
+// 08.08.2020 00:59
+// =============================================================
+
 #include "SystemGui.hpp"
 #include "../../Platform.hpp"
 #include <GLFW/glfw3.h>
 
-#define GLFW_HAS_NEW_CURSORS (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3400)
+#define HAS_NEW_CURSORS (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3400)
 #define MAP_BUTTON(NAV_NO, BUTTON_NO)       { if (buttonsCount > BUTTON_NO && buttons[BUTTON_NO] == GLFW_PRESS) io.NavInputs[NAV_NO] = 1.0f; }
 #define MAP_ANALOG(NAV_NO, AXIS_NO, V0, V1) { float v = (axesCount > AXIS_NO) ? axes[AXIS_NO] : V0; v = (v - V0) / (V1 - V0); if (v > 1.0f) v = 1.0f; if (io.NavInputs[NAV_NO] < v) io.NavInputs[NAV_NO] = v; }
 
@@ -12,7 +20,7 @@ namespace kestd::drivers
 	extern void* G_WIN;
 	static bool G_MOUSE_PRESSED[ImGuiMouseButton_COUNT] = {};
 	GLFWcursor* G_CURSORS[ImGuiMouseCursor_COUNT] = {};
-	
+
 	void SystemGui::InitializeInput()
 	{
 		auto& io = ImGui::GetIO();
@@ -57,7 +65,7 @@ namespace kestd::drivers
 		G_CURSORS[ImGuiMouseCursor_ResizeEW] = glfwCreateStandardCursor(GLFW_HRESIZE_CURSOR);
 		G_CURSORS[ImGuiMouseCursor_Hand] = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
 
-#if GLFW_HAS_NEW_CURSORS
+#if HAS_NEW_CURSORS
 
 		G_CURSORS[ImGuiMouseCursor_ResizeAll] = glfwCreateStandardCursor(GLFW_RESIZE_ALL_CURSOR);
 		G_CURSORS[ImGuiMouseCursor_ResizeNESW] = glfwCreateStandardCursor(GLFW_RESIZE_NESW_CURSOR);
@@ -130,8 +138,8 @@ namespace kestd::drivers
 	{
 		int w, h;
 		int displayW, displayH;
-		glfwGetWindowSize(static_cast<GLFWwindow*>(G_WIN), &w, &h);
-		glfwGetFramebufferSize(static_cast<GLFWwindow*>(G_WIN), &displayW, &displayH);
+		glfwGetWindowSize(static_cast<GLFWwindow *>(G_WIN), &w, &h);
+		glfwGetFramebufferSize(static_cast<GLFWwindow *>(G_WIN), &displayW, &displayH);
 		auto& io = ImGui::GetIO();
 		io.DisplaySize = ImVec2(static_cast<float>(w), static_cast<float>(h));
 		io.DisplayFramebufferScale = ImVec2(static_cast<float>(displayW) / w, static_cast<float>(displayH) / h);
@@ -147,10 +155,10 @@ namespace kestd::drivers
 
 	void SystemGui::UpdateMouse()
 	{
-		auto* const win = static_cast<GLFWwindow*>(G_WIN);
+		auto* const win = static_cast<GLFWwindow *>(G_WIN);
 		auto& io = ImGui::GetIO();
 
-		for (auto i = 0; i < sizeof io.MouseDown / sizeof * io.MouseDown; i++)
+		for (auto i = 0; i < sizeof io.MouseDown / sizeof *io.MouseDown; i++)
 		{
 			io.MouseDown[i] = G_MOUSE_PRESSED[i] || glfwGetMouseButton(win, i);
 			G_MOUSE_PRESSED[i] = false;
@@ -191,7 +199,8 @@ namespace kestd::drivers
 		else
 		{
 			// Show OS mouse cursor:
-			glfwSetCursor(win, G_CURSORS[guiMouseCursor] ? G_CURSORS[guiMouseCursor] : G_CURSORS[ImGuiMouseCursor_Arrow]);
+			glfwSetCursor(win,
+			              G_CURSORS[guiMouseCursor] ? G_CURSORS[guiMouseCursor] : G_CURSORS[ImGuiMouseCursor_Arrow]);
 			glfwSetInputMode(win, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		}
 	}
@@ -237,11 +246,14 @@ namespace kestd::drivers
 	void SystemGui::InstallCallbackProcPtrs()
 	{
 		// Install callbacks:
-		auto* const win = static_cast<GLFWwindow*>(G_WIN);
+		auto* const win = static_cast<GLFWwindow *>(G_WIN);
 		glfwSetMouseButtonCallback(win, MouseButtonCallback);
 		glfwSetScrollCallback(win, ScrollCallback);
 		glfwSetKeyCallback(win, KeyCallback);
 		glfwSetCharCallback(win, CharCallback);
 	}
-
 }
+
+#undef MAP_ANALOG
+#undef MAP_BUTTON
+#undef HAS_NEW_CURSORS

@@ -1,7 +1,15 @@
+// =============================================================
+// © Copyright KerboGames®, Germany 2020! All rights reserved!
+// KESTD-Ronin                                                                    
+// Mario
+// SystemGuiRenderer.cpp
+// 08.08.2020 20:44
+// =============================================================
+
 #include <algorithm>
 #include "Embedded.hpp"
 #include "RobotoRegular.ttf.inl"
-#include "IconsFontAwesome5.hpp"
+#include "../AutoTec/UI/UI.hpp"
 #include "SystemGui.hpp"
 #include "../Renderer/Utils.hpp"
 #include <bx/math.h>
@@ -9,12 +17,12 @@
 namespace kestd::drivers
 {
 	constexpr bgfx::ViewId GUI_VIEW_ID = 0xff;
-	
+
 	void SystemGui::InitializeRendering()
 	{
-		auto& io = ImGui::GetIO();
+		auto& io = GetIO();
 		const auto type = bgfx::getRendererType();
-		GuiProgram = bgfx::createProgram(
+		GuiProgram = createProgram(
 			createEmbeddedShader(INTERNAL_SHADERS, type, "VS_GUI"),
 			createEmbeddedShader(INTERNAL_SHADERS, type, "FS_GUI"),
 			true
@@ -46,11 +54,11 @@ namespace kestd::drivers
 			config.MergeMode = false;
 
 			const ImWchar* ranges = io.Fonts->GetGlyphRangesCyrillic();
-			Font = io.Fonts->AddFontFromMemoryTTF((void*)ROBOTO_REGULAR,
-				sizeof ROBOTO_REGULAR,
-				18,
-				&config,
-				ranges);
+			Font = io.Fonts->AddFontFromMemoryTTF((void *)ROBOTO_REGULAR,
+			                                      sizeof ROBOTO_REGULAR,
+			                                      18,
+			                                      &config,
+			                                      ranges);
 
 			config.MergeMode = true;
 			config.DstFont = Font;
@@ -61,11 +69,11 @@ namespace kestd::drivers
 			FontRangeMerge.Ranges[1] = ICON_MAX_FA;
 			FontRangeMerge.Ranges[2] = 0;
 
-			io.Fonts->AddFontFromMemoryTTF(const_cast<void*>(FontRangeMerge.Data),
-				static_cast<int>(FontRangeMerge.Size),
-				18 - 3.0f,
-				&config,
-				FontRangeMerge.Ranges
+			io.Fonts->AddFontFromMemoryTTF(const_cast<void *>(FontRangeMerge.Data),
+			                               static_cast<int>(FontRangeMerge.Size),
+			                               18 - 3.0f,
+			                               &config,
+			                               FontRangeMerge.Ranges
 			);
 		}
 
@@ -82,7 +90,7 @@ namespace kestd::drivers
 		);
 	}
 
-	void SystemGui::ShutdownRendering()
+	void SystemGui::ShutdownRendering() const
 	{
 		destroy(TextureUniform);
 		destroy(ImageLodEnabled);
@@ -90,17 +98,10 @@ namespace kestd::drivers
 		destroy(GuiImageProgram);
 	}
 
-	void SystemGui::BeginRendering()
+	void SystemGui::RenderDrawData() const
 	{
-		ImGui::NewFrame();
-		ImGui::ShowDemoWindow();
-	}
-
-	void SystemGui::Render()
-	{
-		ImGui::Render();
-		const auto* const drawData = ImGui::GetDrawData();
-		const auto& io = ImGui::GetIO();
+		const auto* const drawData = GetDrawData();
+		const auto& io = GetIO();
 		const auto width = static_cast<std::uint16_t>(io.DisplaySize.x);
 		const auto height = static_cast<std::uint16_t>(io.DisplaySize.y);
 		setViewMode(GUI_VIEW_ID, bgfx::ViewMode::Sequential);
@@ -129,14 +130,14 @@ namespace kestd::drivers
 			allocTransientVertexBuffer(&tvb, vertexCount, Layout);
 			allocTransientIndexBuffer(&tib, indexCount);
 
-			auto* const vertices = reinterpret_cast<ImDrawVert*>(tvb.data);
-			auto* const indices = reinterpret_cast<ImDrawIdx*>(tib.data);
+			auto* const vertices = reinterpret_cast<ImDrawVert *>(tvb.data);
+			auto* const indices = reinterpret_cast<ImDrawIdx *>(tib.data);
 
 			memcpy(vertices, drawList->VtxBuffer.begin(), vertexCount * sizeof(ImDrawVert));
 			memcpy(indices, drawList->IdxBuffer.begin(), indexCount * sizeof(ImDrawIdx));
 
 			std::uint32_t offset = 0;
-			for (const auto* cmd = drawList->CmdBuffer.begin(), *end = drawList->CmdBuffer.end(); cmd != end; ++cmd)
+			for (const auto* cmd = drawList->CmdBuffer.begin(),* end = drawList->CmdBuffer.end(); cmd != end; ++cmd)
 			{
 				if (cmd->UserCallback)
 				{
@@ -162,16 +163,16 @@ namespace kestd::drivers
 								bgfx::TextureHandle Handle;
 								uint8_t Flags;
 								uint8_t Mip;
-							} s;
+							} S;
 						}
-						texture = { cmd->TextureId };
-						state |= 0x01 & texture.s.Flags
-							? BGFX_STATE_BLEND_FUNC(BGFX_STATE_BLEND_SRC_ALPHA, BGFX_STATE_BLEND_INV_SRC_ALPHA)
-							: BGFX_STATE_NONE;
-						textureHandle = texture.s.Handle;
-						if (texture.s.Mip)
+							texture = {cmd->TextureId};
+						state |= 0x01 & texture.S.Flags
+							         ? BGFX_STATE_BLEND_FUNC(BGFX_STATE_BLEND_SRC_ALPHA, BGFX_STATE_BLEND_INV_SRC_ALPHA)
+							         : BGFX_STATE_NONE;
+						textureHandle = texture.S.Handle;
+						if (texture.S.Mip)
 						{
-							const float lodEnabled[4] = { static_cast<float>(texture.s.Mip), 1.f, .0f, .0f };
+							const float lodEnabled[4] = {static_cast<float>(texture.S.Mip), 1.f, .0f, .0f};
 							setUniform(ImageLodEnabled, lodEnabled);
 							program = GuiImageProgram;
 						}
@@ -184,9 +185,9 @@ namespace kestd::drivers
 					const auto xx = uint16_t(std::max(cmd->ClipRect.x, .0f));
 					const auto yy = uint16_t(std::max(cmd->ClipRect.y, .0f));
 					bgfx::setScissor(xx,
-						yy,
-						uint16_t(std::min(cmd->ClipRect.z, 65535.f) - xx),
-						uint16_t(std::min(cmd->ClipRect.w, 65535.f) - yy)
+					                 yy,
+					                 uint16_t(std::min(cmd->ClipRect.z, 65535.f) - xx),
+					                 uint16_t(std::min(cmd->ClipRect.w, 65535.f) - yy)
 					);
 
 					bgfx::setState(state);

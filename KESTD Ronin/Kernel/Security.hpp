@@ -1,8 +1,10 @@
+// =============================================================
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
-// KESTD Ronin
+// KESTD-Ronin                                                                    
 // Mario
 // Security.hpp
 // 07.08.2020 02:30
+// =============================================================
 
 #pragma once
 
@@ -58,11 +60,11 @@ namespace kestd::kernel
 		using enum User;
 		switch (user)
 		{
-		default:
-		case Normal: return "NoPrivileges";
-		case Service: return "ServicePrivileges";
-		case Admin: return "AdminPrivileges";
-		case Root: return "RootDeveloperPrivileges";
+			default:
+			case Normal: return "NoPrivileges";
+			case Service: return "ServicePrivileges";
+			case Admin: return "AdminPrivileges";
+			case Root: return "RootDeveloperPrivileges";
 		}
 	}
 
@@ -86,11 +88,11 @@ namespace kestd::kernel
 	{
 		switch (usr)
 		{
-		default:
-		case User::Normal: return Pin::Invalid;
-		case User::Service: return Pin::Service;
-		case User::Admin: return Pin::Admin;
-		case User::Root: return Pin::Root;
+			default:
+			case User::Normal: return Pin::Invalid;
+			case User::Service: return Pin::Service;
+			case User::Admin: return Pin::Admin;
+			case User::Root: return Pin::Root;
 		}
 	}
 

@@ -2,18 +2,20 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// Sys.cpp
-// 07.08.2020 14:21
+// Terminal.hpp
+// 09.08.2020 01:59
 // =============================================================
 
-#include "Sys.hpp"
+#pragma once
 
 namespace kestd
 {
-	Sys::Sys()
+	struct Terminal final
 	{
-		Platform.OsInfo.query();
-		Platform.CpuInfo.query();
-		Platform.GpuInfos.query();
-	}
+		static constexpr auto MAX_COMMAND_LEN = 64;
+
+		bool DisplayTerminal = true;
+		bool AutoScroll = true;
+		bool AutoFocus = true;
+	};
 }

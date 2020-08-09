@@ -1,8 +1,10 @@
+// =============================================================
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
-// KESTD Ronin
+// KESTD-Ronin                                                                    
 // Mario
 // Context.hpp
 // 08.08.2020 00:21
+// =============================================================
 
 #pragma once
 
@@ -26,7 +28,6 @@ namespace kestd::drivers
 		void Begin();
 		void End();
 
-	private:
 		SystemGui SysGui = {};
 	};
 }

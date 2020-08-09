@@ -1,8 +1,10 @@
+// =============================================================
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
-// KESTD Ronin
+// KESTD-Ronin                                                                    
 // Mario
 // Context.cpp
 // 08.08.2020 00:21
+// =============================================================
 
 #include "Context.hpp"
 #include "../../Screen.hpp"
@@ -31,36 +33,37 @@ namespace kestd::drivers
 		initData.resolution.reset = BGFX_RESET_MSAA_X16;
 		initData.platformData.nwh = G_NWH;
 		initData.platformData.ndt = G_NDT;
-		
+
 		if (!init(initData))
 		{
 			return false;
 		}
 
 		setDebug(BGFX_DEBUG_NONE);
-		
-		bgfx::setViewClear(0
-			, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH
-			, 0x303030ff
-			, 1.0f
-			, 0
+
+		setViewClear(0,
+		             BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH,
+		             0x303030ff,
+		             1.0f,
+		             0
 		);
 
 		setViewRect(0, 0, 0, G_SCREEN.Width, G_SCREEN.Height);
 
 		SysGui.Initialize();
+		SysGui.ApplyStyle(Style::Dark);
 
 		return true;
 	}
 
 	void RenderContext::BeginGui()
 	{
-		SysGui.Begin();
+		SysGui.BeginGui();
 	}
 
 	void RenderContext::EndGui()
 	{
-		SysGui.End();
+		SysGui.EndGui();
 	}
 
 	void RenderContext::Begin()

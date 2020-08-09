@@ -1,12 +1,16 @@
+// =============================================================
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
-// KESTD Ronin
+// KESTD-Ronin                                                                    
 // Mario
 // Winput.cpp
 // 07.08.2020 14:40
+// =============================================================
 
 #include "Winput.hpp"
 #include "../../Platform.hpp"
 #include "../../Sys.hpp"
+
+using namespace kestd::kernel;
 
 #if SYS_LINUX
 #define GLFW_EXPOSE_NATIVE_X11
@@ -25,7 +29,7 @@ namespace kestd::drivers
 	void* G_WIN = nullptr;
 
 	Winput::Winput(): ISubsystem("WindowInputSystem",
-	                             Event::PreStartup | Event::PostStartup | Event::PreTick | Event::PreShutdown,
+	                             Event::OnPreStartup | Event::OnPostStartup | Event::OnPreTick | Event::OnPreShutdown,
 	                             true)
 	{
 	}
@@ -39,20 +43,24 @@ namespace kestd::drivers
 
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 		glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
-		
+
 		auto* const monitor = glfwGetPrimaryMonitor();
-		if(!monitor)
+		if (!monitor)
 		{
 			return false;
 		}
-		
+
 		const auto* const videoMode = glfwGetVideoMode(monitor);
-		if(!videoMode)
+		if (!videoMode)
 		{
 			return false;
 		}
-		
-		auto* const window = glfwCreateWindow(videoMode->width, videoMode->width, "KESTD Ronin Engine", nullptr, nullptr);
+
+		auto* const window = glfwCreateWindow(videoMode->width,
+		                                      videoMode->width,
+		                                      "KESTD Ronin Engine",
+		                                      nullptr,
+		                                      nullptr);
 		if (!window)
 		{
 			return false;
@@ -66,7 +74,7 @@ namespace kestd::drivers
 
 		Window = window;
 		G_WIN = window;
-		
+
 
 #if SYS_LINUX
 		G_NDT = glfwGetX11Display();

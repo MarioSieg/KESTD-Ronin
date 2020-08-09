@@ -1,14 +1,17 @@
+// =============================================================
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
-// KESTD Ronin
+// KESTD-Ronin                                                                    
 // Mario
 // Sys.hpp
 // 07.08.2020 14:04
+// =============================================================
 
 #pragma once
 
 #include "Logger.hpp"
 #include "Screen.hpp"
 #include "OsInfo.hpp"
+#include "Terminal.hpp"
 
 namespace kestd
 {
@@ -28,16 +31,21 @@ namespace kestd
 		/// <summary>
 		/// The logger of the system.
 		/// </summary>
-		Logger Logger;
+		Logger Protocol = {};
 
 		/// <summary>
 		/// Contains platform info.
 		/// </summary>
-		PlatformInfo Platform;
+		PlatformInfo Platform = {};
 
 		/// <summary>
-		/// Contains screen info;
+		/// Contains screen info.
 		/// </summary>
-		Screen Screen;
+		Screen Screen = {};
+
+		/// <summary>
+		/// Represents the engine system terminal.
+		/// </summary>
+		Terminal Terminal = {};
 	};
 }

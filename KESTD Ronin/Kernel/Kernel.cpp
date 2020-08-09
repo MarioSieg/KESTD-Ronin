@@ -1,11 +1,12 @@
+// =============================================================
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
-// KESTD Ronin
+// KESTD-Ronin                                                                    
 // Mario
 // Kernel.cpp
 // 07.08.2020 02:30
+// =============================================================
 
 #include "Kernel.hpp"
-
 #include "../Platform.hpp"
 #include "../Sys.hpp"
 
@@ -38,20 +39,24 @@ namespace kestd::kernel
 
 		Core->IsLocked = true;
 
-		for (const auto& sys : Core->Systems)
+		// Dispatch OnPreStartup()
+		for (std::size_t i = 0; i < Core->Systems.size(); ++i)
 		{
-			if ((sys->SubscribedEvents & Event::PreStartup) != 0 && !sys->OnPreStartup(Core->Sys))
+			const auto& sys = Core->Systems[i];
+			if (sys->SubscribedEvents & Event::OnPreStartup != 0 && !sys->OnPreStartup(Core->Sys))
 			{
-				Core->Sys.Logger & "[Kernel] Failed to dispatch 'OnPreStartup' on system: " + sys->Name;
+				Core->Sys.Protocol & "[Kernel] Failed to dispatch 'OnPreStartup' on system: " + sys->Name;
 				return false;
 			}
 		}
 
-		for (const auto& sys : Core->Systems)
+		// Dispatch OnPostStartup()
+		for (std::size_t i = Core->Systems.size() - 1; i > 0; --i)
 		{
-			if ((sys->SubscribedEvents & Event::PostShutdown) != 0 && !sys->OnPostStartup(Core->Sys))
+			const auto& sys = Core->Systems[i];
+			if ((sys->SubscribedEvents & Event::OnPostShutdown) != 0 && !sys->OnPostStartup(Core->Sys))
 			{
-				Core->Sys.Logger & "[Kernel] Failed to dispatch 'OnPostStartup' on system: " + sys->Name;
+				Core->Sys.Protocol & "[Kernel] Failed to dispatch 'OnPostStartup' on system: " + sys->Name;
 				return false;
 			}
 		}
@@ -74,16 +79,21 @@ namespace kestd::kernel
 
 		auto tick = [&]
 		{
-			for (const auto& sys : Core->Systems)
+			// Dispatch OnPreTick()
+			for (std::size_t i = 0; i < Core->Systems.size(); ++i)
 			{
-				if ((sys->SubscribedEvents & Event::PreTick) != 0 && !sys->OnPreTick(Core->Sys))
+				const auto& sys = Core->Systems[i];
+				if ((sys->SubscribedEvents & Event::OnPreTick) != 0 && !sys->OnPreTick(Core->Sys))
 				{
 					return false;
 				}
 			}
-			for (const auto& sys : Core->Systems)
+
+			// Dispatch OnPostTick()
+			for (std::size_t i = Core->Systems.size() - 1; i > 0; --i)
 			{
-				if ((sys->SubscribedEvents & Event::PostTick) != 0 && !sys->OnPostTick(Core->Sys))
+				const auto& sys = Core->Systems[i];
+				if ((sys->SubscribedEvents & Event::OnPostTick) != 0 && !sys->OnPostTick(Core->Sys))
 				{
 					return false;
 				}
@@ -124,14 +134,14 @@ namespace kestd::kernel
 	{
 		Core->Info = std::make_tuple(std::move(appName), std::move(companyName));
 		QueryLegacySubsystems(Core->Systems);
-		Core->Sys.Logger << "KESTD Ronin Game Engine (C) Copyright KerboGames(R), Germany 2020! All rights reserved!";
-		Core->Sys.Logger << "[Kernel] Initializing native engine C++ runtime...";
-		Core->Sys.Logger << "[Kernel] Engine Kernel Size: " + std::to_string(sizeof(Kernel) + sizeof(Pimpl)) + "B";
-		Core->Sys.Logger << "[Kernel] Running on: " SYS_NAME;
-		Core->Sys.Logger << "[Kernel] Compiled with: " COM_NAME;
-		Core->Sys.Logger << Core->Sys.Platform.OsInfo;
-		Core->Sys.Logger << Core->Sys.Platform.CpuInfo;
-		Core->Sys.Logger << Core->Sys.Platform.GpuInfos;
+		Core->Sys.Protocol << "KESTD Ronin Game Engine (C) Copyright KerboGames(R), Germany 2020! All rights reserved!";
+		Core->Sys.Protocol << "[Kernel] Initializing native engine C++ runtime...";
+		Core->Sys.Protocol << "[Kernel] Engine Kernel Size: " + std::to_string(sizeof(Kernel) + sizeof(Pimpl)) + "B";
+		Core->Sys.Protocol << "[Kernel] Running on: " SYS_NAME;
+		Core->Sys.Protocol << "[Kernel] Compiled with: " COM_NAME;
+		Core->Sys.Protocol << Core->Sys.Platform.OsInfo;
+		Core->Sys.Protocol << Core->Sys.Platform.CpuInfo;
+		Core->Sys.Protocol << Core->Sys.Platform.GpuInfos;
 	}
 
 	Kernel::~Kernel()
@@ -141,16 +151,21 @@ namespace kestd::kernel
 			return;
 		}
 
-		for (const auto& sys : Core->Systems)
+		// Dispatch OnPreShutdown()
+		for (std::size_t i = 0; i < Core->Systems.size(); ++i)
 		{
-			if ((sys->SubscribedEvents & Event::PreShutdown) != 0)
+			const auto& sys = Core->Systems[i];
+			if ((sys->SubscribedEvents & Event::OnPreShutdown) != 0)
 			{
 				sys->OnPreShutdown(Core->Sys);
 			}
 		}
-		for (const auto& sys : Core->Systems)
+
+		// Dispatch OnPostShutdown()
+		for (std::size_t i = Core->Systems.size() - 1; i > 0; --i)
 		{
-			if ((sys->SubscribedEvents & Event::PostShutdown) != 0)
+			const auto& sys = Core->Systems[i];
+			if ((sys->SubscribedEvents & Event::OnPostShutdown) != 0)
 			{
 				sys->OnPostShutdown(Core->Sys);
 			}

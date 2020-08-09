@@ -1,8 +1,10 @@
+// =============================================================
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
-// KESTD Ronin
+// KESTD-Ronin                                                                    
 // Mario
 // Subsystem.hpp
 // 07.08.2020 02:30
+// =============================================================
 
 #pragma once
 
@@ -20,12 +22,12 @@ namespace kestd
 			enum Enum : std::uint8_t
 			{
 				None = 0,
-				PreStartup = 1 << 0,
-				PostStartup = 1 << 1,
-				PreTick = 1 << 2,
-				PostTick = 1 << 3,
-				PreShutdown = 1 << 4,
-				PostShutdown = 1 << 5,
+				OnPreStartup = 1 << 0,
+				OnPostStartup = 1 << 1,
+				OnPreTick = 1 << 2,
+				OnPostTick = 1 << 3,
+				OnPreShutdown = 1 << 4,
+				OnPostShutdown = 1 << 5,
 			};
 		};
 
