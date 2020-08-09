@@ -99,8 +99,8 @@ namespace kestd::drivers
 
 	auto Winput::onPreTick(Sys& sys) -> bool
 	{
-		glfwPollEvents();
-		//glfwWaitEvents();
+		//glfwPollEvents();
+		glfwWaitEvents();
 		return !glfwWindowShouldClose(window);
 	}
 

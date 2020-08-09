@@ -27,7 +27,7 @@ namespace kestd::drivers
 		}
 
 		Init initData;
-		initData.type = RendererType::Direct3D11;
+		initData.type = RendererType::Vulkan;
 		initData.resolution.width = G_SCREEN.width;
 		initData.resolution.height = G_SCREEN.height;
 		initData.resolution.reset = BGFX_RESET_MSAA_X16;
