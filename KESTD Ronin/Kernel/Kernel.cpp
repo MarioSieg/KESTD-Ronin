@@ -43,7 +43,7 @@ namespace kestd::kernel
 		for (std::size_t i = 0; i < core->systems.size(); ++i)
 		{
 			const auto& sys = core->systems[i];
-			if (sys->subscribedEvents & Event::OnPreStartup != 0 && !sys->onPreStartup(core->sys))
+			if (sys->callbacks.onPreStartup && !sys->onPreStartup(core->sys))
 			{
 				core->sys.protocol & "[Kernel] Failed to dispatch 'OnPreStartup' on system: " + sys->name;
 				return false;
@@ -54,7 +54,7 @@ namespace kestd::kernel
 		for (std::size_t i = core->systems.size() - 1; i > 0; --i)
 		{
 			const auto& sys = core->systems[i];
-			if ((sys->subscribedEvents & Event::OnPostShutdown) != 0 && !sys->onPostStartup(core->sys))
+			if (sys->callbacks.onPostShutdown && !sys->onPostStartup(core->sys))
 			{
 				core->sys.protocol & "[Kernel] Failed to dispatch 'OnPostStartup' on system: " + sys->name;
 				return false;
@@ -83,7 +83,7 @@ namespace kestd::kernel
 			for (std::size_t i = 0; i < core->systems.size(); ++i)
 			{
 				const auto& sys = core->systems[i];
-				if ((sys->subscribedEvents & Event::OnPreTick) != 0 && !sys->onPreTick(core->sys))
+				if (sys->callbacks.onPreTick && !sys->onPreTick(core->sys))
 				{
 					return false;
 				}
@@ -93,7 +93,7 @@ namespace kestd::kernel
 			for (std::size_t i = core->systems.size() - 1; i > 0; --i)
 			{
 				const auto& sys = core->systems[i];
-				if ((sys->subscribedEvents & Event::OnPostTick) != 0 && !sys->onPostTick(core->sys))
+				if (sys->callbacks.onPostTick && !sys->onPostTick(core->sys))
 				{
 					return false;
 				}
@@ -120,7 +120,7 @@ namespace kestd::kernel
 		return core->trapFlag;
 	}
 
-	auto Kernel::interrupt() const noexcept
+	void Kernel::interrupt() const noexcept
 	{
 		core->trapFlag = false;
 	}
@@ -157,7 +157,7 @@ namespace kestd::kernel
 		for (std::size_t i = 0; i < core->systems.size(); ++i)
 		{
 			const auto& sys = core->systems[i];
-			if ((sys->subscribedEvents & Event::OnPreShutdown) != 0)
+			if (sys->callbacks.onPreShutdown)
 			{
 				sys->onPreShutdown(core->sys);
 			}
@@ -167,10 +167,10 @@ namespace kestd::kernel
 		for (std::size_t i = core->systems.size() - 1; i > 0; --i)
 		{
 			const auto& sys = core->systems[i];
-			if ((sys->subscribedEvents & Event::OnPostShutdown) != 0)
+			if (sys->callbacks.onPostShutdown)
 			{
 				sys->onPostShutdown(core->sys);
 			}
 		}
 	}
-} // namespace kestd::kernel // namespace kestd::kernel
+}

@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "Subsystem.hpp"
+#include "ISubsystem.hpp"
 #include "Security.hpp"
 #include <memory>
 #include <string>
@@ -98,7 +98,7 @@ namespace kestd::kernel
 		/// Interrupts execution, ending the application.
 		/// </summary>
 		/// <returns></returns>
-		auto interrupt() const noexcept;
+		void interrupt() const noexcept;
 
 	private:
 		struct Pimpl;

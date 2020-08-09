@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "../../Kernel/Subsystem.hpp"
+#include "../../Kernel/ISubsystem.hpp"
 #include <GLFW/glfw3.h>
 
 namespace kestd::drivers

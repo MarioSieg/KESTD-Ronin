@@ -15,12 +15,14 @@ namespace kestd::drivers
 {
 	Screen G_SCREEN;
 
-	Renderer::Renderer() : ISubsystem("Renderer",
-	                                  Event::OnPreStartup | Event::OnPreTick | Event::OnPostTick | Event::OnPreShutdown,
-	                                  true)
+	Renderer::Renderer() : ISubsystem("Renderer", true)
 	{
+		callbacks.onPreStartup = true;
+		callbacks.onPreTick = true;
+		callbacks.onPostTick = true;
+		callbacks.onPreShutdown = true;
 	}
-
+	 
 	auto Renderer::onPreStartup(Sys& sys) -> bool
 	{
 		G_SCREEN = sys.screen;

@@ -13,8 +13,11 @@ using namespace kestd::kernel;
 
 namespace kestd::drivers
 {
-	AutoTec::AutoTec() : ISubsystem("AutoTec", Event::OnPostStartup | Event::OnPostTick | Event::OnPostShutdown, true)
+	AutoTec::AutoTec() : ISubsystem("AutoTec", true)
 	{
+		callbacks.onPostStartup = true;
+		callbacks.onPostTick = true;
+		callbacks.onPostShutdown = true;
 	}
 
 	auto AutoTec::onPostStartup(Sys&) -> bool

@@ -58,7 +58,7 @@ namespace kestd::drivers
 			if (InputText("",
 			              terminalBuffer,
 			              sizeof terminalBuffer,
-			              ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CharsNoBlank))
+			              ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CharsNoBlank) && *terminalBuffer != '\0')
 			{
 				logger.log(terminalBuffer);
 				memset(terminalBuffer, 0, sizeof terminalBuffer);

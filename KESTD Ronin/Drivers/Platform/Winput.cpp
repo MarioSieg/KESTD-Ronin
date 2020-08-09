@@ -28,10 +28,12 @@ namespace kestd::drivers
 	void* G_NWH = nullptr;
 	void* G_WIN = nullptr;
 
-	Winput::Winput(): ISubsystem("WindowInputSystem",
-	                             Event::OnPreStartup | Event::OnPostStartup | Event::OnPreTick | Event::OnPreShutdown,
-	                             true)
+	Winput::Winput(): ISubsystem("WindowInputSystem", true)
 	{
+		callbacks.onPreStartup = true;
+		callbacks.onPostStartup = true;
+		callbacks.onPreTick = true;
+		callbacks.onPreShutdown = true;
 	}
 
 	auto Winput::onPreStartup(Sys& sys) -> bool

@@ -10,7 +10,18 @@
       "cmakeCommandArgs": "",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "variables": []
+      "variables": [
+        {
+          "name": "BGFX_BUILD_TOOLS",
+          "value": "False",
+          "type": "BOOL"
+        },
+        {
+          "name": "BGFX_BUILD_EXAMPLES",
+          "value": "False",
+          "type": "BOOL"
+        }
+      ]
     },
     {
       "name": "x64-Release",
@@ -22,7 +33,23 @@
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "msvc_x64_x64" ],
-      "variables": []
+      "variables": [
+        {
+          "name": "BGFX_BUILD_TOOLS",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "BGFX_CUSTOM_TARGETS",
+          "value": "False",
+          "type": "BOOL"
+        },
+        {
+          "name": "BGFX_BUILD_EXAMPLES",
+          "value": "True",
+          "type": "BOOL"
+        }
+      ]
     }
   ]
 }

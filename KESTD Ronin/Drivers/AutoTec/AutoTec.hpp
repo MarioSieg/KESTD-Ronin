@@ -10,7 +10,7 @@
 
 #include "../../Logger.hpp"
 #include "../../Terminal.hpp"
-#include "../../Kernel/Subsystem.hpp"
+#include "../../Kernel/ISubsystem.hpp"
 
 namespace kestd::drivers
 {

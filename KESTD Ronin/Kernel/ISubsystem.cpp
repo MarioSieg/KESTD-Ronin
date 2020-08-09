@@ -6,16 +6,14 @@
 // 07.08.2020 02:30
 // =============================================================
 
-#include "Subsystem.hpp"
+#include "ISubsystem.hpp"
 
 #include <utility>
 
 namespace kestd::kernel
 {
-	ISubsystem::ISubsystem(std::string name,
-	                       const std::underlying_type<Event::Enum>::type events,
-	                       const bool isLegacy) noexcept
-		: name(std::move(name)), subscribedEvents(events), isLegacy(isLegacy)
+	ISubsystem::ISubsystem(std::string&& name, const bool isLegacy) noexcept
+		: name(std::move(name)), isLegacy(isLegacy)
 	{
 	}
 
