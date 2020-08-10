@@ -2,16 +2,16 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// TerminalData.cpp
-// 09.08.2020 03:01
+// Terminal.cpp
+// 09.08.2020 07:38
 // =============================================================
 
-#include "AutoTec.hpp"
+#include "AutoTecSystem.hpp"
 #include "UI/UI.hpp"
 
 namespace kestd::drivers
 {
-	void AutoTec::terminal(Logger& logger, kestd::Terminal& terminal)
+	void AutoTecSystem::terminal(Logger& logger, Terminal& terminal)
 	{
 		SetNextWindowSize(ImVec2(800, 600), ImGuiCond_FirstUseEver);
 		if (Begin("</> TerminalData", &terminal.displayTerminal, ImGuiWindowFlags_None))
@@ -58,7 +58,8 @@ namespace kestd::drivers
 			if (InputText("",
 			              terminalBuffer,
 			              sizeof terminalBuffer,
-			              ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CharsNoBlank) && *terminalBuffer != '\0')
+			              ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CharsNoBlank) && *terminalBuffer !=
+				'\0')
 			{
 				logger.log(terminalBuffer);
 				memset(terminalBuffer, 0, sizeof terminalBuffer);

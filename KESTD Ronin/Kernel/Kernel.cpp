@@ -3,7 +3,7 @@
 // KESTD-Ronin                                                                    
 // Mario
 // Kernel.cpp
-// 07.08.2020 02:30
+// 09.08.2020 10:43
 // =============================================================
 
 #include "Kernel.hpp"
@@ -25,45 +25,44 @@ namespace kestd::kernel
 		Sys sys = {};
 	};
 
-	auto Kernel::startup(const User usr, const Pin pin) const -> bool
+
+	Kernel::Kernel(std::string&& appName, std::string&& companyName, const User usr, const Pin pin) : core(
+		std::make_unique<Pimpl>())
 	{
-		if (core->systems.empty() || core->state != SystemState::Offline)
-		{
-			return false;
-		}
+		core->info = std::make_tuple(std::move(appName), std::move(companyName));
+		queryLegacySubsystems(core->systems);
 
-		if (!core->securityManager.logIn(usr, pin))
-		{
-			return false;
-		}
-
-		core->isLocked = true;
-
-		// Dispatch OnPreStartup()
+		// Dispatch OnStartup()
 		for (std::size_t i = 0; i < core->systems.size(); ++i)
 		{
 			const auto& sys = core->systems[i];
-			if (sys->callbacks.onPreStartup && !sys->onPreStartup(core->sys))
+			if (sys->callbacks.onStartup && !sys->onStartup(core->sys))
 			{
 				core->sys.protocol & "[Kernel] Failed to dispatch 'OnPreStartup' on system: " + sys->name;
-				return false;
+				break;
 			}
 		}
 
-		// Dispatch OnPostStartup()
-		for (std::size_t i = core->systems.size() - 1; i > 0; --i)
+		dumpInfo();
+		core->state = SystemState::Ready;
+	}
+
+	Kernel::~Kernel()
+	{
+		if (core->state != SystemState::Ready)
+		{
+			return;
+		}
+
+		// Dispatch OnShutdown()
+		for (std::size_t i = core->systems.size() - 1; i; --i)
 		{
 			const auto& sys = core->systems[i];
-			if (sys->callbacks.onPostShutdown && !sys->onPostStartup(core->sys))
+			if (sys->callbacks.onShutdown)
 			{
-				core->sys.protocol & "[Kernel] Failed to dispatch 'OnPostStartup' on system: " + sys->name;
-				return false;
+				sys->onShutdown(core->sys);
 			}
 		}
-
-		core->state = SystemState::Ready;
-
-		return true;
 	}
 
 	auto Kernel::execute() const -> std::tuple<bool, uint32_t>
@@ -90,7 +89,7 @@ namespace kestd::kernel
 			}
 
 			// Dispatch OnPostTick()
-			for (std::size_t i = core->systems.size() - 1; i > 0; --i)
+			for (std::size_t i = core->systems.size() - 1; i; --i)
 			{
 				const auto& sys = core->systems[i];
 				if (sys->callbacks.onPostTick && !sys->onPostTick(core->sys))
@@ -130,10 +129,8 @@ namespace kestd::kernel
 		return core->systems;
 	}
 
-	Kernel::Kernel(std::string&& appName, std::string&& companyName) : core(std::make_unique<Pimpl>())
+	void Kernel::dumpInfo() const
 	{
-		core->info = std::make_tuple(std::move(appName), std::move(companyName));
-		queryLegacySubsystems(core->systems);
 		core->sys.protocol <<
 			"KESTD Ronin Game Engine (C) Copyright KerboGames(R), Germany 2020! All rights reserved!";
 		core->sys.protocol << "[Kernel] Initializing native engine C++ runtime...";
@@ -144,33 +141,5 @@ namespace kestd::kernel
 		core->sys.protocol << core->sys.platform.osInfo;
 		core->sys.protocol << core->sys.platform.cpuInfo;
 		core->sys.protocol << core->sys.platform.gpuInfos;
-	}
-
-	Kernel::~Kernel()
-	{
-		if (core->state != SystemState::Ready)
-		{
-			return;
-		}
-
-		// Dispatch OnPreShutdown()
-		for (std::size_t i = 0; i < core->systems.size(); ++i)
-		{
-			const auto& sys = core->systems[i];
-			if (sys->callbacks.onPreShutdown)
-			{
-				sys->onPreShutdown(core->sys);
-			}
-		}
-
-		// Dispatch OnPostShutdown()
-		for (std::size_t i = core->systems.size() - 1; i > 0; --i)
-		{
-			const auto& sys = core->systems[i];
-			if (sys->callbacks.onPostShutdown)
-			{
-				sys->onPostShutdown(core->sys);
-			}
-		}
 	}
 }

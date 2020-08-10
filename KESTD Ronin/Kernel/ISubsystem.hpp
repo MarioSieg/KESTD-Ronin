@@ -2,13 +2,12 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// Subsystem.hpp
-// 07.08.2020 02:30
+// ISubsystem.hpp
+// 09.08.2020 10:43
 // =============================================================
 
 #pragma once
 
-#include <cstdint>
 #include <string>
 
 namespace kestd
@@ -44,29 +43,20 @@ namespace kestd
 		protected:
 			struct
 			{
-				bool onPreStartup : 1;
-				bool onPostStartup : 1;
+				bool onStartup : 1;
 				bool onPreTick : 1;
 				bool onPostTick : 1;
-				bool onPreShutdown : 1;
-				bool onPostShutdown : 1;
-			} callbacks = {};
-			
-			explicit ISubsystem(std::string &&name, const bool isLegacy) noexcept;
+				bool onShutdown : 1;
+			} callbacks;
 
-			/// <summary>
-			/// Eary kernel startup.
-			/// </summary>
-			/// <param name=""></param>
-			/// <returns></returns>
-			virtual auto onPreStartup(Sys&) -> bool;
+			explicit ISubsystem(std::string&& name, const bool isLegacy) noexcept;
 
 			/// <summary>
 			/// Late kernel startup.
 			/// </summary>
 			/// <param name=""></param>
 			/// <returns></returns>
-			virtual auto onPostStartup(Sys&) -> bool;
+			virtual auto onStartup(Sys&) -> bool;
 
 			/// <summary>
 			/// Early frame tick.
@@ -86,13 +76,7 @@ namespace kestd
 			/// Early kernel shutdown.
 			/// </summary>
 			/// <param name=""></param>
-			virtual void onPreShutdown(Sys&);
-
-			/// <summary>
-			/// Late kernel shutdown.
-			/// </summary>
-			/// <param name=""></param>
-			virtual void onPostShutdown(Sys&);
+			virtual void onShutdown(Sys&);
 		};
 	}
 }

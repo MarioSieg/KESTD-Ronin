@@ -2,16 +2,16 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// Embedded.cpp
-// 08.08.2020 01:22
+// EmbeddedShaders.cpp
+// 09.08.2020 07:24
 // =============================================================
 
 #include <cstdint>
-#include "Embedded.hpp"
-#include "GuiGenericVs.bin.inl"
-#include "GuiGenericFs.bin.inl"
-#include "GuiImageVs.bin.inl"
-#include "GuiImageFs.bin.inl"
+#include "EmbeddedShaders.hpp"
+#include "Shaders/GuiGenericVs.bin.inl"
+#include "Shaders/GuiGenericFs.bin.inl"
+#include "Shaders/GuiImageVs.bin.inl"
+#include "Shaders/GuiImageFs.bin.inl"
 
 const bgfx::EmbeddedShader INTERNAL_SHADERS[]
 {

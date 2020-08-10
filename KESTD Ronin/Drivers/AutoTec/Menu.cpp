@@ -1,9 +1,17 @@
-#include "AutoTec.hpp"
+// =============================================================
+// © Copyright KerboGames®, Germany 2020! All rights reserved!
+// KESTD-Ronin                                                                    
+// Mario
+// Menu.cpp
+// 09.08.2020 08:40
+// =============================================================
+
+#include "AutoTecSystem.hpp"
 #include "UI/UI.hpp"
 
 namespace kestd::drivers
 {
-	void AutoTec::menu()
+	void AutoTecSystem::menu() const
 	{
 		if (BeginMainMenuBar())
 		{

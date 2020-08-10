@@ -2,11 +2,11 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// Winput.cpp
-// 07.08.2020 14:40
+// WindowSystem.cpp
+// 09.08.2020 10:43
 // =============================================================
 
-#include "Winput.hpp"
+#include "WindowSystem.hpp"
 #include "../../Platform.hpp"
 #include "../../Sys.hpp"
 
@@ -27,20 +27,15 @@ namespace kestd::drivers
 	void* G_NDT = nullptr;
 	void* G_NWH = nullptr;
 	void* G_WIN = nullptr;
+	extern Screen G_SCREEN;
 
-	Winput::Winput(): ISubsystem("WindowInputSystem", true)
+	WindowSystem::WindowSystem(): ISubsystem("WindowInputSystem", true)
 	{
-		callbacks.onPreStartup = true;
-		callbacks.onPostStartup = true;
 		callbacks.onPreTick = true;
-		callbacks.onPreShutdown = true;
-	}
 
-	auto Winput::onPreStartup(Sys& sys) -> bool
-	{
 		if (!glfwInit())
 		{
-			return false;
+			return;
 		}
 
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
@@ -50,31 +45,31 @@ namespace kestd::drivers
 		auto* const monitor = glfwGetPrimaryMonitor();
 		if (!monitor)
 		{
-			return false;
+			return;
 		}
 
 		const auto* const videoMode = glfwGetVideoMode(monitor);
 		if (!videoMode)
 		{
-			return false;
+			return;
 		}
 
 		auto* const win = glfwCreateWindow(videoMode->width,
-		                                      videoMode->height,
-		                                      "KESTD Ronin Engine",
-		                                      nullptr,
-		                                      nullptr);
+		                                   videoMode->height,
+		                                   "KESTD Ronin Engine",
+		                                   nullptr,
+		                                   nullptr);
 		if (!win)
 		{
-			return false;
+			return;
 		}
 		//glfwSetWindowMonitor(win, monitor, 0, 0, videoMode->width, videoMode->height, 144);
 
 		int width, height;
 		glfwGetFramebufferSize(win, &width, &height);
 
-		sys.screen.width = static_cast<std::uint16_t>(width);
-		sys.screen.height = static_cast<std::uint16_t>(height);
+		G_SCREEN.width = static_cast<std::uint16_t>(width);
+		G_SCREEN.height = static_cast<std::uint16_t>(height);
 
 		window = win;
 		G_WIN = win;
@@ -89,27 +84,21 @@ namespace kestd::drivers
 		G_NWH = glfwGetCocoaWindow(win);
 #endif
 
-		return true;
-	}
-
-	auto Winput::onPostStartup(Sys& sys) -> bool
-	{
 		glfwShowWindow(window);
 		glfwFocusWindow(window);
-		return true;
 	}
 
-	auto Winput::onPreTick(Sys& sys) -> bool
-	{
-		glfwPollEvents();
-		//glfwWaitEvents();
-		return !glfwWindowShouldClose(window);
-	}
-
-	void Winput::onPreShutdown(Sys& sys)
+	WindowSystem::~WindowSystem()
 	{
 		glfwDestroyWindow(window);
 		glfwTerminate();
 		G_NDT = G_NWH = G_WIN = nullptr;
+	}
+
+	auto WindowSystem::onPreTick(Sys& sys) -> bool
+	{
+		glfwPollEvents();
+		//glfwWaitEvents();
+		return !glfwWindowShouldClose(window);
 	}
 }

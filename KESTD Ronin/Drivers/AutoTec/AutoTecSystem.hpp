@@ -2,27 +2,30 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// Winput.hpp
-// 07.08.2020 14:40
+// AutoTecSystem.hpp
+// 09.08.2020 10:43
 // =============================================================
 
 #pragma once
 
+#include "../../Logger.hpp"
+#include "../../Terminal.hpp"
 #include "../../Kernel/ISubsystem.hpp"
-#include <GLFW/glfw3.h>
 
 namespace kestd::drivers
 {
-	class Winput final : public kernel::ISubsystem
+	class AutoTecSystem final : public kernel::ISubsystem
 	{
 	public:
-		Winput();
+		AutoTecSystem();
+		~AutoTecSystem() override;
 
 	private:
-		auto onPreStartup(Sys& sys) -> bool override;
-		auto onPostStartup(Sys& sys) -> bool override;
-		auto onPreTick(Sys& sys) -> bool override;
-		void onPreShutdown(Sys& sys) override;
-		GLFWwindow* window = nullptr;
+		auto onPostTick(Sys&) -> bool override;
+
+		void terminal(Logger& logger, Terminal& terminal);
+		void menu() const;
+
+		char terminalBuffer[Terminal::MAX_COMMAND_LEN] = {};
 	};
 }

@@ -3,7 +3,7 @@
 // KESTD-Ronin                                                                    
 // Mario
 // Kernel.hpp
-// 07.08.2020 02:30
+// 09.08.2020 07:25
 // =============================================================
 
 #pragma once
@@ -44,13 +44,18 @@ namespace kestd::kernel
 	class Kernel final
 	{
 	public:
+
 		/// <summary>
-		/// Creates a new engine kernel.
+		/// Creates a new engine kernel and initializes all resources.
 		/// </summary>
-		/// <param name="appName">The name of the application or game.</param>
-		/// <param name="companyName">The name of the developing company.</param>
-		/// <returns></returns>
-		explicit Kernel(std::string&& appName, std::string&& companyName);
+		/// <param name="appName"></param>
+		/// <param name="companyName"></param>
+		/// <param name="usr"></param>
+		/// <param name="pin"></param>
+		explicit Kernel(std::string&& appName,
+		                std::string&& companyName,
+		                const User usr = User::Normal,
+		                const Pin pin = Pin::Invalid);
 
 		Kernel(const Kernel&) = delete;
 
@@ -61,14 +66,6 @@ namespace kestd::kernel
 		auto operator=(Kernel&&) -> Kernel& = delete;
 
 		~Kernel();
-
-		/// <summary>
-		/// Starts all subsystems and sets the state to Ready
-		/// </summary>
-		/// <param name="usr"></param>
-		/// <param name="pin"></param>
-		/// <returns></returns>
-		[[nodiscard]] auto startup(const User usr = User::Normal, const Pin pin = Pin::Invalid) const -> bool;
 
 		/// <summary>
 		/// Executes the kernel and enters the game loop.
@@ -101,6 +98,7 @@ namespace kestd::kernel
 		void interrupt() const noexcept;
 
 	private:
+		void dumpInfo() const;
 		struct Pimpl;
 		std::unique_ptr<Pimpl> core;
 	};

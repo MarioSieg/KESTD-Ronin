@@ -2,30 +2,26 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// AutoTec.cpp
-// 09.08.2020 03:13
+// AutoTecSystem.cpp
+// 09.08.2020 10:43
 // =============================================================
 
-#include "AutoTec.hpp"
+#include "AutoTecSystem.hpp"
 #include "../../Sys.hpp"
 
 using namespace kestd::kernel;
 
 namespace kestd::drivers
 {
-	AutoTec::AutoTec() : ISubsystem("AutoTec", true)
+	AutoTecSystem::AutoTecSystem() : ISubsystem("AutoTecSystem", true)
 	{
-		callbacks.onPostStartup = true;
 		callbacks.onPostTick = true;
-		callbacks.onPostShutdown = true;
 	}
 
-	auto AutoTec::onPostStartup(Sys&) -> bool
-	{
-		return true;
-	}
+	AutoTecSystem::~AutoTecSystem()
+	= default;
 
-	auto AutoTec::onPostTick(Sys& sys) -> bool
+	auto AutoTecSystem::onPostTick(Sys& sys) -> bool
 	{
 		if (sys.terminal.displayTerminal)
 		{
@@ -35,9 +31,5 @@ namespace kestd::drivers
 		menu();
 
 		return true;
-	}
-
-	void AutoTec::onPostShutdown(Sys&)
-	{
 	}
 }

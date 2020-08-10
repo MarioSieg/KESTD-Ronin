@@ -3,31 +3,27 @@
 // KESTD-Ronin                                                                    
 // Mario
 // Context.hpp
-// 08.08.2020 00:21
+// 09.08.2020 07:24
 // =============================================================
 
 #pragma once
 
-#include "../SystemGui/SystemGui.hpp"
-
-namespace kestd
-{
-	class Logger;
-}
+#include "Drivers.hpp"
+#include "../SystemGui/Gui.hpp"
 
 namespace kestd::drivers
 {
 	class RenderContext final
 	{
 	public:
-		auto initialize() -> bool;
-		void shutdown();
+		RenderContext();
+		RenderContext(const RenderContext&) = delete;
+		RenderContext(RenderContext&&) = delete;
+		auto operator=(const RenderContext&) -> RenderContext& = delete;
+		auto operator=(RenderContext&&) -> RenderContext& = delete;
+		~RenderContext();
 
-		void beginGui();
-		void endGui();
-		void begin();
-		void end();
-
-		SystemGui sysGui = {};
+		Drivers drivers;
+		SystemGui gui;
 	};
 }

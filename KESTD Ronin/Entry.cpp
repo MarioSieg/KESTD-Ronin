@@ -3,7 +3,7 @@
 // KESTD-Ronin                                                                    
 // Mario
 // Entry.cpp
-// 07.08.2020 02:30
+// 09.08.2020 07:24
 // =============================================================
 
 #include "Kernel/Kernel.hpp"
@@ -13,7 +13,6 @@ using namespace kestd::kernel;
 auto main() -> int
 {
 	const Kernel kernel = Kernel("TestGame", "KerboGames");
-	kernel.startup();
 	kernel.execute();
 	return 0;
 }

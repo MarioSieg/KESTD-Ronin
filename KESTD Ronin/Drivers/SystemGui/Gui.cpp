@@ -2,43 +2,40 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// SystemGui.cpp
-// 08.08.2020 00:59
+// Gui.cpp
+// 09.08.2020 07:24
 // =============================================================
 
-#include "SystemGui.hpp"
+#include "Gui.hpp"
 #include "../../Screen.hpp"
 
 namespace kestd::drivers
 {
 	extern Screen G_SCREEN;
 
-	void SystemGui::initialize()
+	SystemGui::SystemGui()
 	{
-		context = ImGui::CreateContext();
 		ImGui::StyleColorsDark();
 		auto& io = ImGui::GetIO();
 		io.DisplaySize = ImVec2{static_cast<float>(G_SCREEN.width), static_cast<float>(G_SCREEN.height)};
 		io.IniFilename = nullptr;
-		initializeRendering();
-		initializeInput();
-		installCallbackProcPtrs();
 	}
 
-	void SystemGui::beginGui()
+	SystemGui::~SystemGui()
 	{
-		beginInput();
+		ImGui::DestroyContext(context);
+	}
+
+	void SystemGui::begin()
+	{
+		input.update();
 		ImGui::NewFrame();
 	}
 
-	void SystemGui::endGui()
+	void SystemGui::end() const
 	{
 		ImGui::Render();
-		renderDrawData();
-	}
-
-	void SystemGui::shutdown() const
-	{
-		ImGui::DestroyContext(context);
+		const ImDrawData* const data = ImGui::GetDrawData();
+		renderer.draw(data);
 	}
 }

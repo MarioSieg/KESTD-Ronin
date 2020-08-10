@@ -2,23 +2,25 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// SystemGuiRenderer.cpp
-// 08.08.2020 20:44
+// GuiRenderer.cpp
+// 09.08.2020 07:24
 // =============================================================
 
-#include <algorithm>
-#include "Embedded.hpp"
-#include "RobotoRegular.ttf.inl"
+#include "EmbeddedShaders.hpp"
+#include "GuiRenderer.hpp"
 #include "../AutoTec/UI/UI.hpp"
-#include "SystemGui.hpp"
 #include "../Renderer/Utils.hpp"
 #include <bx/math.h>
+#include <algorithm>
+
+#include <cstdint> // Required before RobotoRegular.ttf.inl
+#include "RobotoRegular.ttf.inl"
 
 namespace kestd::drivers
 {
 	constexpr bgfx::ViewId GUI_VIEW_ID = 0xff;
 
-	void SystemGui::initializeRendering()
+	SystemGuiRenderer::SystemGuiRenderer()
 	{
 		auto& io = GetIO();
 		const auto type = bgfx::getRendererType();
@@ -90,7 +92,7 @@ namespace kestd::drivers
 		);
 	}
 
-	void SystemGui::shutdownRendering() const
+	SystemGuiRenderer::~SystemGuiRenderer()
 	{
 		destroy(textureUniform);
 		destroy(imageLodEnabled);
@@ -98,7 +100,7 @@ namespace kestd::drivers
 		destroy(guiImageProgram);
 	}
 
-	void SystemGui::renderDrawData() const
+	void SystemGuiRenderer::draw(const ImDrawData* const data) const
 	{
 		const auto* const drawData = GetDrawData();
 		const auto& io = GetIO();
@@ -186,8 +188,8 @@ namespace kestd::drivers
 					const auto yy = std::uint16_t(std::max(cmd->ClipRect.y, .0f));
 					bgfx::setScissor(xx,
 					                 yy,
-						std::uint16_t(std::min(cmd->ClipRect.z, 65535.f) - xx),
-						std::uint16_t(std::min(cmd->ClipRect.w, 65535.f) - yy)
+					                 std::uint16_t(std::min(cmd->ClipRect.z, 65535.f) - xx),
+					                 std::uint16_t(std::min(cmd->ClipRect.w, 65535.f) - yy)
 					);
 
 					bgfx::setState(state);

@@ -2,18 +2,26 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// Context.cpp
-// 09.08.2020 07:24
+// Drivers.hpp
+// 10.08.2020 13:41
 // =============================================================
 
-#include "Context.hpp"
+#pragma once
 
 namespace kestd::drivers
 {
-	RenderContext::RenderContext()
+	class Drivers final
 	{
-		gui.applyStyle(Style::Dark);
-	}
+	public:
+		Drivers();
+		Drivers(const Drivers&) = delete;
+		Drivers(Drivers&&) = delete;
+		auto operator=(const Drivers&) -> Drivers& = delete;
+		auto operator=(Drivers&&) -> Drivers& = delete;
+		~Drivers();
 
-	RenderContext::~RenderContext() = default;
+
+		void begin();
+		void end();
+	};
 }

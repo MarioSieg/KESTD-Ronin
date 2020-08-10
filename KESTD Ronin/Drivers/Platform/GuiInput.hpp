@@ -2,20 +2,25 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// Terminal.hpp
-// 09.08.2020 07:38
+// GuiInput.hpp
+// 10.08.2020 14:07
 // =============================================================
 
 #pragma once
 
-namespace kestd
+namespace kestd::drivers
 {
-	struct Terminal final
+	class SystemGuiInput final
 	{
-		static constexpr auto MAX_COMMAND_LEN = 64;
+	public:
+		SystemGuiInput();
+		~SystemGuiInput();
+		void update();
 
-		bool displayTerminal = true;
-		bool autoScroll = true;
-		bool autoFocus = true;
+	private:
+		void updateMouse();
+		void updateCursor();
+		void updateGamepads();
+		void installCallackProcedures();
 	};
 }

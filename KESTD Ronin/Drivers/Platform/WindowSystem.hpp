@@ -2,28 +2,25 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// Renderer.hpp
-// 07.08.2020 21:39
+// WindowSystem.hpp
+// 09.08.2020 10:43
 // =============================================================
 
 #pragma once
 
 #include "../../Kernel/ISubsystem.hpp"
-#include "Context.hpp"
+#include <GLFW/glfw3.h>
 
 namespace kestd::drivers
 {
-	class Renderer final : public kernel::ISubsystem
+	class WindowSystem final : public kernel::ISubsystem
 	{
 	public:
-		Renderer();
+		WindowSystem();
+		~WindowSystem() override;
 
 	private:
-		auto onPreStartup(Sys& sys) -> bool override;
 		auto onPreTick(Sys& sys) -> bool override;
-		auto onPostTick(Sys& sys) -> bool override;
-		void onPreShutdown(Sys& sys) override;
-
-		RenderContext context = {};
+		GLFWwindow* window = nullptr;
 	};
 }

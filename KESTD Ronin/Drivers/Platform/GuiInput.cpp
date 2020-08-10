@@ -2,13 +2,16 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// SystemGuiInput.cpp
-// 08.08.2020 00:59
+// GuiInput.cpp
+// 09.08.2020 07:24
 // =============================================================
 
-#include "SystemGui.hpp"
+#include "GuiInput.hpp"
+#include "Callbacks.hpp"
 #include "../../Platform.hpp"
+
 #include <GLFW/glfw3.h>
+#include <imgui.h>
 
 #define HAS_NEW_CURSORS (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3400)
 #define MAP_BUTTON(NAV_NO, BUTTON_NO)       { if (buttonsCount > BUTTON_NO && buttons[BUTTON_NO] == GLFW_PRESS) io.NavInputs[NAV_NO] = 1.0f; }
@@ -18,10 +21,10 @@ namespace kestd::drivers
 {
 	extern void* G_NWH;
 	extern void* G_WIN;
-	static bool G_MOUSE_PRESSED[ImGuiMouseButton_COUNT] = {};
+	extern bool G_MOUSE_PRESSED[ImGuiMouseButton_COUNT];
 	GLFWcursor* G_CURSORS[ImGuiMouseCursor_COUNT] = {};
 
-	void SystemGui::initializeInput()
+	SystemGuiInput::SystemGuiInput()
 	{
 		auto& io = ImGui::GetIO();
 		io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
@@ -80,9 +83,11 @@ namespace kestd::drivers
 		G_CURSORS[ImGuiMouseCursor_NotAllowed] = glfwCreateStandardCursor(GLFW_ARROW_CURSOR);
 
 #endif
+
+		installCallackProcedures();
 	}
 
-	void SystemGui::shutdownInput()
+	SystemGuiInput::~SystemGuiInput()
 	{
 		for (auto*& cur : G_CURSORS)
 		{
@@ -91,50 +96,7 @@ namespace kestd::drivers
 		}
 	}
 
-	void mouseButtonCallback(GLFWwindow* const win, const int button, const int action, const int mods)
-	{
-		if (action == GLFW_PRESS && button >= 0 && button < static_cast<int>(sizeof G_MOUSE_PRESSED / sizeof *
-			G_MOUSE_PRESSED))
-		{
-			G_MOUSE_PRESSED[button] = true;
-		}
-	}
-
-	void scrollCallback(GLFWwindow* const win, const double x, const double y)
-	{
-		auto& io = ImGui::GetIO();
-		io.MouseWheelH += static_cast<float>(x);
-		io.MouseWheel += static_cast<float>(y);
-	}
-
-	void keyCallback(GLFWwindow* const win, const int key, const int scancode, const int action, const int mods)
-	{
-		auto& io = ImGui::GetIO();
-		if (action == GLFW_PRESS)
-		{
-			io.KeysDown[key] = true;
-		}
-		if (action == GLFW_RELEASE)
-		{
-			io.KeysDown[key] = false;
-		}
-		io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
-		io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
-		io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
-#if SYS_WINDOWS
-		io.KeySuper = false;
-#else
-		io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
-#endif
-	}
-
-	void CharCallback(GLFWwindow* const win, const unsigned c)
-	{
-		auto& io = ImGui::GetIO();
-		io.AddInputCharacter(c);
-	}
-
-	void SystemGui::beginInput()
+	void SystemGuiInput::update()
 	{
 		int w, h;
 		int displayW, displayH;
@@ -150,10 +112,11 @@ namespace kestd::drivers
 		io.DeltaTime = g_Time > 0.0 ? static_cast<float>(currentTime - g_Time) : static_cast<float>(1.f / 60.f);
 		g_Time = currentTime;
 		updateMouse();
+		updateCursor();
 		updateGamepads();
 	}
 
-	void SystemGui::updateMouse()
+	void SystemGuiInput::updateMouse()
 	{
 		auto* const win = static_cast<GLFWwindow *>(G_WIN);
 		auto& io = ImGui::GetIO();
@@ -183,7 +146,12 @@ namespace kestd::drivers
 				io.MousePos = ImVec2(static_cast<float>(mouseX), static_cast<float>(mouseY));
 			}
 		}
+	}
 
+	void SystemGuiInput::updateCursor()
+	{
+		auto* const win = static_cast<GLFWwindow *>(G_WIN);
+		auto& io = ImGui::GetIO();
 		if (io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange || glfwGetInputMode(win, GLFW_CURSOR) ==
 			GLFW_CURSOR_DISABLED)
 		{
@@ -205,7 +173,7 @@ namespace kestd::drivers
 		}
 	}
 
-	void SystemGui::updateGamepads()
+	void SystemGuiInput::updateGamepads()
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		memset(io.NavInputs, 0, sizeof io.NavInputs);
@@ -243,14 +211,13 @@ namespace kestd::drivers
 		}
 	}
 
-	void SystemGui::installCallbackProcPtrs()
+	void SystemGuiInput::installCallackProcedures()
 	{
-		// Install callbacks:
 		auto* const win = static_cast<GLFWwindow *>(G_WIN);
 		glfwSetMouseButtonCallback(win, mouseButtonCallback);
 		glfwSetScrollCallback(win, scrollCallback);
 		glfwSetKeyCallback(win, keyCallback);
-		glfwSetCharCallback(win, CharCallback);
+		glfwSetCharCallback(win, charCallback);
 	}
 }
 

@@ -2,8 +2,8 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// Subsystem.cpp
-// 07.08.2020 02:30
+// ISubsystem.cpp
+// 09.08.2020 10:43
 // =============================================================
 
 #include "ISubsystem.hpp"
@@ -13,16 +13,11 @@
 namespace kestd::kernel
 {
 	ISubsystem::ISubsystem(std::string&& name, const bool isLegacy) noexcept
-		: name(std::move(name)), isLegacy(isLegacy)
+		: name(std::move(name)), isLegacy(isLegacy), callbacks()
 	{
 	}
 
-	auto ISubsystem::onPreStartup(Sys&) -> bool
-	{
-		return true;
-	}
-
-	auto ISubsystem::onPostStartup(Sys&) -> bool
+	auto ISubsystem::onStartup(Sys&) -> bool
 	{
 		return true;
 	}
@@ -37,11 +32,7 @@ namespace kestd::kernel
 		return true;
 	}
 
-	void ISubsystem::onPreShutdown(Sys&)
-	{
-	}
-
-	void ISubsystem::onPostShutdown(Sys&)
+	void ISubsystem::onShutdown(Sys&)
 	{
 	}
 }
