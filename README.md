@@ -1,6 +1,6 @@
 # KESTD-Ronin
 ## What is it?
-KESTD-Ronin is a open source, lightweight, experiment friendly and cross platform game engine developed by KerboGames.
+KESTD-Ronin is a lightweight, experiment friendly and cross platform game engine developed by KerboGames.
 
 ## What is the usage?
 The engine and the integrated editor "AutoTec" can be used to create fully features 3D apps, simulations and games.
@@ -19,7 +19,6 @@ The main advantages:
 - :eight_pointed_black_star: Experimenting
 - :eight_pointed_black_star: Fully open source
 - :eight_pointed_black_star: Very lightweight
-- :eight_pointed_black_star: Fully crossplatform
 - :eight_pointed_black_star: Flexible and extendable
 - :eight_pointed_black_star: Fast, low memory usage
 - :eight_pointed_black_star: Modern C++ 20 and idioms
@@ -30,7 +29,7 @@ The main advantages:
 - :white_check_mark: Linux
 - :white_check_mark: Mac
 
-## Integration:
+## Implementation:
 - :white_check_mark: Direct3D9
 - :white_check_mark: Direct3D11
 - :white_check_mark: Direct3D12
@@ -39,5 +38,7 @@ The main advantages:
 - :white_check_mark: OpenGL ES
 - :white_check_mark: Metal
 - :white_check_mark: WebGL
+- :white_check_mark: Multithreaded rendering
+- :white_check_mark: SSE, AVX
 
 ## Getting started:
