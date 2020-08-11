@@ -6,7 +6,7 @@ KESTD-Ronin is a lightweight, experiment friendly and cross platform game engine
 The engine and the integrated editor "AutoTec" can be used to create fully features 3D apps, simulations and games.
 The engine is designed to be very easy to use and flexible - hence "experiment friendly", because 
 it is also often used to test algorithms, rendering techiques or physics.
-But you can also modify it, create your own variation or even use it as base to create your very own engine.
+Besides from games it can also be used to create visualizations of all kinds; for demos, architecture and art.
 Also it is currently used by KerboGames for various projects and demos.
 
 ## What languages?
@@ -17,12 +17,10 @@ For general and gameplay scripting C++ or the very flexible Lua language can be 
 The main advantages:
 - :eight_pointed_black_star: Learning
 - :eight_pointed_black_star: Experimenting
-- :eight_pointed_black_star: Fully open source
 - :eight_pointed_black_star: Very lightweight
 - :eight_pointed_black_star: Flexible and extendable
 - :eight_pointed_black_star: Fast, low memory usage
 - :eight_pointed_black_star: Modern C++ 20 and idioms
-- :eight_pointed_black_star: Use it as base for your very own engine
 - :eight_pointed_black_star: Lua scripting
 
 ## Platforms:
