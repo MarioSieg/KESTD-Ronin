@@ -23,6 +23,7 @@ The main advantages:
 - :eight_pointed_black_star: Fast, low memory usage
 - :eight_pointed_black_star: Modern C++ 20 and idioms
 - :eight_pointed_black_star: Use it as base for your very own engine
+- :eight_pointed_black_star: Lua scripting
 
 ## Platforms:
 - :white_check_mark: Windows
