@@ -1,6 +1,6 @@
 # KESTD-Ronin
 ## What is it?
-KESTD-Ronin is a open source, lightweight, experiment friendly and cross platform game engine made by MarioSieg.
+KESTD-Ronin is a open source, lightweight, experiment friendly and cross platform game engine developed by a small team of enthusiats: KerboGames.
 
 ## What is the usage?
 The engine and the integrated editor "AutoTec" can be used to create fully features 3D apps, simulations and games.
