@@ -4,7 +4,7 @@
       "name": "x64-Debug",
       "generator": "Ninja",
       "configurationType": "Debug",
-      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "inheritEnvironments": [ "msvc_x64" ],
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
       "cmakeCommandArgs": "",
@@ -13,12 +13,47 @@
       "variables": [
         {
           "name": "BGFX_BUILD_TOOLS",
-          "value": "False",
+          "value": "True",
           "type": "BOOL"
         },
         {
           "name": "BGFX_BUILD_EXAMPLES",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "INFOWARE_USE_D3D",
           "value": "False",
+          "type": "BOOL"
+        },
+        {
+          "name": "GLFW_INSTALL",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "USE_MSVC_RUNTIME_LIBRARY_DLL",
+          "value": "False",
+          "type": "BOOL"
+        },
+        {
+          "name": "INFOWARE_USE_OPENGL",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "GLFW_BUILD_DOCS",
+          "value": "False",
+          "type": "BOOL"
+        },
+        {
+          "name": "BGFX_INSTALL_EXAMPLES",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "BGFX_CONFIG_DEBUG",
+          "value": "True",
           "type": "BOOL"
         }
       ]
