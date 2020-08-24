@@ -43,7 +43,7 @@ namespace kestd::detail::sysgui
 
 		if constexpr (!isPaddingDockspace)
 			PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-		Begin("DockSpace Demo", nullptr, windowFlags);
+		Begin("DockSpace", nullptr, windowFlags);
 		if constexpr (!isPaddingDockspace)
 			PopStyleVar();
 
@@ -54,7 +54,7 @@ namespace kestd::detail::sysgui
 		auto& io = GetIO();
 		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 		{
-			const auto dockspace_id = GetID("MyDockSpace");
+			const auto dockspace_id = GetID("DockSpace");
 			DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspaceFlags);
 		}
 		else

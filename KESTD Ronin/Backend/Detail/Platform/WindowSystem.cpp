@@ -30,10 +30,8 @@ extern kestd::Screen G_SCREEN;
 namespace kestd::detail
 {
 
-	WindowSystem::WindowSystem(): ISubsystem("WindowInputSystem", true)
+	WindowSystem::WindowSystem(): ISubsystem("WindowInputSystem", true, Event::Tick)
 	{
-		callbacks.onPreTick = true;
-
 		if (!glfwInit())
 		{
 			return;
@@ -96,7 +94,7 @@ namespace kestd::detail
 		G_NDT = G_NWH = G_WIN = nullptr;
 	}
 
-	auto WindowSystem::onPreTick(Sys& sys) -> bool
+	auto WindowSystem::onTick(Sys& sys) -> bool
 	{
 		glfwPollEvents();
 		//glfwWaitEvents();

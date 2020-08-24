@@ -25,8 +25,7 @@ namespace kestd::detail
 		~RenderSystem() override;
 
 	private:
-		auto onPreTick(Sys& sys) -> bool override;
-		auto onPostTick(Sys& sys) -> bool override;
+		auto onTick(Sys& sys) -> bool override;
 
 		RenderContext context;
 		sysgui::TerminalRenderer terminalRenderer;

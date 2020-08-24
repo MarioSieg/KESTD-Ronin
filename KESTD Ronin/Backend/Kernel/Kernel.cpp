@@ -32,11 +32,10 @@ namespace kestd::kernel
 		core->info = std::make_tuple(std::move(appName), std::move(companyName));
 		queryLegacySubsystems(core->systems);
 
-		// Dispatch OnStartup()
-		for (std::size_t i = 0; i < core->systems.size(); ++i)
+		// Dispatch onStartup()
+		for (const auto& sys : core->systems)
 		{
-			const auto& sys = core->systems[i];
-			if (sys->callbacks.onStartup && !sys->onStartup(core->sys))
+			if (sys->events & Event::Startup && !sys->onStartup(core->sys))
 			{
 				core->sys.protocol & "[Kernel] Failed to dispatch 'OnPreStartup' on system: " + sys->name;
 				break;
@@ -54,11 +53,11 @@ namespace kestd::kernel
 			return;
 		}
 
-		// Dispatch OnShutdown()
+		// Dispatch onShutdown()
 		for (std::size_t i = core->systems.size() - 1; i; --i)
 		{
 			const auto& sys = core->systems[i];
-			if (sys->callbacks.onShutdown)
+			if (sys->events & Event::Shutdown)
 			{
 				sys->onShutdown(core->sys);
 			}
@@ -78,21 +77,10 @@ namespace kestd::kernel
 
 		auto tick = [&]
 		{
-			// Dispatch OnPreTick()
-			for (std::size_t i = 0; i < core->systems.size(); ++i)
+			// Dispatch onTick()
+			for (const auto& sys : core->systems)
 			{
-				const auto& sys = core->systems[i];
-				if (sys->callbacks.onPreTick && !sys->onPreTick(core->sys))
-				{
-					return false;
-				}
-			}
-
-			// Dispatch OnPostTick()
-			for (std::size_t i = core->systems.size() - 1; i; --i)
-			{
-				const auto& sys = core->systems[i];
-				if (sys->callbacks.onPostTick && !sys->onPostTick(core->sys))
+				if (sys->events & Event::Tick && !sys->onTick(core->sys))
 				{
 					return false;
 				}

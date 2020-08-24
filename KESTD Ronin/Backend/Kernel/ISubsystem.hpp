@@ -16,6 +16,17 @@ namespace kestd
 
 	namespace kernel
 	{
+		struct Event final
+		{
+			enum Enum : std::uint_fast8_t
+			{
+				None = 0,
+				Startup = 1 << 0,
+				Tick = 1 << 1,
+				Shutdown = 1 << 2,
+			};
+		};
+		
 		/// <summary>
 		/// Base interface for all engine kernel subystems.
 		/// </summary>
@@ -40,16 +51,13 @@ namespace kestd
 			/// </summary>
 			const bool isLegacy;
 
+			/// <summary>
+			/// Subscribed events.
+			/// </summary>
+			const Event::Enum events;
+			
 		protected:
-			struct
-			{
-				bool onStartup : 1;
-				bool onPreTick : 1;
-				bool onPostTick : 1;
-				bool onShutdown : 1;
-			} callbacks;
-
-			explicit ISubsystem(std::string&& name, const bool isLegacy) noexcept;
+			explicit ISubsystem(std::string&& name, const bool isLegacy, const Event::Enum events) noexcept;
 
 			/// <summary>
 			/// Late kernel startup.
@@ -59,18 +67,11 @@ namespace kestd
 			virtual auto onStartup(Sys&) -> bool;
 
 			/// <summary>
-			/// Early frame tick.
+			/// Frame tick.
 			/// </summary>
 			/// <param name=""></param>
 			/// <returns></returns>
-			virtual auto onPreTick(Sys&) -> bool;
-
-			/// <summary>
-			/// Late frame tick.
-			/// </summary>
-			/// <param name=""></param>
-			/// <returns></returns>
-			virtual auto onPostTick(Sys&) -> bool;
+			virtual auto onTick(Sys&) -> bool;
 
 			/// <summary>
 			/// Early kernel shutdown.

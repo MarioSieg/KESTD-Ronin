@@ -16,22 +16,16 @@ kestd::Screen G_SCREEN;
 namespace kestd::detail
 {
 
-	RenderSystem::RenderSystem() : ISubsystem("RenderSystem", true)
+	RenderSystem::RenderSystem() : ISubsystem("RenderSystem", true, Event::Tick)
 	{
-		callbacks.onPreTick = true;
-		callbacks.onPostTick = true;
 		G_SCREEN.width = 1920;
 		G_SCREEN.height = 1080;
 	}
 
 	RenderSystem::~RenderSystem() = default;
 
-	auto RenderSystem::onPreTick(Sys& sys) -> bool
-	{
-		return true;
-	}
 
-	auto RenderSystem::onPostTick(Sys& sys) -> bool
+	auto RenderSystem::onTick(Sys& sys) -> bool
 	{
 		context.gui.begin();
 		terminalRenderer.render(sys.protocol, sys.terminal.displayTerminal);

@@ -20,7 +20,7 @@ namespace kestd::detail
 		~WindowSystem() override;
 
 	private:
-		auto onPreTick(Sys& sys) -> bool override;
+		auto onTick(Sys& sys) -> bool override;
 		GLFWwindow* window = nullptr;
 	};
 }

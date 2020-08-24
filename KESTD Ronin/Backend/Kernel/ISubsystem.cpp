@@ -12,8 +12,8 @@
 
 namespace kestd::kernel
 {
-	ISubsystem::ISubsystem(std::string&& name, const bool isLegacy) noexcept
-		: name(std::move(name)), isLegacy(isLegacy), callbacks()
+	ISubsystem::ISubsystem(std::string&& name, const bool isLegacy, const Event::Enum events) noexcept
+		: name(std::move(name)), isLegacy(isLegacy), events(events)
 	{
 	}
 
@@ -22,12 +22,7 @@ namespace kestd::kernel
 		return true;
 	}
 
-	auto ISubsystem::onPreTick(Sys&) -> bool
-	{
-		return true;
-	}
-
-	auto ISubsystem::onPostTick(Sys&) -> bool
+	auto ISubsystem::onTick(Sys&) -> bool
 	{
 		return true;
 	}
