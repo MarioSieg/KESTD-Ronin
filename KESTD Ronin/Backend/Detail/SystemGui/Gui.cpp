@@ -7,13 +7,13 @@
 // =============================================================
 
 #include "Gui.hpp"
-#include "../../Frontend/Screen.hpp"
+#include "../../Frontend/ScreenInfo.hpp"
 
-extern kestd::Screen G_SCREEN;
+extern kestd::ScreenInfo G_SCREEN;
 
 namespace kestd::detail::sysgui
 {
-	SystemGui::SystemGui()
+	SystemGui::SystemGui(const std::size_t fontSize) : renderer(fontSize)
 	{
 		// Initialize ImGui:
 		ImGui::StyleColorsDark();

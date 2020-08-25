@@ -7,13 +7,14 @@
 // =============================================================
 
 #include "Kernel.hpp"
-#include "../../Frontend/Platform.hpp"
-#include "../../Frontend/Sys.hpp"
+#include "../../Frontend/PlatformInfo.hpp"
+#include "../../Frontend/Environment.hpp"
 #include <fmt/core.h>
+#include <chrono>
 
 namespace kestd::kernel
 {
-	extern void queryLegacySubsystems(std::vector<std::unique_ptr<ISubsystem>>&);
+	extern void InitializeLegacySubsystens(const BootConfig& cfg, std::vector<std::unique_ptr<ISubsystem>>&);
 
 	struct Kernel::Pimpl final
 	{
@@ -23,27 +24,29 @@ namespace kestd::kernel
 		std::vector<std::unique_ptr<ISubsystem>> systems = {};
 		std::tuple<std::string, std::string> info = {};
 		SecurityManager securityManager;
-		Sys sys = {};
+		Environment sys = {};
 	};
-
 
 	Kernel::Kernel(std::string&& appName, std::string&& companyName, const User usr, const Pin pin) : core(
 		std::make_unique<Pimpl>())
 	{
 		core->info = std::make_tuple(std::move(appName), std::move(companyName));
-		queryLegacySubsystems(core->systems);
-
-		// Dispatch onStartup()
-		for (const auto& sys : core->systems)
+		const auto stopwatch = std::chrono::high_resolution_clock::now();
+		auto& protocol = core->sys.getProtocol();
+		protocol | "Booting kernel & subsystems...";
+		InitializeLegacySubsystens(core->sys.getBootConfig(), core->systems); // Create and initialize subsystems
+		for (const auto& sys : core->systems)                                 // Dispatch onStartup()
 		{
 			if (sys->events & Event::Startup && !sys->onStartup(core->sys))
 			{
-				core->sys.protocol & "[Kernel] Failed to dispatch 'OnPreStartup' on system: " + sys->name;
+				protocol & "[Kernel] Failed to dispatch 'OnPreStartup' on system: " + sys->name;
 				break;
 			}
 		}
-
 		dumpInfo();
+		const auto bootTime = std::chrono::duration_cast<std::chrono::milliseconds>(
+			std::chrono::high_resolution_clock::now() - stopwatch).count();
+		protocol % fmt::format("System online! BootTime: {}s", bootTime / 1000.f);
 		core->state = SystemState::Ready;
 	}
 
@@ -74,7 +77,7 @@ namespace kestd::kernel
 
 		core->systems.shrink_to_fit();
 		core->trapFlag = true;
-		uint32_t cycles = 0;
+		std::uint32_t cycles = 0;
 
 		auto tick = [&]
 		{
@@ -91,9 +94,9 @@ namespace kestd::kernel
 			return true;
 		};
 
-		for(;;)
+		for (;;)
 		{
-			if(!tick())
+			if (!tick())
 			{
 				break;
 			}
@@ -125,17 +128,20 @@ namespace kestd::kernel
 
 	void Kernel::dumpInfo() const
 	{
-		core->sys.protocol <<
+		auto& protocol = core->sys.getProtocol();
+		auto& platform = core->sys.getPlatformInfo();
+
+		protocol <<
 			"KESTD Ronin Game Engine (C) Copyright KerboGames(R), Germany 2020! All rights reserved!";
-		core->sys.protocol << "[Kernel] Initializing native engine runtime...";
-		core->sys.protocol << "[Kernel] Compiler: " COM_NAME;
-		core->sys.protocol << "[Kernel] STD: C++20";
-		core->sys.protocol << fmt::format("[Kernel] WorkingDir: \"{}\"", std::filesystem::current_path().string());
-		core->sys.protocol << fmt::format("[Kernel] KernelSize: {}B", sizeof(Kernel) + sizeof(Pimpl));
-		core->sys.protocol << fmt::format("[Kernel] SystemSize: {}B", sizeof(Sys));
-		core->sys.protocol << fmt::format("[Kernel] EngineSize: {}B", sizeof(Sys) + sizeof(Kernel) + sizeof(Pimpl));
-		core->sys.protocol ^ core->sys.platform.osInfo.toStr();
-		core->sys.protocol ^ core->sys.platform.cpuInfo.toStr();
-		core->sys.protocol ^ core->sys.platform.gpuInfos.toStr();
+		protocol << "[Kernel] Initializing native engine runtime...";
+		protocol << "[Kernel] Compiler: " COM_NAME;
+		protocol << "[Kernel] STD: C++20";
+		protocol << fmt::format("[Kernel] WorkingDir: \"{}\"", std::filesystem::current_path().string());
+		protocol << fmt::format("[Kernel] KernelSize: {}B", sizeof(Kernel) + sizeof(Pimpl));
+		protocol << fmt::format("[Kernel] SystemSize: {}B", sizeof(Environment));
+		protocol << fmt::format("[Kernel] EngineSize: {}B", sizeof(Environment) + sizeof(Kernel) + sizeof(Pimpl));
+		protocol ^ platform.osInfo.toStr();
+		protocol ^ platform.cpuInfo.toStr();
+		protocol ^ platform.gpuInfos.toStr();
 	}
 }

@@ -2,20 +2,29 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// Terminal.hpp
-// 09.08.2020 07:38
+// AutoTec.hpp
+// 26.08.2020 00:19
 // =============================================================
 
 #pragma once
 
+#include <cstdint>
+
 namespace kestd
 {
-	struct Terminal final
+	enum class AutoTecStyle
 	{
-		static constexpr auto MAX_COMMAND_LEN = 64;
+		Dark,
+		Light,
+		Blue,
+		Cherry,
+		Green,
+	};
 
-		bool displayTerminal = true;
-		bool autoScroll = true;
-		bool autoFocus = true;
+	struct AutoTecConfig final
+	{
+		std::uint8_t fontSize = 18;
+		bool isEnabled = true;
+		AutoTecStyle style = AutoTecStyle::Dark;
 	};
 }

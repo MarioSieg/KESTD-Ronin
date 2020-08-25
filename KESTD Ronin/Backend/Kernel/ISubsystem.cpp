@@ -17,17 +17,17 @@ namespace kestd::kernel
 	{
 	}
 
-	auto ISubsystem::onStartup(Sys&) -> bool
+	auto ISubsystem::onStartup(Environment&) -> bool
 	{
 		return true;
 	}
 
-	auto ISubsystem::onTick(Sys&) -> bool
+	auto ISubsystem::onTick(Environment&) -> bool
 	{
 		return true;
 	}
 
-	void ISubsystem::onShutdown(Sys&)
+	void ISubsystem::onShutdown(Environment&)
 	{
 	}
 }

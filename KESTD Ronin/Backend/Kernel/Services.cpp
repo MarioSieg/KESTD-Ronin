@@ -14,10 +14,10 @@
 
 namespace kestd::kernel
 {
-	void queryLegacySubsystems(std::vector<std::unique_ptr<ISubsystem>>& services)
+	void InitializeLegacySubsystens(const BootConfig& cfg, std::vector<std::unique_ptr<ISubsystem>>& services)
 	{
-		services.reserve(3);
-		services.emplace_back(std::make_unique<detail::WindowSystem>());
-		services.emplace_back(std::make_unique<detail::RenderSystem>());
+		services.reserve(2);
+		services.emplace_back(std::make_unique<detail::WindowSystem>(cfg));
+		services.emplace_back(std::make_unique<detail::RenderSystem>(cfg));
 	}
 }

@@ -13,14 +13,11 @@
 #include <imgui.h>
 #include <algorithm>
 
-#include <cstdint> // Required before RobotoRegular.ttf.inl
-#include "RobotoRegular.ttf.inl"
-
 namespace kestd::detail
 {
 	constexpr bgfx::ViewId GUI_VIEW_ID = 0xff;
 
-	SystemGuiRenderer::SystemGuiRenderer()
+	SystemGuiRenderer::SystemGuiRenderer(const std::size_t fontSize)
 	{
 		auto& io = ImGui::GetIO();
 		const auto type = bgfx::getRendererType();
@@ -55,29 +52,21 @@ namespace kestd::detail
 			config.FontDataOwnedByAtlas = false;
 			config.MergeMode = false;
 
-			const ImWchar* ranges = io.Fonts->GetGlyphRangesCyrillic();
+			const auto* ranges = io.Fonts->GetGlyphRangesDefault();
+			io.Fonts->AddFontFromFileTTF("../DB/Fonts/JetBrainsMono.ttf", fontSize - 3.0f, &config, ranges);
+
+			/*
 			font = io.Fonts->AddFontFromMemoryTTF((void *)ROBOTO_REGULAR,
 			                                      sizeof ROBOTO_REGULAR,
 			                                      18,
 			                                      &config,
 			                                      ranges);
+			*/
 
-			config.MergeMode = true;
+			config.MergeMode = false;
 			config.DstFont = font;
-
-			fontRangeMerge.data = ROBOTO_REGULAR;
-			fontRangeMerge.size = sizeof ROBOTO_REGULAR;
-			fontRangeMerge.ranges[0] = L' ';
-			fontRangeMerge.ranges[1] = L' ';
-			fontRangeMerge.ranges[2] = 0;
-
-			io.Fonts->AddFontFromMemoryTTF(const_cast<void *>(fontRangeMerge.data),
-			                               static_cast<int>(fontRangeMerge.size),
-			                               18 - 3.0f,
-			                               &config,
-			                               fontRangeMerge.ranges
-			);
 		}
+
 
 		io.Fonts->GetTexDataAsRGBA32(&data, &lwidth, &lheight);
 

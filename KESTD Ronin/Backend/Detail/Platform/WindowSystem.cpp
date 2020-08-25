@@ -7,8 +7,8 @@
 // =============================================================
 
 #include "WindowSystem.hpp"
-#include "../../Frontend/Platform.hpp"
-#include "../../Frontend/Sys.hpp"
+#include "../../Frontend/PlatformInfo.hpp"
+#include "../../Frontend/Environment.hpp"
 
 using namespace kestd::kernel;
 
@@ -25,12 +25,11 @@ using namespace kestd::kernel;
 void* G_NDT = nullptr;
 void* G_NWH = nullptr;
 void* G_WIN = nullptr;
-extern kestd::Screen G_SCREEN;
+extern kestd::ScreenInfo G_SCREEN;
 
 namespace kestd::detail
 {
-
-	WindowSystem::WindowSystem(): ISubsystem("WindowInputSystem", true, Event::Tick)
+	WindowSystem::WindowSystem(const BootConfig& cfg): ISubsystem("WindowInputSystem", true, Event::Tick)
 	{
 		if (!glfwInit())
 		{
@@ -94,7 +93,7 @@ namespace kestd::detail
 		G_NDT = G_NWH = G_WIN = nullptr;
 	}
 
-	auto WindowSystem::onTick(Sys& sys) -> bool
+	auto WindowSystem::onTick(Environment& sys) -> bool
 	{
 		glfwPollEvents();
 		//glfwWaitEvents();

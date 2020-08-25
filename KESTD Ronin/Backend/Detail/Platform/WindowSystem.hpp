@@ -11,16 +11,25 @@
 #include "../../Kernel/ISubsystem.hpp"
 #include <GLFW/glfw3.h>
 
+namespace kestd
+{
+	struct BootConfig;
+}
+
 namespace kestd::detail
 {
 	class WindowSystem final : public kernel::ISubsystem
 	{
 	public:
-		WindowSystem();
+		WindowSystem(const BootConfig& cfg);
+		WindowSystem(const WindowSystem&) = delete;
+		WindowSystem(WindowSystem&&) = delete;
+		WindowSystem& operator=(const WindowSystem&) = delete;
+		WindowSystem& operator=(WindowSystem&&) = delete;
 		~WindowSystem() override;
 
 	private:
-		auto onTick(Sys& sys) -> bool override;
+		auto onTick(Environment& sys) -> bool override;
 		GLFWwindow* window = nullptr;
 	};
 }

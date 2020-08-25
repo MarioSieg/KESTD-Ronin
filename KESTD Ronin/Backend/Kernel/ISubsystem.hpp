@@ -12,7 +12,7 @@
 
 namespace kestd
 {
-	class Sys;
+	class Environment;
 
 	namespace kernel
 	{
@@ -26,7 +26,7 @@ namespace kestd
 				Shutdown = 1 << 2,
 			};
 		};
-		
+
 		/// <summary>
 		/// Base interface for all engine kernel subystems.
 		/// </summary>
@@ -55,7 +55,7 @@ namespace kestd
 			/// Subscribed events.
 			/// </summary>
 			const Event::Enum events;
-			
+
 		protected:
 			explicit ISubsystem(std::string&& name, const bool isLegacy, const Event::Enum events) noexcept;
 
@@ -64,20 +64,20 @@ namespace kestd
 			/// </summary>
 			/// <param name=""></param>
 			/// <returns></returns>
-			virtual auto onStartup(Sys&) -> bool;
+			virtual auto onStartup(Environment&) -> bool;
 
 			/// <summary>
 			/// Frame tick.
 			/// </summary>
 			/// <param name=""></param>
 			/// <returns></returns>
-			virtual auto onTick(Sys&) -> bool;
+			virtual auto onTick(Environment&) -> bool;
 
 			/// <summary>
 			/// Early kernel shutdown.
 			/// </summary>
 			/// <param name=""></param>
-			virtual void onShutdown(Sys&);
+			virtual void onShutdown(Environment&);
 		};
 	}
 }

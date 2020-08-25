@@ -2,18 +2,19 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// Context.cpp
+// ScreenInfo.hpp
 // 09.08.2020 07:24
 // =============================================================
 
-#include "Context.hpp"
+#pragma once
 
-namespace kestd::detail
+#include <cstdint>
+
+namespace kestd
 {
-	RenderContext::RenderContext(const std::size_t fontSize, const AutoTecStyle style) : gui(fontSize)
+	struct ScreenInfo final
 	{
-		gui.applyStyle(style);
-	}
-
-	RenderContext::~RenderContext() = default;
+		std::uint16_t width = 0;
+		std::uint16_t height = 0;
+	};
 }

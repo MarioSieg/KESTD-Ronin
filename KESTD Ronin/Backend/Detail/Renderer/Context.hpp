@@ -11,12 +11,17 @@
 #include "Drivers.hpp"
 #include "../SystemGui/Gui.hpp"
 
+namespace kestd
+{
+	enum class AutoTecStyle;
+}
+
 namespace kestd::detail
 {
 	class RenderContext final
 	{
 	public:
-		RenderContext();
+		RenderContext(const std::size_t fontSize, const AutoTecStyle style);
 		RenderContext(const RenderContext&) = delete;
 		RenderContext(RenderContext&&) = delete;
 		auto operator=(const RenderContext&) -> RenderContext& = delete;

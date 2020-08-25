@@ -8,8 +8,9 @@
 
 #pragma once
 
+#include "../../Frontend/BootConfig.hpp"
 #include "../../Kernel/ISubsystem.hpp"
-#include "../SystemGui/Terminal.hpp"
+#include "../SystemGui/TerminalRenderer.hpp"
 #include "Context.hpp"
 
 namespace kestd::detail
@@ -17,7 +18,7 @@ namespace kestd::detail
 	class RenderSystem final : public kernel::ISubsystem
 	{
 	public:
-		RenderSystem();
+		RenderSystem(const BootConfig& cfg);
 		RenderSystem(const RenderSystem&) = delete;
 		RenderSystem(RenderSystem&&) = delete;
 		auto operator=(const RenderSystem&) -> RenderSystem& = delete;
@@ -25,7 +26,7 @@ namespace kestd::detail
 		~RenderSystem() override;
 
 	private:
-		auto onTick(Sys& sys) -> bool override;
+		auto onTick(Environment& sys) -> bool override;
 
 		RenderContext context;
 		sysgui::TerminalRenderer terminalRenderer;

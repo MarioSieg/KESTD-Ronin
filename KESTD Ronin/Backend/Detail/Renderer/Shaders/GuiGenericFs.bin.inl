@@ -1,8 +1,10 @@
+// =============================================================
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
-// KESTD Ronin
+// KESTD-Ronin                                                                    
 // Mario
 // GuiGenericFs.bin.inl
-// 08.08.2020 00:50
+// 09.08.2020 07:24
+// =============================================================
 
 constexpr std::uint8_t FS_GUI_glsl[242] =
 {

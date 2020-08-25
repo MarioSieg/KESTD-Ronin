@@ -7,18 +7,17 @@
 // =============================================================
 
 #include "Drivers.hpp"
-#include "../../Frontend/Screen.hpp"
+#include "../../Frontend/ScreenInfo.hpp"
 #include <bgfx/bgfx.h>
 
 using namespace bgfx;
 
 extern void* G_NDT;
 extern void* G_NWH;
-extern kestd::Screen G_SCREEN;
+extern kestd::ScreenInfo G_SCREEN;
 
 namespace kestd::detail
 {
-
 	Drivers::Drivers()
 	{
 		if (!G_NWH)

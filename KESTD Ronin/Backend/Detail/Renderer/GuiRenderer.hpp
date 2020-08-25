@@ -8,29 +8,23 @@
 
 #pragma once
 
-#include <imgui.h>
 #include <bgfx/bgfx.h>
 #include <cstddef>
 
+struct ImFont;
+struct ImDrawData;
+
 namespace kestd::detail
 {
-	struct FontRangeMerge final
-	{
-		const void* data = nullptr;
-		std::size_t size = 0;
-		ImWchar ranges[3] = {};
-	};
-
 	class SystemGuiRenderer final
 	{
 	public:
-		SystemGuiRenderer();
+		SystemGuiRenderer(const std::size_t fontSize);
 		~SystemGuiRenderer();
 		void draw(const ImDrawData* const data) const;
 
 	private:
 		ImFont* font = nullptr;
-		FontRangeMerge fontRangeMerge = {};
 		bgfx::VertexLayout layout = {};
 		bgfx::ProgramHandle guiProgram = {};
 		bgfx::ProgramHandle guiImageProgram = {};

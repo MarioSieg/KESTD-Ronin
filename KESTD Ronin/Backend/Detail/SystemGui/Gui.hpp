@@ -13,35 +13,31 @@
 #include "../Platform/GuiInput.hpp"
 #include "../Renderer/GuiRenderer.hpp"
 
+namespace kestd
+{
+	enum class AutoTecStyle;
+}
+
 namespace kestd::detail::sysgui
 {
-	enum class Style
-	{
-		Dark,
-		Light,
-		Blue,
-		Cherry,
-		Green,
-	};
-
 	class SystemGui final
 	{
 	public:
-		SystemGui();
+		SystemGui(const std::size_t fontSize);
 		SystemGui(const SystemGui&) = delete;
 		SystemGui(SystemGui&) = delete;
-		auto operator=(const SystemGui&)->SystemGui & = delete;
-		auto operator=(SystemGui&&)->SystemGui & = delete;
+		auto operator=(const SystemGui&) -> SystemGui& = delete;
+		auto operator=(SystemGui&&) -> SystemGui& = delete;
 		~SystemGui();
 
 		void begin();
 		void end() const;
-		void applyStyle(const Style sty);
+		void applyStyle(const AutoTecStyle sty);
 
 	private:
 		void beginDockSpace() const;
 		void endDockSpace() const;
-		ImGuiContext* context{ ImGui::CreateContext() };
+		ImGuiContext* context{ImGui::CreateContext()};
 		SystemGuiRenderer renderer;
 		SystemGuiInput input;
 	};

@@ -7,16 +7,17 @@
 // =============================================================
 
 #include "Gui.hpp"
+#include "../../Frontend/AutoTec.hpp"
 
 namespace kestd::detail::sysgui
 {
-	void SystemGui::applyStyle(const Style sty)
+	void SystemGui::applyStyle(const AutoTecStyle sty)
 	{
 		auto& style = ImGui::GetStyle();
 		switch (sty)
 		{
 			default:
-			case Style::Dark:
+			case AutoTecStyle::Dark:
 			{
 				style.Colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
 				style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
@@ -63,7 +64,7 @@ namespace kestd::detail::sysgui
 			}
 				break;
 
-			case Style::Light:
+			case AutoTecStyle::Light:
 			{
 				style.Colors[ImGuiCol_Text] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
 				style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);
@@ -113,7 +114,7 @@ namespace kestd::detail::sysgui
 			}
 			break;
 
-			case Style::Cherry:
+			case AutoTecStyle::Cherry:
 			{
 				style.Colors[ImGuiCol_Text] = ImVec4(0.860f, 0.930f, 0.890f, 0.78f);
 				style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.860f, 0.930f, 0.890f, 0.28f);
@@ -174,7 +175,7 @@ namespace kestd::detail::sysgui
 			}
 			break;
 
-			case Style::Blue:
+			case AutoTecStyle::Blue:
 			{
 				style.Colors[ImGuiCol_Text] = ImVec4(0.95f, 0.96f, 0.98f, 1.00f);
 				style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.36f, 0.42f, 0.47f, 1.00f);
@@ -227,7 +228,7 @@ namespace kestd::detail::sysgui
 			}
 			break;
 
-			case Style::Green:
+			case AutoTecStyle::Green:
 			{
 				style.Colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
 				style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);

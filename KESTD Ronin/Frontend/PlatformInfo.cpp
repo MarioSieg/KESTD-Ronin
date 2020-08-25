@@ -2,12 +2,12 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// OsInfo.cpp
+// PlatformInfo.cpp
 // 09.08.2020 07:24
 // =============================================================
 
-#include "OsInfo.hpp"
-#include "Logger.hpp"
+#include "PlatformInfo.hpp"
+#include "BufferedProtocolLogger.hpp"
 #include <infoware/infoware.hpp>
 #include <fmt/core.h>
 
@@ -57,13 +57,12 @@ namespace kestd
 		}
 	}
 
-	auto CpuInfo::toStr() -> std::string
+	auto CpuInfo::toStr() const -> std::string
 	{
 		constexpr auto HZ2GHZ = 1000.f * 1000.f * 1000.f;
 		constexpr auto B2MB = 1000.f * 1000.f;
-		
-		return fmt::format
-		(
+
+		return fmt::format(
 			"--------CPU--------\n"
 			"LogicalCores: {}\n"
 			"PhysicalCores: {}\n"
@@ -133,18 +132,17 @@ namespace kestd
 		}
 	}
 
-	auto GpuInfoCollection::toStr() -> std::string
+	auto GpuInfoCollection::toStr() const -> std::string
 	{
 		constexpr auto B2MB = 1024.f * 1024.f;
 		constexpr auto B2GB = 1024.f * 1024.f * 1024.f;
 		constexpr auto HZ2GHZ = 1000.f * 1000.f * 1000.f;
-		
+
 		std::string ret = {};
 		for (std::size_t i = 0; i < allGpus.size(); ++i)
 		{
 			const auto& gpu = allGpus[i];
-			ret += fmt::format
-			(
+			ret += fmt::format(
 				"--------GPU{}--------\n"
 				"Vendor: {}\n"
 				"Name: {}\n"
@@ -190,13 +188,12 @@ namespace kestd
 		os.patch = osi.patch;
 	}
 
-	auto OsInfo::toStr() -> std::string
+	auto OsInfo::toStr() const -> std::string
 	{
 		constexpr auto B2MB = 1024.f * 1024.f;
 		constexpr auto B2GB = 1024.f * 1024.f * 1024.f;
-		
-		return fmt::format
-		(
+
+		return fmt::format(
 			"--------OS--------\n"
 			"Name: {}\n"
 			"AvailablePhysicalMemory(RAM):\n\t{}B\n\t{}MB\n\t{}GB\n"

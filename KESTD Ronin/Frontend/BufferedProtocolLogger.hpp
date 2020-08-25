@@ -2,7 +2,7 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// Logger.hpp
+// BufferedProtocolLogger.hpp
 // 09.08.2020 07:24
 // =============================================================
 
@@ -20,24 +20,29 @@ namespace kestd
 	enum class MessageType
 	{
 		/// <summary>
-		/// Just info logging.
+		/// (Grey) Just info logging.
 		/// </summary>
 		Info,
 
 		/// <summary>
-		/// Just tracer logging.
+		/// (Grey) Just tracer logging.
 		/// </summary>
 		Trace,
 
 		/// <summary>
-		/// Warning - could lean to an error!
+		/// (Red) Fatal error!
+		/// </summary>
+		Error,
+
+		/// <summary>
+		/// (Orange) Warning - could lean to an error!
 		/// </summary>
 		Warning,
 
 		/// <summary>
-		/// Fatal error!
+		/// (Green) Log a success message.
 		/// </summary>
-		Error,
+		Success
 	};
 
 	/// <summary>
@@ -59,7 +64,7 @@ namespace kestd
 	/// <summary>
 	/// Represents an automatically flushing, buffered logger.
 	/// </summary>
-	class Logger final
+	class BufferedProtocolLogger final
 	{
 	public:
 		/// <summary>
@@ -90,7 +95,7 @@ namespace kestd
 		/// <summary>
 		/// Initialize a new logger with n capacity.
 		/// </summary>
-		Logger(const std::size_t reserve = 64);
+		BufferedProtocolLogger(const std::size_t reserve = 64);
 
 		/// <summary>
 		/// Returns the current buffer.
@@ -139,11 +144,18 @@ namespace kestd
 		void log<MessageType::Trace>(std::string&& msg);
 
 		/// <summary>
+		/// Log a message.
+		/// </summary>
+		/// <param name="msg"></param>
+		template<>
+		void log<MessageType::Success>(std::string&& msg);
+
+		/// <summary>
 		/// Log an info message.
 		/// </summary>
 		/// <param name="msg"></param>
 		/// <returns></returns>
-		auto operator<<(std::string&& msg) -> Logger&;
+		auto operator<<(std::string&& msg) -> BufferedProtocolLogger&;
 
 
 		/// <summary>
@@ -151,27 +163,34 @@ namespace kestd
 		/// </summary>
 		/// <param name="msg"></param>
 		/// <returns></returns>
-		auto operator>>(std::string&& msg) -> Logger&;
+		auto operator>>(std::string&& msg) -> BufferedProtocolLogger&;
 
 		/// <summary>
 		/// Log a warning message.
 		/// </summary>
 		/// <param name="msg"></param>
 		/// <returns></returns>
-		auto operator|(std::string&& msg) -> Logger&;
+		auto operator|(std::string&& msg) -> BufferedProtocolLogger&;
 
 		/// <summary>
 		/// Log an error message.
 		/// </summary>
 		/// <param name="msg"></param>
 		/// <returns></returns>
-		auto operator&(std::string&& msg) -> Logger&;
+		auto operator&(std::string&& msg) -> BufferedProtocolLogger&;
+
+		/// <summary>
+		/// Log a success message.
+		/// </summary>
+		/// <param name="msg"></param>
+		/// <returns></returns>
+		auto operator%(std::string&& msg) -> BufferedProtocolLogger&;
 
 		/// <summary>
 		/// Log a message without any time and type formatting.
 		/// </summary>
 		/// <param name="msg"></param>
-		auto operator^(std::string&& msg)->Logger&;
+		auto operator^(std::string&& msg) -> BufferedProtocolLogger&;
 
 		/// <summary>
 		/// Flushes the current buffer to the logfile and clears it.

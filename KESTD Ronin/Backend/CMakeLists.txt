@@ -28,7 +28,7 @@ target_sources("KestdRonin" PRIVATE
 "Backend/Kernel/Services.cpp" 
 "Backend/Detail/Renderer/GuiRenderer.cpp"
 "Backend/Detail/Renderer/GuiRenderer.hpp"
-"Backend/Detail/SystemGui/Terminal.cpp"
-"Backend/Detail/SystemGui/Terminal.hpp"
+"Backend/Detail/SystemGui/TerminalRenderer.cpp"
+"Backend/Detail/SystemGui/TerminalRenderer.hpp"
 "Backend/Detail/SystemGui/Dockspace.cpp"
 )

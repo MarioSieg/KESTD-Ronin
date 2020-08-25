@@ -2,19 +2,20 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// Screen.hpp
+// Environment.cpp
 // 09.08.2020 07:24
 // =============================================================
 
-#pragma once
-
-#include <cstdint>
+#include "Environment.hpp"
 
 namespace kestd
 {
-	struct Screen final
+	Environment::Environment()
 	{
-		std::uint16_t width = 0;
-		std::uint16_t height = 0;
-	};
+		platform.osInfo.query();
+		platform.cpuInfo.query();
+		platform.gpuInfos.query();
+	}
+
+	Environment::~Environment() = default;
 }
