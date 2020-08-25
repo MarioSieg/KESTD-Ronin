@@ -9,6 +9,7 @@
 #include "OsInfo.hpp"
 #include "Logger.hpp"
 #include <infoware/infoware.hpp>
+#include <fmt/core.h>
 
 namespace kestd
 {
@@ -56,27 +57,62 @@ namespace kestd
 		}
 	}
 
-	auto operator <<(Logger& out, const CpuInfo& info) -> Logger&
+	auto CpuInfo::toStr() -> std::string
 	{
-		out << "Logical: " + std::to_string(info.logical);
-		out << "Physical: " + std::to_string(info.physical);
-		out << "Sockets: " + std::to_string(info.sockets);
-		out << "Freq: " + std::to_string(info.frequency);
-		out << "Vendor: " + info.vendor;
-		out << "VendorID: " + info.vendorId;
-		out << "ModelName: " + info.modelName;
-		out << "Arch: " + std::to_string(static_cast<int>(info.architecture));
-		for (auto i = 0; i < 3; ++i)
-		{
-			const auto& cache = info.caches[i];
-			out << "L" + std::to_string(i) + " Cache";
-			out << "Size: " + std::to_string(cache.size);
-			out << "LineSize: " + std::to_string(cache.lineSize);
-			out << "Associativity: " + std::to_string(cache.associativity);
-			out << "Type: " + std::to_string(static_cast<int>(cache.type));
-		}
-		out << "Endianness: " + std::to_string(static_cast<int>(info.endianness));
-		return out;
+		constexpr auto HZ2GHZ = 1000.f * 1000.f * 1000.f;
+		constexpr auto B2MB = 1000.f * 1000.f;
+		
+		return fmt::format
+		(
+			"--------CPU--------\n"
+			"LogicalCores: {}\n"
+			"PhysicalCores: {}\n"
+			"Sockets: {}\n"
+			"BaseFreqeuncy: {}Hz -> {}Ghz\n"
+			"Vendor: {}\n"
+			"VendorID: {}\n"
+			"ModelName: {}\n"
+			"Architecture: {}\n"
+			"L0Cache:\n"
+			"\tType: {}\n"
+			"\tAssociativity: {}\n"
+			"\tLineSize: {}B\n"
+			"\tSize: {}B -> {}MB\n"
+			"L1Cache:\n"
+			"\tType: {}\n"
+			"\tAssociativity: {}\n"
+			"\tLineSize: {}B\n"
+			"\tSize: {}B -> {}MB\n"
+			"L2Cache:\n"
+			"\tType: {}\n"
+			"\tAssociativity: {}\n"
+			"\tLineSize: {}B\n"
+			"\tSize: {}B -> {}MB\n",
+			logical,
+			physical,
+			sockets,
+			frequency,
+			frequency / HZ2GHZ,
+			vendor,
+			vendorId,
+			modelName,
+			architecture,
+			caches[0].type,
+			caches[0].associativity,
+			caches[0].lineSize,
+			caches[0].size,
+			caches[0].size / B2MB,
+			caches[1].type,
+			caches[1].associativity,
+			caches[1].lineSize,
+			caches[1].size,
+			caches[1].size / B2MB,
+			caches[2].type,
+			caches[2].associativity,
+			caches[2].lineSize,
+			caches[2].size,
+			caches[2].size / B2MB
+		);
 	}
 
 	void GpuInfoCollection::query()
@@ -97,20 +133,38 @@ namespace kestd
 		}
 	}
 
-	auto operator <<(Logger& out, const GpuInfoCollection& info) -> Logger&
+	auto GpuInfoCollection::toStr() -> std::string
 	{
-		out << "GPUs: " + std::to_string(info.allGpus.size());
-		for (std::size_t i = 0; i < info.allGpus.size(); ++i)
+		constexpr auto B2MB = 1024.f * 1024.f;
+		constexpr auto B2GB = 1024.f * 1024.f * 1024.f;
+		constexpr auto HZ2GHZ = 1000.f * 1000.f * 1000.f;
+		
+		std::string ret = {};
+		for (std::size_t i = 0; i < allGpus.size(); ++i)
 		{
-			const auto& gpu = info.allGpus[i];
-			out << "GPU: " + std::to_string(i);
-			out << "Vendor: " + std::to_string(static_cast<int>(gpu.vendor));
-			out << "Name: " + gpu.name;
-			out << "MemorySize: " + std::to_string(gpu.memorySize);
-			out << "CacheSize: " + std::to_string(gpu.cacheSize);
-			out << "MaxFrequency: " + std::to_string(gpu.maxFrequency);
+			const auto& gpu = allGpus[i];
+			ret += fmt::format
+			(
+				"--------GPU{}--------\n"
+				"Vendor: {}\n"
+				"Name: {}\n"
+				"MemorySize(VRAM): {}B -> {}MB -> {}GB\n"
+				"CacheSize: {}B -> {}MB -> {}GB\n"
+				"MaxFrequency: {}Hz -> {}Ghz\n",
+				i,
+				gpu.vendor,
+				gpu.name,
+				gpu.memorySize,
+				gpu.memorySize / B2MB,
+				gpu.memorySize / B2GB,
+				gpu.cacheSize,
+				gpu.cacheSize / B2MB,
+				gpu.cacheSize / B2GB,
+				gpu.maxFrequency,
+				gpu.maxFrequency / HZ2GHZ
+			);
 		}
-		return out;
+		return ret;
 	}
 
 	void OsInfo::query()
@@ -136,21 +190,42 @@ namespace kestd
 		os.patch = osi.patch;
 	}
 
-	auto operator <<(Logger& out, const OsInfo& info) -> Logger&
+	auto OsInfo::toStr() -> std::string
 	{
-		out << "Name: " + info.os.name;
-		out << "PhysicalAvailableMemory: " + std::to_string(info.memory.physicalAvailable);
-		out << "PhysicalTotalMemory: " + std::to_string(info.memory.physicalTotal);
-		out << "VirtualAvailableMemory: " + std::to_string(info.memory.virtualAvailable);
-		out << "VirtualTotalMemory: " + std::to_string(info.memory.virtualTotal);
-		out << "KernelMajor: " + std::to_string(info.kernel.major);
-		out << "KernelMinor: " + std::to_string(info.kernel.minor);
-		out << "KernelPatch: " + std::to_string(info.kernel.patch);
-		out << "KernelBuild: " + std::to_string(info.kernel.build);
-		out << "OSMajor: " + std::to_string(info.os.major);
-		out << "OSMinor: " + std::to_string(info.os.minor);
-		out << "OSPatch: " + std::to_string(info.os.patch);
-		out << "OSBuild: " + std::to_string(info.os.build);
-		return out;
+		constexpr auto B2MB = 1024.f * 1024.f;
+		constexpr auto B2GB = 1024.f * 1024.f * 1024.f;
+		
+		return fmt::format
+		(
+			"--------OS--------\n"
+			"Name: {}\n"
+			"AvailablePhysicalMemory(RAM):\n\t{}B\n\t{}MB\n\t{}GB\n"
+			"TotalPhysicalMemory(RAM):\n\t{}B\n\t{}MB\n\t{}GB\n"
+			"AvailableVirtualMemory(RAM):\n\t{}B\n\t{}MB\n\t{}GB\n"
+			"TotalVirtualMemory(RAM):\n\t{}B\n\t{}MB\n\t{}GB\n"
+			"KernelVersion: {}.{}.{}.{}\n"
+			"SystemVersion: {}.{}.{}.{}\n",
+			os.fullName,
+			memory.physicalAvailable,
+			memory.physicalAvailable / B2MB,
+			memory.physicalAvailable / B2GB,
+			memory.physicalTotal,
+			memory.physicalTotal / B2MB,
+			memory.physicalTotal / B2GB,
+			memory.virtualAvailable,
+			memory.virtualAvailable / B2MB,
+			memory.virtualAvailable / B2GB,
+			memory.virtualTotal,
+			memory.virtualAvailable / B2MB,
+			memory.virtualAvailable / B2GB,
+			kernel.major,
+			kernel.minor,
+			kernel.patch,
+			kernel.build,
+			os.major,
+			os.minor,
+			os.patch,
+			os.build
+		);
 	}
 }

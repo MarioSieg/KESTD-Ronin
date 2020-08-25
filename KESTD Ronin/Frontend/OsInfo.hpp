@@ -122,9 +122,8 @@ namespace kestd
 		std::vector<InstructionSet> supportedInstructionSets = {};
 
 		void query();
+		auto toStr() -> std::string;
 	};
-
-	auto operator <<(Logger& out, const CpuInfo& info) -> Logger&;
 
 
 	/// <summary>
@@ -160,9 +159,8 @@ namespace kestd
 	{
 		std::vector<GpuInfo> allGpus = {};
 		void query();
+		auto toStr()->std::string;
 	};
-
-	auto operator <<(Logger& out, const GpuInfoCollection& info) -> Logger&;
 
 	struct OsInfo final
 	{
@@ -193,9 +191,8 @@ namespace kestd
 		} os;
 
 		void query();
+		auto toStr()->std::string;
 	};
-
-	auto operator <<(Logger& out, const OsInfo& info) -> Logger&;
 
 	struct PlatformInfo final
 	{

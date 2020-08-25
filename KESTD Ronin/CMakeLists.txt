@@ -11,7 +11,6 @@ add_library("KestdRonin" SHARED)
 
 add_subdirectory("Backend/")
 add_subdirectory("Frontend/")
-add_subdirectory("AutoTec/")
 include("Extern/CMakeLists.txt")
 
 # Add AutoTec:

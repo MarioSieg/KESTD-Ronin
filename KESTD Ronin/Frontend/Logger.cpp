@@ -9,25 +9,19 @@
 #include "Logger.hpp"
 #include <fstream>
 #include <chrono>
-#ifndef NDEBUG
-#include <iostream>
-#endif
+#include <fmt/core.h>
+#include <fmt/chrono.h>
 
 namespace kestd
 {
-	Logger::Logger()
+	Logger::Logger(const std::size_t reserve)
 	{
-		buffer.reserve(autoFlushThreshold);
+		buffer.reserve(reserve);
 	}
 
 	auto Logger::getBuffer() const noexcept -> const std::vector<Message>&
 	{
 		return buffer;
-	}
-
-	auto Logger::getLogCount() const noexcept -> std::size_t
-	{
-		return logCount;
 	}
 
 	auto Logger::flush() -> bool
@@ -56,19 +50,25 @@ namespace kestd
 
 	auto Logger::operator>>(std::string&& msg) -> Logger&
 	{
-		log(std::move(msg), MessageType::Trace);
+		log<MessageType::Trace>(std::move(msg));
 		return *this;
 	}
 
 	auto Logger::operator|(std::string&& msg) -> Logger&
 	{
-		log(std::move(msg), MessageType::Warning);
+		log<MessageType::Warning>(std::move(msg));
 		return *this;
 	}
 
 	auto Logger::operator&(std::string&& msg) -> Logger&
 	{
-		log(std::move(msg), MessageType::Error);
+		log<MessageType::Error>(std::move(msg));
+		return *this;
+	}
+
+	auto Logger::operator^(std::string&& msg) -> Logger&
+	{
+		log_raw(std::move(msg));
 		return *this;
 	}
 
@@ -76,25 +76,59 @@ namespace kestd
 	{
 		buffer.clear();
 		errorMessages = infoMessages = traceMessages = warningMessages = 0;
-		logCount = 0;
 	}
 
-	void Logger::log(std::string&& msg, const MessageType type)
+	void Logger::log_raw(std::string&& msg)
 	{
-#ifndef NDEBUG
-		std::cout << msg << '\n';
-#endif
 		buffer.emplace_back(
 			Message
 			{
-				std::move(msg),
-				type,
-				std::chrono::system_clock::now(),
+				msg,
+				MessageType::Info
 			});
-		++logCount;
-		if (autoFlushThreshold && logCount >= autoFlushThreshold)
-		{
-			flush();
-		}
+	}
+
+	template<>
+	void Logger::log<MessageType::Error>(std::string&& msg)
+	{
+		buffer.emplace_back(
+			Message
+			{
+				fmt::format("{:%H:%M:%S} [ERROR] {}", fmt::localtime(std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())), msg),
+				MessageType::Error,
+			});
+	}
+
+	template<>
+	void Logger::log<MessageType::Warning>(std::string&& msg)
+	{
+		buffer.emplace_back(
+			Message
+			{
+				fmt::format("{:%H:%M:%S} [WARNING] {}", fmt::localtime(std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())), msg),
+				MessageType::Warning,
+			});
+	}
+
+	template<>
+	void Logger::log<MessageType::Trace>(std::string&& msg)
+	{
+		buffer.emplace_back(
+			Message
+			{
+				fmt::format("{:%H:%M:%S} [TRACE] {}", fmt::localtime(std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())), msg),
+				MessageType::Warning,
+			});
+	}
+
+	template<MessageType T>
+	void Logger::log(std::string&& msg)
+	{
+		buffer.emplace_back(
+			Message
+			{
+				fmt::format("{:%H:%M:%S} [INFO] {}", fmt::localtime(std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())), msg),
+				T,
+			});
 	}
 }

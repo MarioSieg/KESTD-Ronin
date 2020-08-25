@@ -13,17 +13,17 @@
       "variables": [
         {
           "name": "BGFX_BUILD_TOOLS",
-          "value": "True",
+          "value": "False",
           "type": "BOOL"
         },
         {
           "name": "BGFX_BUILD_EXAMPLES",
-          "value": "True",
+          "value": "False",
           "type": "BOOL"
         },
         {
           "name": "INFOWARE_USE_D3D",
-          "value": "False",
+          "value": "True",
           "type": "BOOL"
         },
         {
@@ -38,7 +38,7 @@
         },
         {
           "name": "INFOWARE_USE_OPENGL",
-          "value": "True",
+          "value": "False",
           "type": "BOOL"
         },
         {
@@ -54,6 +54,11 @@
         {
           "name": "BGFX_CONFIG_DEBUG",
           "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "INFOWARE_USE_OPENCL",
+          "value": "False",
           "type": "BOOL"
         }
       ]
@@ -81,6 +86,16 @@
         },
         {
           "name": "BGFX_BUILD_EXAMPLES",
+          "value": "True",
+          "type": "BOOL"
+        },
+        {
+          "name": "USE_MSVC_RUNTIME_LIBRARY_DLL",
+          "value": "False",
+          "type": "BOOL"
+        },
+        {
+          "name": "INFOWARE_USE_D3D",
           "value": "True",
           "type": "BOOL"
         }

@@ -9,6 +9,7 @@
 #include "Kernel.hpp"
 #include "../../Frontend/Platform.hpp"
 #include "../../Frontend/Sys.hpp"
+#include <fmt/core.h>
 
 namespace kestd::kernel
 {
@@ -126,13 +127,15 @@ namespace kestd::kernel
 	{
 		core->sys.protocol <<
 			"KESTD Ronin Game Engine (C) Copyright KerboGames(R), Germany 2020! All rights reserved!";
-		core->sys.protocol << "[Kernel] Initializing native engine C++ runtime...";
-		core->sys.protocol << "[Kernel] Engine Kernel Size: " + std::to_string(sizeof(Kernel) + sizeof(Pimpl)) +
-			"B";
-		core->sys.protocol << "[Kernel] Running on: " SYS_NAME;
-		core->sys.protocol << "[Kernel] Compiled with: " COM_NAME;
-		core->sys.protocol << core->sys.platform.osInfo;
-		core->sys.protocol << core->sys.platform.cpuInfo;
-		core->sys.protocol << core->sys.platform.gpuInfos;
+		core->sys.protocol << "[Kernel] Initializing native engine runtime...";
+		core->sys.protocol << "[Kernel] Compiler: " COM_NAME;
+		core->sys.protocol << "[Kernel] STD: C++20";
+		core->sys.protocol << fmt::format("[Kernel] WorkingDir: \"{}\"", std::filesystem::current_path().string());
+		core->sys.protocol << fmt::format("[Kernel] KernelSize: {}B", sizeof(Kernel) + sizeof(Pimpl));
+		core->sys.protocol << fmt::format("[Kernel] SystemSize: {}B", sizeof(Sys));
+		core->sys.protocol << fmt::format("[Kernel] EngineSize: {}B", sizeof(Sys) + sizeof(Kernel) + sizeof(Pimpl));
+		core->sys.protocol ^ core->sys.platform.osInfo.toStr();
+		core->sys.protocol ^ core->sys.platform.cpuInfo.toStr();
+		core->sys.protocol ^ core->sys.platform.gpuInfos.toStr();
 	}
 }

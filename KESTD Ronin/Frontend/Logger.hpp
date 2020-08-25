@@ -11,7 +11,6 @@
 #include <vector>
 #include <string>
 #include <filesystem>
-#include <chrono>
 
 namespace kestd
 {
@@ -55,11 +54,6 @@ namespace kestd
 		/// The type of the message.
 		/// </summary>
 		MessageType type;
-
-		/// <summary>
-		/// Time stamp in seconds.
-		/// </summary>
-		std::chrono::system_clock::time_point timeStamp;
 	};
 
 	/// <summary>
@@ -68,11 +62,6 @@ namespace kestd
 	class Logger final
 	{
 	public:
-		/// <summary>
-		/// After how many messages should we autoflush? Set to 0 to disable autoflush!
-		/// </summary>
-		std::size_t autoFlushThreshold = 1024;
-
 		/// <summary>
 		/// How many info messages are in the buffer?
 		/// </summary>
@@ -101,19 +90,13 @@ namespace kestd
 		/// <summary>
 		/// Initialize a new logger with n capacity.
 		/// </summary>
-		Logger();
+		Logger(const std::size_t reserve = 64);
 
 		/// <summary>
 		/// Returns the current buffer.
 		/// </summary>
 		/// <returns></returns>
 		[[nodiscard]] auto getBuffer() const noexcept -> const std::vector<Message>&;
-
-		/// <summary>
-		/// Returns the log count. Will be set to 0 after flush.
-		/// </summary>
-		/// <returns></returns>
-		[[nodiscard]] auto getLogCount() const noexcept -> std::size_t;
 
 		/// <summary>
 		/// Clears the current buffer.
@@ -125,8 +108,35 @@ namespace kestd
 		/// Log a message.
 		/// </summary>
 		/// <param name="msg"></param>
-		/// <param name="type"></param>
-		void log(std::string&& msg, const MessageType type = MessageType::Info);
+		template<MessageType T = MessageType::Info>
+		void log(std::string&& msg);
+
+		/// <summary>
+		/// Log a message without any time and type formatting.
+		/// </summary>
+		/// <param name="msg"></param>
+		void log_raw(std::string&& msg);
+
+		/// <summary>
+		/// Log a message.
+		/// </summary>
+		/// <param name="msg"></param>
+		template<>
+		void log<MessageType::Error>(std::string&& msg);
+
+		/// <summary>
+		/// Log a message.
+		/// </summary>
+		/// <param name="msg"></param>
+		template<>
+		void log<MessageType::Warning>(std::string&& msg);
+
+		/// <summary>
+		/// Log a message.
+		/// </summary>
+		/// <param name="msg"></param>
+		template<>
+		void log<MessageType::Trace>(std::string&& msg);
 
 		/// <summary>
 		/// Log an info message.
@@ -158,13 +168,18 @@ namespace kestd
 		auto operator&(std::string&& msg) -> Logger&;
 
 		/// <summary>
+		/// Log a message without any time and type formatting.
+		/// </summary>
+		/// <param name="msg"></param>
+		auto operator^(std::string&& msg)->Logger&;
+
+		/// <summary>
 		/// Flushes the current buffer to the logfile and clears it.
 		/// </summary>
 		/// <returns>True if the flushing succeeded, else false.</returns>
 		auto flush() -> bool;
 
 	private:
-		std::size_t logCount = 0;
 		std::vector<Message> buffer = {};
 	};
 }

@@ -7,6 +7,10 @@ namespace kestd::detail::sysgui
 {
 	void TerminalRenderer::render(const Logger& protocol, bool& display)
 	{
+		if(!display)
+		{
+			return;
+		}
 		SetNextWindowSize(ImVec2(800, 600), ImGuiCond_FirstUseEver);
 		if (Begin("</> Terminal", &display, ImGuiWindowFlags_None))
 		{

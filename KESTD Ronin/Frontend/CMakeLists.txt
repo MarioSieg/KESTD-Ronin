@@ -10,5 +10,5 @@ target_sources("KestdRonin" PRIVATE
 "Frontend/OsInfo.cpp" 
 "Frontend/Sys.hpp" 
 "Frontend/Sys.cpp" 
-"Frontend/Screen.hpp"  
+"Frontend/Screen.hpp"
 )
