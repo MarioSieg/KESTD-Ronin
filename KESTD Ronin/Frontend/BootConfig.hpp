@@ -12,8 +12,9 @@
 
 namespace kestd
 {
-	struct BootConfig final
+	class BootConfig final
 	{
+	public:
 		AutoTecConfig autoTec;
 	};
 }

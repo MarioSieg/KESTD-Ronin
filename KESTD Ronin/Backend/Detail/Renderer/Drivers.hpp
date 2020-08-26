@@ -16,12 +16,12 @@ namespace kestd::detail
 		Drivers();
 		Drivers(const Drivers&) = delete;
 		Drivers(Drivers&&) = delete;
-		auto operator=(const Drivers&) -> Drivers& = delete;
-		auto operator=(Drivers&&) -> Drivers& = delete;
+		Drivers& operator=(const Drivers&) = delete;
+		Drivers& operator=(Drivers&&) = delete;
 		~Drivers();
 
 
-		void begin();
-		void end();
+		void beginFrame();
+		void endFrame();
 	};
 }

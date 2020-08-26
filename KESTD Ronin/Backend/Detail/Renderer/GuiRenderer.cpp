@@ -9,6 +9,7 @@
 #include "EmbeddedShaders.hpp"
 #include "GuiRenderer.hpp"
 #include "../Renderer/Utils.hpp"
+#include "../SystemGui/IconsFontAwesome5.hpp"
 #include <bx/math.h>
 #include <imgui.h>
 #include <algorithm>
@@ -48,12 +49,24 @@ namespace kestd::detail
 		std::int32_t lwidth;
 		std::int32_t lheight;
 		{
+			const auto* ranges = io.Fonts->GetGlyphRangesDefault();
 			ImFontConfig config;
 			config.FontDataOwnedByAtlas = false;
 			config.MergeMode = false;
 
-			const auto* ranges = io.Fonts->GetGlyphRangesDefault();
-			io.Fonts->AddFontFromFileTTF("../DB/Fonts/JetBrainsMono.ttf", fontSize - 3.0f, &config, ranges);
+			io.Fonts->AddFontFromFileTTF("../DB/Fonts/JetBrainsMono.ttf", fontSize - 3.f, &config, ranges);
+
+			config.MergeMode = true;
+			ImWchar mergeRanges[3] = {};
+
+			mergeRanges[0] = ICON_MIN_FA;
+			mergeRanges[1] = ICON_MAX_FA;
+			io.Fonts->AddFontFromFileTTF("../DB/Fonts/FontAwesome5.ttf", fontSize - 3.f, &config, mergeRanges);
+
+			/*mergeRanges[0] = ICON_MIN_KI;
+			mergeRanges[1] = ICON_MAX_KI;
+			io.Fonts->AddFontFromFileTTF("../DB/Fonts/KenneyIconFont.ttf", fontSize - 3.f, &config, mergeRanges);*/
+
 
 			/*
 			font = io.Fonts->AddFontFromMemoryTTF((void *)ROBOTO_REGULAR,

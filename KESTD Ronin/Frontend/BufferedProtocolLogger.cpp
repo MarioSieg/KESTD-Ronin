@@ -26,7 +26,13 @@ namespace kestd
 
 	auto BufferedProtocolLogger::flush() -> bool
 	{
-		std::ofstream handle(logFile);
+		if (!std::filesystem::is_directory("../Protocol"))
+		{
+			std::filesystem::create_directory("../Protocol");
+		}
+		const auto now = std::time(nullptr);
+		std::ofstream handle(
+			logFile.value_or(fmt::format("../Protocol/KESTD-Ronin-{:%d-%m-%Y-%H-%M-%S}.log", fmt::localtime(now))));
 		if (!handle)
 		{
 			return false;
@@ -40,6 +46,19 @@ namespace kestd
 		clear();
 
 		return true;
+	}
+
+	void BufferedProtocolLogger::compressMessages()
+	{
+		for (auto& msg : buffer)
+		{
+			msg.msg.shrink_to_fit();
+		}
+	}
+
+	void BufferedProtocolLogger::compressBuffer()
+	{
+		buffer.shrink_to_fit();
 	}
 
 	auto BufferedProtocolLogger::operator<<(std::string&& msg) -> BufferedProtocolLogger&
@@ -129,7 +148,7 @@ namespace kestd
 				fmt::format("{:%H:%M:%S} [TRACE] {}",
 				            fmt::localtime(std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())),
 				            msg),
-				MessageType::Warning,
+				MessageType::Trace,
 			});
 	}
 

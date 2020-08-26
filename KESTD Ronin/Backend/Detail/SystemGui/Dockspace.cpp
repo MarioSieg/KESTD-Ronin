@@ -18,7 +18,7 @@ namespace kestd::detail::sysgui
 		constexpr auto isFullscrenDockspace = true;
 		constexpr auto isPaddingDockspace = false;
 
-		ImGuiWindowFlags windowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+		ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoDocking;
 		ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None;
 
 		if constexpr (isFullscrenDockspace)
@@ -30,8 +30,7 @@ namespace kestd::detail::sysgui
 			PushStyleVar(ImGuiStyleVar_WindowRounding, .0f);
 			PushStyleVar(ImGuiStyleVar_WindowBorderSize, .0f);
 			windowFlags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
-				ImGuiWindowFlags_NoMove;
-			windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+				ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 		}
 		else
 		{
@@ -54,8 +53,8 @@ namespace kestd::detail::sysgui
 		auto& io = GetIO();
 		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 		{
-			const auto dockspace_id = GetID("DockSpace");
-			DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspaceFlags);
+			const auto dockspaceID = GetID("DockSpace");
+			DockSpace(dockspaceID, ImVec2(0.0f, 0.0f), dockspaceFlags);
 		}
 		else
 		{

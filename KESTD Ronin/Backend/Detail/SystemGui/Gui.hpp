@@ -15,7 +15,7 @@
 
 namespace kestd
 {
-	enum class AutoTecStyle;
+	enum class AutoTecTheme;
 }
 
 namespace kestd::detail::sysgui
@@ -30,9 +30,9 @@ namespace kestd::detail::sysgui
 		auto operator=(SystemGui&&) -> SystemGui& = delete;
 		~SystemGui();
 
-		void begin();
-		void end() const;
-		void applyStyle(const AutoTecStyle sty);
+		void beginFrame();
+		void endFrame() const;
+		static void ApplyTheme(const AutoTecTheme sty);
 
 	private:
 		void beginDockSpace() const;

@@ -55,12 +55,12 @@ namespace kestd::detail
 		shutdown();
 	}
 
-	void Drivers::begin()
+	void Drivers::beginFrame()
 	{
 		touch(0);
 	}
 
-	void Drivers::end()
+	void Drivers::endFrame()
 	{
 		frame();
 	}

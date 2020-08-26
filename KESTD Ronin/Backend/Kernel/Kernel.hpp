@@ -98,7 +98,7 @@ namespace kestd::kernel
 		void interrupt() const noexcept;
 
 	private:
-		void dumpInfo() const;
+		void dumpBootInfo() const;
 		struct Pimpl;
 		std::unique_ptr<Pimpl> core;
 	};

@@ -12,7 +12,7 @@
 
 namespace kestd
 {
-	enum class AutoTecStyle
+	enum class AutoTecTheme
 	{
 		Dark,
 		Light,
@@ -25,6 +25,6 @@ namespace kestd
 	{
 		std::uint8_t fontSize = 18;
 		bool isEnabled = true;
-		AutoTecStyle style = AutoTecStyle::Dark;
+		AutoTecTheme theme = AutoTecTheme::Dark;
 	};
 }

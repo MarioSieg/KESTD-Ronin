@@ -60,6 +60,11 @@ namespace kestd
 		/// <returns></returns>
 		auto getBootConfig() noexcept -> BootConfig&;
 
+		/// <summary>
+		/// Update boot stages.
+		/// </summary>
+		void refreshBootStages();
+
 	private:
 		BufferedProtocolLogger logger;
 		PlatformInfo platform;

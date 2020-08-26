@@ -28,14 +28,14 @@ namespace kestd::detail::sysgui
 		ImGui::DestroyContext(context);
 	}
 
-	void SystemGui::begin()
+	void SystemGui::beginFrame()
 	{
 		input.update();
 		ImGui::NewFrame();
 		beginDockSpace();
 	}
 
-	void SystemGui::end() const
+	void SystemGui::endFrame() const
 	{
 		endDockSpace();
 		ImGui::Render();

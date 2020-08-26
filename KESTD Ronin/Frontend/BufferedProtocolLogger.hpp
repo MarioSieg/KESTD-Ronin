@@ -11,6 +11,7 @@
 #include <vector>
 #include <string>
 #include <filesystem>
+#include <optional>
 
 namespace kestd
 {
@@ -70,27 +71,27 @@ namespace kestd
 		/// <summary>
 		/// How many info messages are in the buffer?
 		/// </summary>
-		std::size_t infoMessages = 0;
+		std::size_t infoMessages;
 
 		/// <summary>
 		/// How many trace messages are in the buffer?
 		/// </summary>
-		std::size_t traceMessages = 0;
+		std::size_t traceMessages;
 
 		/// <summary>
 		/// How many warning messages are in the buffer?
 		/// </summary>
-		std::size_t warningMessages = 0;
+		std::size_t warningMessages;
 
 		/// <summary>
 		/// How many error messages are in the buffer?
 		/// </summary>
-		std::size_t errorMessages = 0;
+		std::size_t errorMessages;
 
 		/// <summary>
 		/// The current log file path.
 		/// </summary>
-		std::filesystem::path logFile = "session.log";
+		std::optional<std::filesystem::path> logFile;
 
 		/// <summary>
 		/// Initialize a new logger with n capacity.
@@ -198,7 +199,17 @@ namespace kestd
 		/// <returns>True if the flushing succeeded, else false.</returns>
 		auto flush() -> bool;
 
+		/// <summary>
+		/// Shrinks all message strings capacity in the buffer to the minimal size.
+		/// </summary>
+		void compressMessages();
+
+		/// <summary>
+		/// Shrinks the message buffer capacity to the minimal size.
+		/// </summary>
+		void compressBuffer();
+
 	private:
-		std::vector<Message> buffer = {};
+		std::vector<Message> buffer;
 	};
 }

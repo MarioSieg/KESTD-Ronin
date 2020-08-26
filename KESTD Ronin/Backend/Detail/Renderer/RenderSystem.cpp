@@ -16,7 +16,7 @@ kestd::ScreenInfo G_SCREEN;
 namespace kestd::detail
 {
 	RenderSystem::RenderSystem(const BootConfig& cfg) : ISubsystem("RenderSystem", true, Event::Tick),
-	                                                    context(cfg.autoTec.fontSize, cfg.autoTec.style)
+	                                                    context(cfg.autoTec.fontSize, cfg.autoTec.theme)
 	{
 		G_SCREEN.width = 1920;
 		G_SCREEN.height = 1080;
@@ -24,14 +24,25 @@ namespace kestd::detail
 
 	RenderSystem::~RenderSystem() = default;
 
-
 	auto RenderSystem::onTick(Environment& sys) -> bool
 	{
-		context.gui.begin();
-		terminalRenderer.render(sys.getProtocol(), sys.getTerminal().displayTerminal);
-		context.gui.end();
-		context.drivers.begin();
-		context.drivers.end();
+		// Begin GUI rendering:
+		context.gui.beginFrame();
+
+		// Draw the terminal:
+		terminalRenderer.updateAndRender(sys.getProtocol(), sys.getTerminal().displayTerminal);
+
+		// Update and draw the AutoTec editor:
+		autoTec.updateAndRender(sys);
+
+		// End GUI rendering:
+		context.gui.endFrame();
+
+		// Begin 3D rendering:
+		context.drivers.beginFrame();
+
+		// End frame
+		context.drivers.endFrame();
 		return true;
 	}
 }

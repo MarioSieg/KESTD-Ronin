@@ -10,6 +10,7 @@
 #include "BufferedProtocolLogger.hpp"
 #include <infoware/infoware.hpp>
 #include <fmt/core.h>
+#include <bgfx/bgfx.h>
 
 namespace kestd
 {
@@ -61,8 +62,7 @@ namespace kestd
 	{
 		constexpr auto HZ2GHZ = 1000.f * 1000.f * 1000.f;
 		constexpr auto B2MB = 1000.f * 1000.f;
-
-		return fmt::format(
+		auto ret = fmt::format(
 			"--------CPU--------\n"
 			"LogicalCores: {}\n"
 			"PhysicalCores: {}\n"
@@ -72,6 +72,7 @@ namespace kestd
 			"VendorID: {}\n"
 			"ModelName: {}\n"
 			"Architecture: {}\n"
+			"Endianness: {}\n"
 			"L0Cache:\n"
 			"\tType: {}\n"
 			"\tAssociativity: {}\n"
@@ -86,7 +87,8 @@ namespace kestd
 			"\tType: {}\n"
 			"\tAssociativity: {}\n"
 			"\tLineSize: {}B\n"
-			"\tSize: {}B -> {}MB\n",
+			"\tSize: {}B -> {}MB\n"
+			"SupportedInstructionSets:\n",
 			logical,
 			physical,
 			sockets,
@@ -95,28 +97,47 @@ namespace kestd
 			vendor,
 			vendorId,
 			modelName,
-			architecture,
-			caches[0].type,
+			ArchitecureNames[static_cast<std::size_t>(architecture)],
+			endianness == Endianness::Big ? "Big" : "Little",
+			CacheNames[static_cast<std::size_t>(caches[0].type)],
 			caches[0].associativity,
 			caches[0].lineSize,
 			caches[0].size,
 			caches[0].size / B2MB,
-			caches[1].type,
+			CacheNames[static_cast<std::size_t>(caches[1].type)],
 			caches[1].associativity,
 			caches[1].lineSize,
 			caches[1].size,
 			caches[1].size / B2MB,
-			caches[2].type,
+			CacheNames[static_cast<std::size_t>(caches[2].type)],
 			caches[2].associativity,
 			caches[2].lineSize,
 			caches[2].size,
 			caches[2].size / B2MB
 		);
+
+		for (std::size_t i = 0; i < sizeof InstructionSetNames / sizeof *InstructionSetNames; ++i)
+		{
+			const auto arch = InstructionSetNames[i];
+			ret += fmt::format("\t{}: {}\n",
+			                   arch,
+			                   std::find(supportedInstructionSets.begin(),
+			                             supportedInstructionSets.end(),
+			                             static_cast<InstructionSet>(i)) != supportedInstructionSets.end());
+		}
+
+		return ret;
 	}
 
 	void GpuInfoCollection::query()
 	{
 		const auto info = iware::gpu::device_properties();
+		const auto* adapter = bgfx::getCaps();
+
+		static_assert(sizeof(GpuAdapterLimits) == sizeof(bgfx::Caps::Limits));
+
+		memcpy(&adapterLimits, &adapter->limits, sizeof(GpuAdapterLimits));
+
 		allGpus.reserve(info.size());
 		for (const auto& gpu : info)
 		{
@@ -138,7 +159,8 @@ namespace kestd
 		constexpr auto B2GB = 1024.f * 1024.f * 1024.f;
 		constexpr auto HZ2GHZ = 1000.f * 1000.f * 1000.f;
 
-		std::string ret = {};
+		std::string ret;
+		ret.reserve(128);
 		for (std::size_t i = 0; i < allGpus.size(); ++i)
 		{
 			const auto& gpu = allGpus[i];
@@ -146,22 +168,73 @@ namespace kestd
 				"--------GPU{}--------\n"
 				"Vendor: {}\n"
 				"Name: {}\n"
-				"MemorySize(VRAM): {}B -> {}MB -> {}GB\n"
-				"CacheSize: {}B -> {}MB -> {}GB\n"
+				"MemorySize(VRAM): {}B -> {}MB ~ {}GB\n"
+				"CacheSize: {}B -> {}MB ~ {}GB\n"
 				"MaxFrequency: {}Hz -> {}Ghz\n",
 				i,
-				gpu.vendor,
+				VendorNames[static_cast<std::size_t>(gpu.vendor)],
 				gpu.name,
 				gpu.memorySize,
 				gpu.memorySize / B2MB,
-				gpu.memorySize / B2GB,
+				std::ceil(gpu.memorySize / B2GB),
 				gpu.cacheSize,
 				gpu.cacheSize / B2MB,
-				gpu.cacheSize / B2GB,
+				std::ceil(gpu.cacheSize / B2GB),
 				gpu.maxFrequency,
 				gpu.maxFrequency / HZ2GHZ
 			);
 		}
+		ret += fmt::format(
+			"--------GPU Adapter--------\n"
+			"MaxDrawCalls: {}\n"
+			"MaxBlitCalls: {}\n"
+			"MaxTextureSize: {}\n"
+			"MaxTextureLayers: {}\n"
+			"MaxViews: {}\n"
+			"MaxFrameBuffers: {}\n"
+			"MaxFrameBufferAttachments: {}\n"
+			"MaxPrograms: {}\n"
+			"MaxShaders: {}\n"
+			"MaxTextures: {}\n"
+			"MaxTextureSamplers: {}\n"
+			"MaxComputeBindings: {}\n"
+			"MaxVerteyLayouts: {}\n"
+			"MaxVertexStreams: {}\n"
+			"MaxIndexBuffers: {}\n"
+			"MaxVertexBuffers: {}\n"
+			"MaxDynamicIndexBuffers: {}\n"
+			"MaxDynamicVertexBuffers: {}\n"
+			"MaxUniforms: {}\n"
+			"MaxOcclusionQueries: {}\n"
+			"MaxEncoders: {}\n"
+			"MinResourceCommandBufferSize: {}\n"
+			"MaxTransientVertexBufferSize: {}\n"
+			"MaxTransientIndexBufferSize: {}\n",
+			adapterLimits.maxDrawCalls,
+			adapterLimits.maxBlits,
+			adapterLimits.maxTextureSize,
+			adapterLimits.maxTextureLayers,
+			adapterLimits.maxViews,
+			adapterLimits.maxFrameBuffers,
+			adapterLimits.maxFBAttachments,
+			adapterLimits.maxPrograms,
+			adapterLimits.maxShaders,
+			adapterLimits.maxTextures,
+			adapterLimits.maxTextureSamplers,
+			adapterLimits.maxComputeBindings,
+			adapterLimits.maxVertexLayouts,
+			adapterLimits.maxVertexStreams,
+			adapterLimits.maxIndexBuffers,
+			adapterLimits.maxVertexBuffers,
+			adapterLimits.maxDynamicIndexBuffers,
+			adapterLimits.maxDynamicVertexBuffers,
+			adapterLimits.maxUniforms,
+			adapterLimits.maxOcclusionQueries,
+			adapterLimits.maxEncoders,
+			adapterLimits.minResourceCbSize,
+			adapterLimits.transientVbSize,
+			adapterLimits.transientIbSize
+		);
 		return ret;
 	}
 
@@ -196,25 +269,25 @@ namespace kestd
 		return fmt::format(
 			"--------OS--------\n"
 			"Name: {}\n"
-			"AvailablePhysicalMemory(RAM):\n\t{}B\n\t{}MB\n\t{}GB\n"
-			"TotalPhysicalMemory(RAM):\n\t{}B\n\t{}MB\n\t{}GB\n"
-			"AvailableVirtualMemory(RAM):\n\t{}B\n\t{}MB\n\t{}GB\n"
-			"TotalVirtualMemory(RAM):\n\t{}B\n\t{}MB\n\t{}GB\n"
+			"AvailablePhysicalMemory(RAM):\n\t{}B\n\t{}MB\n\t~{}GB\n"
+			"TotalPhysicalMemory(RAM):\n\t{}B\n\t{}MB\n\t~{}GB\n"
+			"AvailableVirtualMemory(RAM):\n\t{}B\n\t{}MB\n\t~{}GB\n"
+			"TotalVirtualMemory(RAM):\n\t{}B\n\t{}MB\n\t~{}GB\n"
 			"KernelVersion: {}.{}.{}.{}\n"
 			"SystemVersion: {}.{}.{}.{}\n",
 			os.fullName,
 			memory.physicalAvailable,
 			memory.physicalAvailable / B2MB,
-			memory.physicalAvailable / B2GB,
+			std::ceil(memory.physicalAvailable / B2GB),
 			memory.physicalTotal,
 			memory.physicalTotal / B2MB,
-			memory.physicalTotal / B2GB,
+			std::ceil(memory.physicalTotal / B2GB),
 			memory.virtualAvailable,
 			memory.virtualAvailable / B2MB,
-			memory.virtualAvailable / B2GB,
+			std::ceil(memory.virtualAvailable / B2GB),
 			memory.virtualTotal,
 			memory.virtualAvailable / B2MB,
-			memory.virtualAvailable / B2GB,
+			std::ceil(memory.virtualAvailable / B2GB),
 			kernel.major,
 			kernel.minor,
 			kernel.patch,
@@ -224,5 +297,49 @@ namespace kestd
 			os.patch,
 			os.build
 		);
+	}
+
+	void PeripheryInfo::query()
+	{
+		const auto dis = iware::system::displays();
+
+		for (const auto& d : dis)
+		{
+			displays.emplace_back(
+				DisplayInfo
+				{
+					static_cast<std::uint16_t>(d.width),
+					static_cast<std::uint16_t>(d.height),
+					static_cast<std::uint16_t>(d.dpi),
+					static_cast<std::uint16_t>(d.bpp),
+					d.refresh_rate
+				}
+			);
+		}
+	}
+
+	auto PeripheryInfo::toStr() const -> std::string
+	{
+		std::string ret;
+		ret.reserve(128);
+		for (std::size_t i = 0; i < displays.size(); ++i)
+		{
+			const auto& dis = displays[i];
+			ret += fmt::format(
+				"--------DISPLAY{}--------\n"
+				"Width: {}\n"
+				"Height: {}\n"
+				"DPI: {}\n"
+				"BPP: {}\n"
+				"RefreshRate: {}\n",
+				i,
+				dis.width,
+				dis.height,
+				dis.dpi,
+				dis.bpp,
+				dis.refreshRate
+			);
+		}
+		return ret;
 	}
 }

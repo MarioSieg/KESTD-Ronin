@@ -26,15 +26,16 @@ namespace kestd
 		/// ABGR colors of the message types.
 		/// </summary>
 		static constexpr std::uint32_t COLORS[5] = {
-			0xFF'FF'FF'FF,
 			// Info
-			0xFF'8C'8C'8C,
+			0xFF'FF'FF'FF,
 			// Trace
-			0xFF'36'36'C9,
+			0xFF'BB'BB'BB,
 			// Error
-			0xFF'36'6F'C9,
+			0xFF'36'36'C9,
 			// Warning
-			0xFF'4C'C9'36 // Success
+			0xFF'36'6F'C9,
+			// Success
+			0xFF'4C'C9'36
 		};
 
 		/// <summary>

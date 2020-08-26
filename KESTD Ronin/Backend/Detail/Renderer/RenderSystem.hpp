@@ -10,7 +10,8 @@
 
 #include "../../Frontend/BootConfig.hpp"
 #include "../../Kernel/ISubsystem.hpp"
-#include "../SystemGui/TerminalRenderer.hpp"
+#include "../SystemGui/Terminal.hpp"
+#include "../SystemGui/AutoTec.hpp"
 #include "Context.hpp"
 
 namespace kestd::detail
@@ -21,14 +22,15 @@ namespace kestd::detail
 		RenderSystem(const BootConfig& cfg);
 		RenderSystem(const RenderSystem&) = delete;
 		RenderSystem(RenderSystem&&) = delete;
-		auto operator=(const RenderSystem&) -> RenderSystem& = delete;
-		auto operator=(RenderSystem&&) -> RenderSystem& = delete;
+		RenderSystem& operator=(const RenderSystem&) = delete;
+		RenderSystem& operator=(RenderSystem&&) = delete;
 		~RenderSystem() override;
 
 	private:
 		auto onTick(Environment& sys) -> bool override;
 
 		RenderContext context;
-		sysgui::TerminalRenderer terminalRenderer;
+		sysgui::Terminal terminalRenderer;
+		sysgui::AutoTec autoTec;
 	};
 }

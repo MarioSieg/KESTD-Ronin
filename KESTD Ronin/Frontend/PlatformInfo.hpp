@@ -94,8 +94,6 @@
 
 namespace kestd
 {
-	class BufferedProtocolLogger;
-
 	/// <summary>
 	/// Represents an architecture.
 	/// </summary>
@@ -106,6 +104,16 @@ namespace kestd
 		Itanium,
 		X86,
 		Other,
+		Count,
+	};
+
+	constexpr std::string_view ArchitecureNames[static_cast<std::size_t>(Architecture::Count)]
+	{
+		"X86_64",
+		"ARM",
+		"Itanium",
+		"X86",
+		"Other"
 	};
 
 	/// <summary>
@@ -160,6 +168,49 @@ namespace kestd
 		RdRand,
 		X64,
 		X87Fpu,
+		Count,
+	};
+
+	constexpr std::string_view InstructionSetNames[static_cast<std::size_t>(InstructionSet::Count)]
+	{
+		"3DNow",
+		"3DNow EX",
+		"MMX",
+		"MMX EX",
+		"SSE",
+		"SSE2",
+		"SSE3",
+		"SSSE3",
+		"SSE4 A",
+		"SSE4 1",
+		"SSE4 2",
+		"AES",
+		"AVX",
+		"AVX2",
+		"AVX512",
+		"AVX512 F",
+		"AVX512 CD",
+		"AVX512 PF",
+		"AVX512 ER",
+		"AVX512 VL",
+		"AVX512 BW",
+		"AVX512 BQ",
+		"AVX512 DQ",
+		"AVX512 IFMA",
+		"AVX512 VBMI",
+		"HLE",
+		"BMI1",
+		"BMI2",
+		"ADX",
+		"MPX",
+		"SHA",
+		"Prefetch WT1",
+		"FMA3",
+		"FMA4",
+		"XOP",
+		"RD Rand",
+		"X64",
+		"X87 FPU"
 	};
 
 	/// <summary>
@@ -171,6 +222,15 @@ namespace kestd
 		Instruction,
 		Data,
 		Trace,
+		Count
+	};
+
+	constexpr std::string_view CacheNames[static_cast<std::size_t>(CacheType::Count)]
+	{
+		"Unified",
+		"Instruction",
+		"Data",
+		"Trace"
 	};
 
 	/// <summary>
@@ -178,10 +238,10 @@ namespace kestd
 	/// </summary>
 	struct Cache final
 	{
-		std::size_t size = 0;
-		std::size_t lineSize = 0;
-		std::size_t associativity = 0;
-		CacheType type = CacheType::Data;
+		std::size_t size;
+		std::size_t lineSize;
+		std::size_t associativity;
+		CacheType type;
 	};
 
 	/// <summary>
@@ -189,17 +249,17 @@ namespace kestd
 	/// </summary>
 	struct CpuInfo final
 	{
-		std::uint16_t logical = 0;
-		std::uint16_t physical = 0;
-		std::uint16_t sockets = 0;
-		std::uint64_t frequency = 0;
-		std::string vendor = {};
-		std::string vendorId = {};
-		std::string modelName = {};
-		Architecture architecture = Architecture::Other;
-		Cache caches[3] = {};
-		Endianness endianness = Endianness::Little;
-		std::vector<InstructionSet> supportedInstructionSets = {};
+		std::uint16_t logical;
+		std::uint16_t physical;
+		std::uint16_t sockets;
+		std::uint64_t frequency;
+		std::string vendor;
+		std::string vendorId;
+		std::string modelName;
+		Architecture architecture;
+		Cache caches[3];
+		Endianness endianness;
+		std::vector<InstructionSet> supportedInstructionSets;
 
 		void query();
 		auto toStr() const -> std::string;
@@ -217,6 +277,17 @@ namespace kestd
 		Microsoft,
 		Qualcomm,
 		Other,
+		Count
+	};
+
+	constexpr std::string_view VendorNames[static_cast<std::size_t>(Vendor::Count)]
+	{
+		"Intel",
+		"AMD",
+		"Nvidia",
+		"Microsoft",
+		"Qualcomm",
+		"Other",
 	};
 
 
@@ -226,49 +297,102 @@ namespace kestd
 	struct GpuInfo final
 	{
 		Vendor vendor = Vendor::Other;
-		std::string name = {};
-		std::size_t memorySize = 0;
-		std::size_t cacheSize = 0;
-		std::size_t maxFrequency = 0;
+		std::string name;
+		std::size_t memorySize;
+		std::size_t cacheSize;
+		std::size_t maxFrequency;
+	};
+
+	/// <summary>
+	/// Contains info about the graphics API and limitations.
+	/// </summary>
+	struct GpuAdapterLimits final
+	{
+		std::uint32_t maxDrawCalls;            // Maximum number of draw calls.
+		std::uint32_t maxBlits;                // Maximum number of blit calls.
+		std::uint32_t maxTextureSize;          // Maximum texture size.
+		std::uint32_t maxTextureLayers;        // Maximum texture layers.
+		std::uint32_t maxViews;                // Maximum number of views.
+		std::uint32_t maxFrameBuffers;         // Maximum number of frame buffer handles.
+		std::uint32_t maxFBAttachments;        // Maximum number of frame buffer attachments.
+		std::uint32_t maxPrograms;             // Maximum number of program handles.
+		std::uint32_t maxShaders;              // Maximum number of shader handles.
+		std::uint32_t maxTextures;             // Maximum number of texture handles.
+		std::uint32_t maxTextureSamplers;      // Maximum number of texture samplers.
+		std::uint32_t maxComputeBindings;      // Maximum number of compute bindings.
+		std::uint32_t maxVertexLayouts;        // Maximum number of vertex format layouts.
+		std::uint32_t maxVertexStreams;        // Maximum number of vertex streams.
+		std::uint32_t maxIndexBuffers;         // Maximum number of index buffer handles.
+		std::uint32_t maxVertexBuffers;        // Maximum number of vertex buffer handles.
+		std::uint32_t maxDynamicIndexBuffers;  // Maximum number of dynamic index buffer handles.
+		std::uint32_t maxDynamicVertexBuffers; // Maximum number of dynamic vertex buffer handles.
+		std::uint32_t maxUniforms;             // Maximum number of uniform handles.
+		std::uint32_t maxOcclusionQueries;     // Maximum number of occlusion query handles.
+		std::uint32_t maxEncoders;             // Maximum number of encoder threads.
+		std::uint32_t minResourceCbSize;       // Minimum resource command buffer size.
+		std::uint32_t transientVbSize;         // Maximum transient vertex buffer size.
+		std::uint32_t transientIbSize;         // Maximum transient index buffer size.
 	};
 
 	/// <summary>
 	/// Contains GPU info.
+	/// TODO Add list with supported texture formats.
 	/// </summary>
 	struct GpuInfoCollection final
 	{
-		std::vector<GpuInfo> allGpus = {};
+		std::vector<GpuInfo> allGpus;
+		GpuAdapterLimits adapterLimits;
 		void query();
 		auto toStr() const -> std::string;
+	};
+
+	/// <summary>
+	/// Represents a monitor/TV/display.
+	/// </summary>
+	struct DisplayInfo final
+	{
+		std::uint16_t width;
+		std::uint16_t height;
+		std::uint16_t dpi;
+		std::uint16_t bpp;
+		double refreshRate;
 	};
 
 	struct OsInfo final
 	{
 		struct
 		{
-			std::uint64_t physicalAvailable = 0;
-			std::uint64_t physicalTotal = 0;
-			std::uint64_t virtualAvailable = 0;
-			std::uint64_t virtualTotal = 0;
+			std::uint64_t physicalAvailable;
+			std::uint64_t physicalTotal;
+			std::uint64_t virtualAvailable;
+			std::uint64_t virtualTotal;
 		} memory;
 
 		struct
 		{
-			std::uint32_t major = 0;
-			std::uint32_t minor = 0;
-			std::uint32_t patch = 0;
-			std::uint32_t build = 0;
+			std::uint32_t major;
+			std::uint32_t minor;
+			std::uint32_t patch;
+			std::uint32_t build;
 		} kernel;
 
 		struct
 		{
-			std::string name = {};
-			std::string fullName = {};
-			std::uint32_t major = 0;
-			std::uint32_t minor = 0;
-			std::uint32_t patch = 0;
-			std::uint32_t build = 0;
+			std::string name;
+			std::string fullName;
+			std::uint32_t major;
+			std::uint32_t minor;
+			std::uint32_t patch;
+			std::uint32_t build;
 		} os;
+
+		void query();
+		auto toStr() const -> std::string;
+	};
+
+	struct PeripheryInfo final
+	{
+		std::vector<DisplayInfo> displays;
 
 		void query();
 		auto toStr() const -> std::string;
@@ -279,5 +403,6 @@ namespace kestd
 		CpuInfo cpuInfo;
 		GpuInfoCollection gpuInfos;
 		OsInfo osInfo;
+		PeripheryInfo peripheryInfo;
 	};
 }

@@ -5,6 +5,7 @@ cmake_minimum_required (VERSION 3.8)
 project("KESTD-Ronin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/../Bin")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/../Bin")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /fp:fast")
 set (CMAKE_CXX_STANDARD 20)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON) # Export all symbols for the engine dll without using __declspec(dllexport) or __declspec(dllimport)
 # Add engine:

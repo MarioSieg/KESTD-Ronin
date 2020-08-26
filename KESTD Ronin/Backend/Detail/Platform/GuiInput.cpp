@@ -86,7 +86,7 @@ namespace kestd::detail
 
 #endif
 
-		installCallackProcedures();
+		installCallbackProcedures();
 	}
 
 	SystemGuiInput::~SystemGuiInput()
@@ -213,7 +213,7 @@ namespace kestd::detail
 		}
 	}
 
-	void SystemGuiInput::installCallackProcedures()
+	void SystemGuiInput::installCallbackProcedures()
 	{
 		auto* const win = static_cast<GLFWwindow *>(G_WIN);
 		glfwSetMouseButtonCallback(win, mouseButtonCallback);
@@ -222,7 +222,3 @@ namespace kestd::detail
 		glfwSetCharCallback(win, charCallback);
 	}
 }
-
-#undef MAP_ANALOG
-#undef MAP_BUTTON
-#undef HAS_NEW_CURSORS

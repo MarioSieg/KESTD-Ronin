@@ -21,6 +21,6 @@ namespace kestd::detail
 		void updateMouse();
 		void updateCursor();
 		void updateGamepads();
-		void installCallackProcedures();
+		void installCallbackProcedures();
 	};
 }
