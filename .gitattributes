@@ -2,4 +2,3 @@
 * text=auto
 *.h linguist-language=C++
 *.sc linguist-language=GLSL
-*.mm linguist-language=C++
