@@ -12,12 +12,19 @@
 
 namespace kestd::kernel
 {
-	ISubsystem::ISubsystem(std::string&& name, const bool isLegacy, const Event::Enum events) noexcept
+	ISubsystem::ISubsystem(std::string&& name,
+	                       const bool isLegacy,
+	                       const std::underlying_type<Event::Enum>::type events) noexcept
 		: name(std::move(name)), isLegacy(isLegacy), events(events)
 	{
 	}
 
 	auto ISubsystem::onStartup(Environment&) -> bool
+	{
+		return true;
+	}
+
+	auto ISubsystem::onPrepare(Environment&) -> bool
 	{
 		return true;
 	}

@@ -14,7 +14,7 @@ target_sources("KestdRonin" PRIVATE
 "Backend/Detail/Platform/GuiInput.hpp"
 "Backend/Detail/Platform/WindowSystem.hpp" 
 "Backend/Detail/Platform/WindowSystem.cpp" 
-"Backend/Kernel/Services.cpp" 
+"Backend/Kernel/LegacySubsystemBuilder.cpp" 
 "Backend/Detail/Renderer/RenderSystem.hpp" 
 "Backend/Detail/Renderer/RenderSystem.cpp" 
 "Backend/Detail/Renderer/Context.hpp" 
@@ -25,7 +25,6 @@ target_sources("KestdRonin" PRIVATE
 "Backend/Detail/SystemGui/Gui.cpp" 
 "Backend/Detail/Platform/GuiInput.cpp" 
 "Backend/Detail/Renderer/Utils.hpp" 
-"Backend/Kernel/Services.cpp" 
 "Backend/Detail/Renderer/GuiRenderer.cpp"
 "Backend/Detail/Renderer/GuiRenderer.hpp"
 "Backend/Detail/SystemGui/Terminal.cpp"
@@ -33,4 +32,6 @@ target_sources("KestdRonin" PRIVATE
 "Backend/Detail/SystemGui/Dockspace.cpp"
 "Backend/Detail/SystemGui/AutoTec.hpp"
 "Backend/Detail/SystemGui/AutoTec.cpp"
+"Backend/Detail/Service/ServiceSystem.hpp"
+"Backend/Detail/Service/ServiceSystem.cpp"
 )

@@ -18,7 +18,6 @@ namespace kestd::kernel
 
 	struct Kernel::Pimpl final
 	{
-		bool isLocked = false;
 		volatile bool trapFlag = false;
 		SystemState state = SystemState::Offline;
 		std::vector<std::unique_ptr<ISubsystem>> systems = {};
@@ -36,39 +35,29 @@ namespace kestd::kernel
 		const auto stopwatch = std::chrono::high_resolution_clock::now();
 
 		// Fetch environment data:
-		auto& protocol = core->env.getProtocol();
+		auto& proto = core->env.getProtocol();
 		const auto& platformInfo = core->env.getPlatformInfo();
 
 		// Write engine info to protocol:
 		dumpBootInfo();
-		protocol << "[Kernel] Booting kernel & subsystems...";
+		proto << "[Kernel] Booting kernel & subsystems...";
 
 		// Allocate subsystems and dispatch onStartup() event:
 		InitializeLegacySubsystens(core->env.getBootConfig(), core->systems); // Create and initialize subsystems
 
-		// TODO move this into utility subsystem!
-		// Perform system analysis and dump it into the protocol:
-		protocol << "[Kernel] Performing system analysis...";
-		core->env.refreshBootStages();
-		protocol ^ platformInfo.osInfo.toStr();
-		protocol ^ platformInfo.cpuInfo.toStr();
-		protocol ^ platformInfo.gpuInfos.toStr();
-		protocol ^ platformInfo.peripheryInfo.toStr();
-
 		// Dispatch onStartup()
 		for (const auto& sys : core->systems)
 		{
-			if (sys->events & Event::Startup && !sys->onStartup(core->env))
+			if (sys->events & Event::OnStartup && !sys->onStartup(core->env))
 			{
-				protocol & "[Kernel] Failed to dispatch 'OnPreStartup' on system: " + sys->name;
-				break;
+				throw std::runtime_error("[Kernel] Failed to dispatch 'OnPreStartup' on system: " + sys->name);
 			}
 		}
 
 		// Calculate boot time and print it:
 		const auto bootTime = std::chrono::duration_cast<std::chrono::milliseconds>(
 			std::chrono::high_resolution_clock::now() - stopwatch).count();
-		protocol % fmt::format("[Kernel] System online! BootTime: {:.1f}s", bootTime / 1000.f);
+		proto % fmt::format("[Kernel] System online! BootTime: {:.1f}s", bootTime / 1000.f);
 
 		// System is ready now:
 		core->state = SystemState::Ready;
@@ -83,19 +72,44 @@ namespace kestd::kernel
 			return std::make_tuple(false, 0);
 		}
 
-		core->env.getProtocol() % "[Kernel] Executing runtime...";
-
-		// TODO move this into utility subsystem!
 		{
 			auto& proto = core->env.getProtocol();
-			proto >> fmt::format("Compressing protocol... Streamcapacity: {}, Length: {}",
-			                     proto.getBuffer().capacity(),
-			                     proto.getBuffer().size());
-			// Compress all logged messages to minimize memory usage:
-			proto.compressMessages();
+			proto << "[Kernel] Preparing runtime...";
+			const auto stopwatch = std::chrono::high_resolution_clock::now();
+
+			// Dispatch onPrepare()
+			for (const auto& sys : core->systems)
+			{
+				if (sys->events & Event::OnPrepare && !sys->onPrepare(core->env))
+				{
+					proto & "[Kernel] Failed to dispatch 'OnPreStartup' on system: " + sys->name;
+					break;
+				}
+			}
+
+			proto >> fmt::format("FinalSubsystems -> {} Interfaces:", core->systems.size());
+
+			// Print info about all final subsystems:
+			for (std::size_t i = 0; i < core->systems.size(); ++i)
+			{
+				const auto& sys = core->systems[i];
+				const auto* const typeinfo = typeid(decltype(*sys)).name();
+				proto >> fmt::format("\tSubsystem[{}] -> Name: {}, IsLegacy: {}, EventMask: {:08b}, Type: {}",
+				                     i,
+				                     sys->name,
+				                     sys->isLegacy,
+				                     sys->events,
+				                     typeinfo);
+			}
+
+			const auto bootTime = std::chrono::duration_cast<std::chrono::milliseconds>(
+				std::chrono::high_resolution_clock::now() - stopwatch).count();
+
+			proto % fmt::format("[Kernel] System prepared for executing! PrepareTime: {:.1f}s", bootTime / 1000.f);
+			proto % "[Kernel] Executing runtime...";
 		}
 
-		// Prepare for runtime:
+		// OnPrepare for runtime:
 		core->state = SystemState::Online;
 		core->systems.shrink_to_fit();
 		core->trapFlag = true;
@@ -107,7 +121,7 @@ namespace kestd::kernel
 			// Dispatch onTick()
 			for (const auto& sys : core->systems)
 			{
-				if (sys->events & Event::Tick && !sys->onTick(core->env))
+				if (sys->events & Event::OnTick && !sys->onTick(core->env))
 				{
 					return false;
 				}
@@ -137,17 +151,17 @@ namespace kestd::kernel
 			return;
 		}
 
+		core->env.getProtocol() << "Shutting down kernel & subsystems...";
+
 		// Dispatch onShutdown()
 		for (std::size_t i = core->systems.size() - 1; i; --i)
 		{
 			const auto& sys = core->systems[i];
-			if (sys->events & Event::Shutdown)
+			if (sys->events & Event::OnShutdown)
 			{
 				sys->onShutdown(core->env);
 			}
 		}
-
-		core->env.getProtocol().flush();
 	}
 
 	auto Kernel::getState() const noexcept -> SystemState
@@ -173,7 +187,6 @@ namespace kestd::kernel
 	void Kernel::dumpBootInfo() const
 	{
 		auto& protocol = core->env.getProtocol();
-		auto& platform = core->env.getPlatformInfo();
 
 		//Print boot info:
 		protocol <<

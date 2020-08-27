@@ -10,13 +10,10 @@
 
 #include <imgui.h>
 
+
+#include "../../../Frontend/AutoTec.hpp"
 #include "../Platform/GuiInput.hpp"
 #include "../Renderer/GuiRenderer.hpp"
-
-namespace kestd
-{
-	enum class AutoTecTheme;
-}
 
 namespace kestd::detail::sysgui
 {
@@ -32,7 +29,7 @@ namespace kestd::detail::sysgui
 
 		void beginFrame();
 		void endFrame() const;
-		static void ApplyTheme(const AutoTecTheme sty);
+		static void ApplyTheme(const AutoTecTheme& sty, const bool applyColors = true);
 
 	private:
 		void beginDockSpace() const;

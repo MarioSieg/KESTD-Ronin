@@ -15,7 +15,7 @@ kestd::ScreenInfo G_SCREEN;
 
 namespace kestd::detail
 {
-	RenderSystem::RenderSystem(const BootConfig& cfg) : ISubsystem("RenderSystem", true, Event::Tick),
+	RenderSystem::RenderSystem(const BootConfig& cfg) : ISubsystem("RenderSystem", true, Event::OnTick),
 	                                                    context(cfg.autoTec.fontSize, cfg.autoTec.theme)
 	{
 		G_SCREEN.width = 1920;

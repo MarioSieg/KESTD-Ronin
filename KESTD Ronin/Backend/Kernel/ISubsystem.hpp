@@ -9,75 +9,81 @@
 #pragma once
 
 #include <string>
+#include "../../Frontend/Environment.hpp"
 
-namespace kestd
+namespace kestd::kernel
 {
-	class Environment;
-
-	namespace kernel
+	struct Event final
 	{
-		struct Event final
+		enum Enum : std::uint_fast8_t
 		{
-			enum Enum : std::uint_fast8_t
-			{
-				None = 0,
-				Startup = 1 << 0,
-				Tick = 1 << 1,
-				Shutdown = 1 << 2,
-			};
+			None = 0,
+			OnStartup = 1 << 0,
+			OnPrepare = 1 << 1,
+			OnTick = 1 << 2,
+			OnShutdown = 1 << 3,
 		};
+	};
+
+	/// <summary>
+	/// Base interface for all engine kernel subystems.
+	/// </summary>
+	class ISubsystem
+	{
+		friend class Kernel;
+
+	public:
+		ISubsystem(const ISubsystem&) = delete;
+		ISubsystem(ISubsystem&&) = delete;
+		auto operator =(const ISubsystem&) -> ISubsystem& = delete;
+		auto operator =(ISubsystem&&) -> ISubsystem& = delete;
+		virtual ~ISubsystem() = default;
 
 		/// <summary>
-		/// Base interface for all engine kernel subystems.
+		/// The name of this subsystem.
 		/// </summary>
-		class ISubsystem
-		{
-			friend class Kernel;
+		const std::string name;
 
-		public:
-			ISubsystem(const ISubsystem&) = delete;
-			ISubsystem(ISubsystem&&) = delete;
-			auto operator =(const ISubsystem&) -> ISubsystem& = delete;
-			auto operator =(ISubsystem&&) -> ISubsystem& = delete;
-			virtual ~ISubsystem() = default;
+		/// <summary>
+		/// Is this a legacy or a buildin subsystem?
+		/// </summary>
+		const bool isLegacy;
 
-			/// <summary>
-			/// The name of this subsystem.
-			/// </summary>
-			const std::string name;
+		/// <summary>
+		/// Subscribed events.
+		/// </summary>
+		const std::underlying_type<Event::Enum>::type events;
 
-			/// <summary>
-			/// Is this a legacy or a buildin subsystem?
-			/// </summary>
-			const bool isLegacy;
+	protected:
+		explicit ISubsystem(std::string&& name,
+		                    const bool isLegacy,
+		                    const std::underlying_type<Event::Enum>::type events = Event::None) noexcept;
 
-			/// <summary>
-			/// Subscribed events.
-			/// </summary>
-			const Event::Enum events;
+		/// <summary>
+		/// Called on startup.
+		/// </summary>
+		/// <param name=""></param>
+		/// <returns></returns>
+		virtual auto onStartup(Environment&) -> bool;
 
-		protected:
-			explicit ISubsystem(std::string&& name, const bool isLegacy, const Event::Enum events) noexcept;
+		/// <summary>
+		/// Called before entering the runtime loop.
+		/// </summary>
+		/// <param name=""></param>
+		/// <returns></returns>
+		virtual auto onPrepare(Environment&) -> bool;
 
-			/// <summary>
-			/// Late kernel startup.
-			/// </summary>
-			/// <param name=""></param>
-			/// <returns></returns>
-			virtual auto onStartup(Environment&) -> bool;
+		/// <summary>
+		/// Frame tick.
+		/// </summary>
+		/// <param name=""></param>
+		/// <returns></returns>
+		virtual auto onTick(Environment&) -> bool;
 
-			/// <summary>
-			/// Frame tick.
-			/// </summary>
-			/// <param name=""></param>
-			/// <returns></returns>
-			virtual auto onTick(Environment&) -> bool;
-
-			/// <summary>
-			/// Early kernel shutdown.
-			/// </summary>
-			/// <param name=""></param>
-			virtual void onShutdown(Environment&);
-		};
-	}
+		/// <summary>
+		/// Early kernel shutdown.
+		/// </summary>
+		/// <param name=""></param>
+		virtual void onShutdown(Environment&);
+	};
 }

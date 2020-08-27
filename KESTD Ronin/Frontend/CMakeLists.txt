@@ -8,4 +8,5 @@ target_sources("KestdRonin" PRIVATE
 "Frontend/ScreenInfo.hpp"
 "Frontend/AutoTec.hpp"
 "Frontend/BootConfig.hpp"
+"Frontend/IO.hpp"
 )

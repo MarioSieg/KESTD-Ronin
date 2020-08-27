@@ -11,10 +11,21 @@
 
 namespace kestd::detail::sysgui
 {
-	void SystemGui::ApplyTheme(const AutoTecTheme sty)
+	void SystemGui::ApplyTheme(const AutoTecTheme& sty, const bool applyColors)
 	{
 		auto& style = ImGui::GetStyle();
-		switch (sty)
+		style.ChildRounding = sty.childRounding;
+		style.FrameRounding = sty.frameRounding;
+		style.GrabRounding = sty.grabRounding;
+		style.PopupRounding = sty.popupRounding;
+		style.ScrollbarRounding = sty.scrollbarRounding;
+		style.TabRounding = sty.tabRounding;
+		style.WindowRounding = sty.windowRounding;
+		if (!applyColors)
+		{
+			return;
+		}
+		switch (sty.theme)
 		{
 			default:
 			case AutoTecTheme::Dark:
@@ -66,18 +77,12 @@ namespace kestd::detail::sysgui
 				style.Colors[ImGuiCol_TabHovered] = ImVec4(0.20f, 0.21f, 0.22f, 0.54f);
 				style.Colors[ImGuiCol_TabUnfocused] = ImVec4(0.00f, 0.00f, 0.00f, 0.51f);
 				style.Colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.00f, 0.00f, 0.00f, 0.51f);
-				style.ChildRounding = .0f;
-				style.FrameRounding = .0f;
-				style.GrabRounding = .0f;
-				style.PopupRounding = .0f;
-				style.ScrollbarRounding = .0f;
-				style.TabRounding = .0f;
-				style.WindowRounding = .0f;
 			}
 				break;
 
 			case AutoTecTheme::Light:
 			{
+				/*
 				style.Colors[ImGuiCol_Text] = ImVec4(0.00f, 0.00f, 0.00f, 1.00f);
 				style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);
 				//style.Colors[ImGuiCol_TextHovered] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
@@ -123,6 +128,8 @@ namespace kestd::detail::sysgui
 				style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.26f, 0.59f, 0.98f, 0.35f);
 				//style.Colors[ImGuiCol_TooltipBg] = ImVec4(1.00f, 1.00f, 1.00f, 0.94f);
 				style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
+				*/
+				ImGui::StyleColorsLight(&style);
 			}
 			break;
 
@@ -168,22 +175,6 @@ namespace kestd::detail::sysgui
 				style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.455f, 0.198f, 0.301f, 0.43f);
 				style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.200f, 0.220f, 0.270f, 0.73f);
 				style.Colors[ImGuiCol_Border] = ImVec4(0.539f, 0.479f, 0.255f, 0.162f);
-
-				style.WindowPadding = ImVec2(6, 4);
-				style.WindowRounding = 0.0f;
-				style.FramePadding = ImVec2(5, 2);
-				style.FrameRounding = 3.0f;
-				style.ItemSpacing = ImVec2(7, 1);
-				style.ItemInnerSpacing = ImVec2(1, 1);
-				style.TouchExtraPadding = ImVec2(0, 0);
-				style.IndentSpacing = 6.0f;
-				style.ScrollbarSize = 12.0f;
-				style.ScrollbarRounding = 16.0f;
-				style.GrabMinSize = 20.0f;
-				style.GrabRounding = 2.0f;
-				style.WindowTitleAlign.x = 0.50f;
-				style.FrameBorderSize = 0.0f;
-				style.WindowBorderSize = 1.0f;
 			}
 			break;
 
@@ -292,15 +283,6 @@ namespace kestd::detail::sysgui
 				style.Colors[ImGuiCol_NavWindowingHighlight] = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
 				style.Colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
 				style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
-
-				style.FrameBorderSize = 1.0f;
-				style.WindowRounding = 0.0f;
-				style.ChildRounding = 0.0f;
-				style.FrameRounding = 0.0f;
-				style.PopupRounding = 0.0f;
-				style.ScrollbarRounding = 0.0f;
-				style.GrabRounding = 0.0f;
-				style.TabRounding = 0.0f;
 			}
 			break;
 		}

@@ -13,7 +13,7 @@
 
 namespace kestd
 {
-	enum class AutoTecTheme;
+	struct AutoTecTheme;
 }
 
 namespace kestd::detail
@@ -21,7 +21,7 @@ namespace kestd::detail
 	class RenderContext final
 	{
 	public:
-		RenderContext(const std::size_t fontSize, const AutoTecTheme style);
+		RenderContext(const std::size_t fontSize, const AutoTecTheme& style);
 		RenderContext(const RenderContext&) = delete;
 		RenderContext(RenderContext&&) = delete;
 		auto operator=(const RenderContext&) -> RenderContext& = delete;

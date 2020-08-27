@@ -12,19 +12,30 @@
 
 namespace kestd
 {
-	enum class AutoTecTheme
+	struct AutoTecTheme final
 	{
-		Dark,
-		Light,
-		Blue,
-		Cherry,
-		Green,
+		enum Theme
+		{
+			Dark,
+			Light,
+			Blue,
+			Cherry,
+			Green,
+		} theme;
+
+		float childRounding;
+		float frameRounding;
+		float grabRounding;
+		float popupRounding;
+		float scrollbarRounding;
+		float tabRounding;
+		float windowRounding;
 	};
 
 	struct AutoTecConfig final
 	{
 		std::uint8_t fontSize = 18;
 		bool isEnabled = true;
-		AutoTecTheme theme = AutoTecTheme::Dark;
+		AutoTecTheme theme;
 	};
 }

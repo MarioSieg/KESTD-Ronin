@@ -12,12 +12,4 @@ namespace kestd
 {
 	Environment::Environment() = default;
 	Environment::~Environment() = default;
-
-	void Environment::refreshBootStages()
-	{
-		platform.osInfo.query();
-		platform.cpuInfo.query();
-		platform.gpuInfos.query();
-		platform.peripheryInfo.query();
-	}
 }

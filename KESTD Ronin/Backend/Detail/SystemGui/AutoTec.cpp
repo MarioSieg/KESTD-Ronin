@@ -95,6 +95,15 @@ namespace kestd::detail::sysgui
 					TextUnformatted("Some changes may require a restart!");
 					PopStyleColor();
 
+					// Roundings:
+					SliderFloat("ChildRounding", &cfg.autoTec.theme.childRounding, .0f, 10.f);
+					SliderFloat("FrameRounding", &cfg.autoTec.theme.frameRounding, .0f, 10.f);
+					SliderFloat("GrabRounding", &cfg.autoTec.theme.grabRounding, .0f, 10.f);
+					SliderFloat("PopupRounding", &cfg.autoTec.theme.popupRounding, .0f, 10.f);
+					SliderFloat("ScrollbarRounding", &cfg.autoTec.theme.scrollbarRounding, .0f, 10.f);
+					SliderFloat("TabRounding", &cfg.autoTec.theme.tabRounding, .0f, 10.f);
+					SliderFloat("WindowRounding", &cfg.autoTec.theme.windowRounding, .0f, 10.f);
+
 					// Theme:
 					static constexpr std::string_view ThemeNames[]
 					{
@@ -104,22 +113,20 @@ namespace kestd::detail::sysgui
 						"Cherry",
 						"Green"
 					};
-					const auto previous = cfg.autoTec.theme;
-					if (BeginCombo("Theme", ThemeNames[static_cast<std::size_t>(cfg.autoTec.theme)].data()))
+					const auto previous = cfg.autoTec.theme.theme;
+					if (BeginCombo("Theme", ThemeNames[static_cast<std::size_t>(cfg.autoTec.theme.theme)].data()))
 					{
 						for (std::size_t i = 0; i < sizeof ThemeNames / sizeof *ThemeNames; ++i)
 						{
-							if (Selectable(ThemeNames[i].data(), i == static_cast<std::size_t>(cfg.autoTec.theme)))
+							if (Selectable(ThemeNames[i].data(),
+							               i == static_cast<std::size_t>(cfg.autoTec.theme.theme)))
 							{
-								cfg.autoTec.theme = static_cast<AutoTecTheme>(i);
+								cfg.autoTec.theme.theme = static_cast<AutoTecTheme::Theme>(i);
 							}
 						}
 						EndCombo();
 					}
-					if (previous != cfg.autoTec.theme)
-					{
-						SystemGui::ApplyTheme(cfg.autoTec.theme);
-					}
+					SystemGui::ApplyTheme(cfg.autoTec.theme, previous != cfg.autoTec.theme.theme);
 
 					// FontSize:
 					int fontSize = cfg.autoTec.fontSize;
