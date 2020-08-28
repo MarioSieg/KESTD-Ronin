@@ -1976,7 +1976,7 @@ constexpr std::uint8_t FS_GUI_mtl[559] =
 	0x78,
 	0x6c,
 	0x61,
-	// tal;..struct xla
+	// tal;..class xla
 	0x74,
 	0x4d,
 	0x74,

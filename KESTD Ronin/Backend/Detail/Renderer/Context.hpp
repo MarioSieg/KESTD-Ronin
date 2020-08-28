@@ -13,7 +13,7 @@
 
 namespace kestd
 {
-	struct AutoTecTheme;
+	class AutoTecTheme;
 }
 
 namespace kestd::detail::renderer

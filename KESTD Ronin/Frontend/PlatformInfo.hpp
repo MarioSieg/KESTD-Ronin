@@ -236,8 +236,9 @@ namespace kestd
 	/// <summary>
 	/// Contains cache info.
 	/// </summary>
-	struct Cache final
+	class Cache final
 	{
+	public:
 		std::size_t size;
 		std::size_t lineSize;
 		std::size_t associativity;
@@ -247,8 +248,9 @@ namespace kestd
 	/// <summary>
 	/// Contains CPU info.
 	/// </summary>
-	struct CpuInfo final
+	class CpuInfo final
 	{
+	public:
 		std::uint16_t logical;
 		std::uint16_t physical;
 		std::uint16_t sockets;
@@ -294,8 +296,9 @@ namespace kestd
 	/// <summary>
 	/// Contains GPU info.
 	/// </summary>
-	struct GpuInfo final
+	class GpuInfo final
 	{
+	public:
 		Vendor vendor = Vendor::Other;
 		std::string name;
 		std::size_t memorySize;
@@ -306,8 +309,9 @@ namespace kestd
 	/// <summary>
 	/// Contains info about the graphics API and limitations.
 	/// </summary>
-	struct GpuAdapterLimits final
+	class GpuAdapterLimits final
 	{
+	public:
 		std::uint32_t maxDrawCalls;            // Maximum number of draw calls.
 		std::uint32_t maxBlits;                // Maximum number of blit calls.
 		std::uint32_t maxTextureSize;          // Maximum texture size.
@@ -338,8 +342,9 @@ namespace kestd
 	/// Contains GPU info.
 	/// TODO Add list with supported texture formats.
 	/// </summary>
-	struct GpuInfoCollection final
+	class GpuInfoCollection final
 	{
+	public:
 		std::vector<GpuInfo> allGpus;
 		GpuAdapterLimits adapterLimits;
 		void query();
@@ -349,8 +354,9 @@ namespace kestd
 	/// <summary>
 	/// Represents a monitor/TV/display.
 	/// </summary>
-	struct DisplayInfo final
+	class DisplayInfo final
 	{
+	public:
 		std::uint16_t width;
 		std::uint16_t height;
 		std::uint16_t dpi;
@@ -358,8 +364,9 @@ namespace kestd
 		double refreshRate;
 	};
 
-	struct OsInfo final
+	class OsInfo final
 	{
+	public:
 		struct
 		{
 			std::uint64_t physicalAvailable;
@@ -390,16 +397,18 @@ namespace kestd
 		auto toStr() const -> std::string;
 	};
 
-	struct PeripheryInfo final
+	class PeripheryInfo final
 	{
+	public:
 		std::vector<DisplayInfo> displays;
 
 		void query();
 		auto toStr() const -> std::string;
 	};
 
-	struct PlatformInfo final
+	class PlatformInfo final
 	{
+	public:
 		CpuInfo cpuInfo;
 		GpuInfoCollection gpuInfos;
 		OsInfo osInfo;

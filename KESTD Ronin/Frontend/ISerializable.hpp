@@ -10,7 +10,7 @@
 
 namespace kestd
 {
-	struct JSONSerializeStream;
+	class JSONSerializeStream;
 
 	/// <summary>
 	/// Base interface for all serializeable objects.

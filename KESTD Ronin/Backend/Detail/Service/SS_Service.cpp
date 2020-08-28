@@ -13,8 +13,8 @@
 namespace kestd::detail::service
 {
 	ServiceSystem::ServiceSystem(Environment& env) : ISubsystem("ServiceSystem",
-	                                                                                   true,
-	                                                                                   kernel::Event::Exhaustive)
+	                                                            true,
+	                                                            kernel::Event::Exhaustive)
 	{
 		auto& protocol = env.getProtocol();
 
@@ -81,7 +81,7 @@ namespace kestd::detail::service
 		return true;
 	}
 
-	auto ServiceSystem::onTick(Environment&) -> bool
+	auto ServiceSystem::onTick(Environment& env) -> bool
 	{
 		return true;
 	}

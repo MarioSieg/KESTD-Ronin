@@ -103,7 +103,7 @@ namespace kestd::kernel
 	/// <summary>
 	/// Represents lockable security manager.
 	/// </summary>
-	struct SecurityManager final
+	class SecurityManager final
 	{
 		/// <summary>
 		/// Number of succeeded login attempts.

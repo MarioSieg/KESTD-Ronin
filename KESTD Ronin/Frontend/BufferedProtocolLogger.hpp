@@ -49,8 +49,9 @@ namespace kestd
 	/// <summary>
 	/// Represents a single log message.
 	/// </summary>
-	struct Message final
+	class Message final
 	{
+	public:
 		/// <summary>
 		/// The message string.
 		/// </summary>

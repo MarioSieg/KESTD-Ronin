@@ -6,8 +6,9 @@
 // 10.08.2020 13:41
 // =============================================================
 
-#include "Drivers.hpp"
 #include "../../Frontend/ScreenInfo.hpp"
+#include "Drivers.hpp"
+#include <stdexcept>
 #include <bgfx/bgfx.h>
 
 using namespace bgfx;
@@ -22,7 +23,7 @@ namespace kestd::detail::renderer
 	{
 		if (!WindowHandle)
 		{
-			return;
+			throw std::runtime_error("Invalid window handle!");
 		}
 
 		Init initData;
@@ -35,7 +36,7 @@ namespace kestd::detail::renderer
 
 		if (!init(initData))
 		{
-			return;
+			throw std::runtime_error("Failed to initialize graphics backend!");
 		}
 
 		setDebug(BGFX_DEBUG_NONE);

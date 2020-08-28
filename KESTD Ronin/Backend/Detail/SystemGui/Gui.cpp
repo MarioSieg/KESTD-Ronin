@@ -8,12 +8,14 @@
 
 #include "Gui.hpp"
 #include "../../Frontend/ScreenInfo.hpp"
+#include <imgui.h>
+#include <implot.h>
 
 extern kestd::ScreenInfo G_SCREEN;
 
 namespace kestd::detail::systemgui
 {
-	SystemGui::SystemGui(const std::size_t fontSize) : renderer(fontSize)
+	SystemGui::SystemGui(const std::size_t fontSize) : guiContext(ImGui::CreateContext()), plotContext(ImPlot::CreateContext()), renderer(fontSize)
 	{
 		// Initialize ImGui:
 		ImGui::StyleColorsDark();
@@ -21,11 +23,6 @@ namespace kestd::detail::systemgui
 		io.DisplaySize = ImVec2{static_cast<float>(G_SCREEN.width), static_cast<float>(G_SCREEN.height)};
 		io.IniFilename = nullptr;
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-	}
-
-	SystemGui::~SystemGui()
-	{
-		ImGui::DestroyContext(context);
 	}
 
 	void SystemGui::beginFrame()
@@ -41,5 +38,11 @@ namespace kestd::detail::systemgui
 		ImGui::Render();
 		const ImDrawData* const data = ImGui::GetDrawData();
 		renderer.draw(data);
+	}
+
+	SystemGui::~SystemGui()
+	{
+		ImPlot::DestroyContext(plotContext);
+		ImGui::DestroyContext(guiContext);
 	}
 }

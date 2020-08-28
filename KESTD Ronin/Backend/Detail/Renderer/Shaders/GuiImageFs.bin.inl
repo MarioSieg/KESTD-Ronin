@@ -2836,7 +2836,7 @@ constexpr std::uint8_t FS_IMGUI_IMAGE_mtl[785] =
 	0x6f,
 	0x62,
 	0x61,
-	// ;..struct _Globa
+	// ;..class _Globa
 	0x6c,
 	0x0a,
 	0x7b,
@@ -2887,7 +2887,7 @@ constexpr std::uint8_t FS_IMGUI_IMAGE_mtl[785] =
 	0x78,
 	0x6c,
 	0x61,
-	// ;.};..struct xla
+	// ;.};..class xla
 	0x74,
 	0x4d,
 	0x74,

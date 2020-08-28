@@ -12,8 +12,9 @@
 
 namespace kestd
 {
-	struct SystemDirs final
+	class SystemDirs final
 	{
+	public:
 		enum Enum
 		{
 			SystemDataBase,
@@ -23,8 +24,9 @@ namespace kestd
 		};
 	};
 
-	struct IOConfig final
+	class IOConfig final
 	{
+	public:
 		std::filesystem::path systemDirs[SystemDirs::Count]
 		{
 			"../DB",

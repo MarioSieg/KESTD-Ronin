@@ -12,8 +12,9 @@
 
 namespace kestd
 {
-	struct ScreenInfo final
+	class ScreenInfo final
 	{
+	public:
 		std::uint16_t width = 0;
 		std::uint16_t height = 0;
 	};

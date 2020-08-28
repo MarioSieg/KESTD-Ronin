@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "../../Frontend/BootConfig.hpp"
 #include "../../Kernel/ISubsystem.hpp"
 #include "../SystemGui/Terminal.hpp"
 #include "../SystemGui/AutoTec.hpp"

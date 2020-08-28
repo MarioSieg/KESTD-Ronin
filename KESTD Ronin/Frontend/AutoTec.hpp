@@ -12,8 +12,9 @@
 
 namespace kestd
 {
-	struct AutoTecTheme final
+	class AutoTecTheme final
 	{
+	public:
 		enum Theme
 		{
 			Dark,
@@ -32,8 +33,9 @@ namespace kestd
 		float windowRounding;
 	};
 
-	struct AutoTecConfig final
+	class AutoTecConfig final
 	{
+	public:
 		std::uint8_t fontSize = 18;
 		bool isEnabled = true;
 		AutoTecTheme theme;

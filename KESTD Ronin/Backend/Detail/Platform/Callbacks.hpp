@@ -8,7 +8,7 @@
 
 #pragma once
 
-struct GLFWwindow;
+class GLFWwindow;
 
 namespace kestd::detail::platform
 {

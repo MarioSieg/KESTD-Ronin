@@ -3216,7 +3216,7 @@ constexpr std::uint8_t VS_GUI_mtl[889] =
 	0x63,
 	0x74,
 	0x20,
-	// xel;.};..struct 
+	// xel;.};..class 
 	0x78,
 	0x6c,
 	0x61,

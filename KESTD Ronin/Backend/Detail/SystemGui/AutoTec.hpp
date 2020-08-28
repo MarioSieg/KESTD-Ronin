@@ -23,7 +23,10 @@ namespace kestd::detail::systemgui
 
 	private:
 		bool showSettingsEditor = false;
+		bool showDiagnosticsProfiler = false;
+		
 		void mainMenu();
 		void configEditor(BootConfig& bcfg);
+		void diagnosticsProfiler();
 	};
 }

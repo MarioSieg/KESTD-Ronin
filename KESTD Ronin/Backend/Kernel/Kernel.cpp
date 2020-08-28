@@ -15,8 +15,9 @@
 
 namespace kestd::kernel
 {
-	struct Kernel::Pimpl final
+	class Kernel::Pimpl final
 	{
+	public:
 		volatile bool trapFlag = false;
 		SystemState state = SystemState::Offline;
 		std::vector<std::unique_ptr<ISubsystem>> systems = {};

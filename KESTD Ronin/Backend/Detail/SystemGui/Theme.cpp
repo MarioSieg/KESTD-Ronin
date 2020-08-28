@@ -8,6 +8,7 @@
 
 #include "Gui.hpp"
 #include "../../Frontend/AutoTec.hpp"
+#include <imgui.h>
 
 namespace kestd::detail::systemgui
 {

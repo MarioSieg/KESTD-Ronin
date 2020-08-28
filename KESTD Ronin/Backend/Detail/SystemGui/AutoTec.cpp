@@ -6,13 +6,12 @@
 // 26.08.2020 10:47
 // =============================================================
 
-#include "../../Frontend/Environment.hpp"
-#include "../../Frontend/BootConfig.hpp"
-#include "IconsFontAwesome5.hpp"
 #include "AutoTec.hpp"
-#include <imgui.h>
-
 #include "Gui.hpp"
+#include "IconsFontAwesome5.hpp"
+#include "../../Frontend/Environment.hpp"
+#include <imgui.h>
+#include <implot.h>
 
 using namespace ImGui;
 
@@ -24,6 +23,10 @@ namespace kestd::detail::systemgui
 		if (showSettingsEditor)
 		{
 			configEditor(env.getBootConfig());
+		}
+		if(showDiagnosticsProfiler)
+		{
+			diagnosticsProfiler();
 		}
 	}
 
@@ -57,6 +60,11 @@ namespace kestd::detail::systemgui
 			}
 			if (BeginMenu("Tools"))
 			{
+				if (MenuItem("Diagnostics"))
+				{
+					showDiagnosticsProfiler = true;
+				}
+				
 				if (MenuItem("Settings"))
 				{
 					showSettingsEditor = true;
@@ -142,5 +150,10 @@ namespace kestd::detail::systemgui
 			}
 		}
 		End();
+	}
+
+	void AutoTec::diagnosticsProfiler()
+	{
+		ImPlot::ShowDemoWindow();
 	}
 }

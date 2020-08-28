@@ -8,12 +8,12 @@
 
 #pragma once
 
-#include <imgui.h>
-
-
 #include "../../../Frontend/AutoTec.hpp"
 #include "../Platform/GuiInput.hpp"
 #include "../Renderer/GuiRenderer.hpp"
+
+struct ImGuiContext;
+struct ImPlotContext;
 
 namespace kestd::detail::systemgui
 {
@@ -34,7 +34,8 @@ namespace kestd::detail::systemgui
 	private:
 		void beginDockSpace() const;
 		void endDockSpace() const;
-		ImGuiContext* context{ImGui::CreateContext()};
+		ImGuiContext* guiContext;
+		ImPlotContext* plotContext;
 		renderer::SystemGuiRenderer renderer;
 		platform::SystemGuiInput input;
 	};

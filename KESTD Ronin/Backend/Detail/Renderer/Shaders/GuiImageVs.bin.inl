@@ -2517,7 +2517,7 @@ constexpr std::uint8_t VS_GUI_IMAGE_mtl[686] =
 	0x63,
 	0x74,
 	0x20,
-	// roj;.};..struct 
+	// roj;.};..class 
 	0x78,
 	0x6c,
 	0x61,
@@ -2653,7 +2653,7 @@ constexpr std::uint8_t VS_GUI_IMAGE_mtl[686] =
 	0x6c,
 	0x61,
 	0x74,
-	// .};..struct xlat
+	// .};..class xlat
 	0x4d,
 	0x74,
 	0x6c,

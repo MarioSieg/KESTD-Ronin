@@ -40,8 +40,9 @@ namespace kestd::kernel
 	/// <summary>
 	/// Configuration to boot the kernel.
 	/// </summary>
-	struct KernelDescriptor final
+	class KernelDescriptor final
 	{
+	public:
 		std::string appName;
 		std::string companyName;
 		User user = User::Normal;
@@ -129,7 +130,7 @@ namespace kestd::kernel
 
 	private:
 		void dumpBootInfo() const;
-		struct Pimpl;
+		class Pimpl;
 		std::unique_ptr<Pimpl> core;
 	};
 }

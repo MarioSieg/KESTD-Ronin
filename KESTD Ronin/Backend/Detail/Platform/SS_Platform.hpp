@@ -10,7 +10,7 @@
 
 #include "../../Kernel/ISubsystem.hpp"
 
-struct GLFWwindow;
+class GLFWwindow;
 
 namespace kestd::detail::platform
 {

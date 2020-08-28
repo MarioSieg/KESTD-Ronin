@@ -13,8 +13,9 @@ namespace kestd
 	/// <summary>
 	/// Allows to control the terminal.
 	/// </summary>
-	struct TerminalController final
+	class TerminalController final
 	{
+	public:
 		/// <summary>
 		/// Length of the internal command buffer.
 		/// </summary>

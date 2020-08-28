@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "../../Frontend/BootConfig.hpp"
 #include "../../Kernel/ISubsystem.hpp"
 
 namespace kestd::detail::service

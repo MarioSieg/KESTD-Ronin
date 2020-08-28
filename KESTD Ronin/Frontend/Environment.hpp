@@ -34,31 +34,31 @@ namespace kestd
 		/// Returns the current log protocol.
 		/// </summary>
 		/// <returns></returns>
-		auto getProtocol() noexcept -> BufferedProtocolLogger&;
+		[[nodiscard]] auto getProtocol() noexcept -> BufferedProtocolLogger&;
 
 		/// <summary>
 		/// Returns info about the current getBootConfig, machine and system.
 		/// </summary>
 		/// <returns></returns>
-		auto getPlatformInfo() const noexcept -> const PlatformInfo&;
+		[[nodiscard]] auto getPlatformInfo() const noexcept -> const PlatformInfo&;
 
 		/// <summary>
 		/// Returns info about the screen.
 		/// </summary>
 		/// <returns></returns>
-		auto getScreenInfo() const noexcept -> const ScreenInfo&;
+		[[nodiscard]] auto getScreenInfo() const noexcept -> const ScreenInfo&;
 
 		/// <summary>
 		/// Returns the terminal controller.
 		/// </summary>
 		/// <returns></returns>
-		auto getTerminal() noexcept -> TerminalController&;
+		[[nodiscard]] auto getTerminal() noexcept -> TerminalController&;
 
 		/// <summary>
 		/// Returns the boot config.
 		/// </summary>
 		/// <returns></returns>
-		auto getBootConfig() noexcept -> BootConfig&;
+		[[nodiscard]] auto getBootConfig() noexcept -> BootConfig&;
 
 	private:
 		BufferedProtocolLogger logger;
