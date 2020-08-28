@@ -12,22 +12,43 @@
 
 namespace kestd::detail::service
 {
-	ServiceSystem::ServiceSystem(const BootConfig& cfg) : ISubsystem("ServiceSystem",
-	                                                                 true,
-	                                                                 kernel::Event::OnStartup | kernel::Event::OnTick |
-	                                                                 kernel::Event::OnShutdown)
-	{
-	}
-
-	ServiceSystem::~ServiceSystem() = default;
-
-	auto ServiceSystem::onStartup(Environment& env) -> bool
+	ServiceSystem::ServiceSystem(const BootConfig& cfg, Environment& env) : ISubsystem("ServiceSystem",
+	                                                                                   true,
+	                                                                                   kernel::Event::Exhaustive)
 	{
 		auto& protocol = env.getProtocol();
-		auto& platformInfo = const_cast<PlatformInfo &>(env.getPlatformInfo());
+
+		protocol << fmt::format("Verifying working dir \"{}\"...", std::filesystem::current_path().string());
+
+		// Verify all system directories:
+		for (const auto& dir : cfg.io.systemDirs)
+		{
+			if (is_directory(dir))
+			{
+				protocol % fmt::format("[SysDir] {}", dir.string());
+			}
+			else
+			{
+				throw std::runtime_error("Required system directory not found: " + dir.string());
+			}
+		}
+
+		// Verify all custom directories:
+		for (const auto& dir : cfg.io.additionalRequiredDirectories)
+		{
+			if (is_directory(dir))
+			{
+				protocol % fmt::format("[UsrDir] {}", dir.string());
+			}
+			else
+			{
+				throw std::runtime_error("Additional user required directory not found: " + dir.string());
+			}
+		}
 
 		// Perform system analysis and dump it into the protocol:
 		protocol << "Performing system analysis...";
+		auto& platformInfo = const_cast<PlatformInfo &>(env.getPlatformInfo());
 
 		platformInfo.osInfo.query();
 		protocol ^ platformInfo.osInfo.toStr();
@@ -40,7 +61,12 @@ namespace kestd::detail::service
 
 		platformInfo.peripheryInfo.query();
 		protocol ^ platformInfo.peripheryInfo.toStr();
+	}
 
+	ServiceSystem::~ServiceSystem() = default;
+
+	auto ServiceSystem::onStartup(Environment& env) -> bool
+	{
 		return true;
 	}
 
@@ -64,6 +90,5 @@ namespace kestd::detail::service
 	{
 		auto& proto = env.getProtocol();
 		proto.flush();
-		proto.clear();
 	}
 }

@@ -26,13 +26,9 @@ namespace kestd
 
 	auto BufferedProtocolLogger::flush() -> bool
 	{
-		if (!std::filesystem::is_directory("../Protocol"))
-		{
-			std::filesystem::create_directory("../Protocol");
-		}
 		const auto now = std::time(nullptr);
 		std::ofstream handle(
-			logFile.value_or(fmt::format("../Protocol/KESTD-Ronin-{:%d-%m-%Y-%H-%M-%S}.log", fmt::localtime(now))));
+			logFile.value_or(fmt::format("../Proto/KESTD-Ronin-{:%d-%m-%Y-%H-%M-%S}.log", fmt::localtime(now))));
 		if (!handle)
 		{
 			return false;

@@ -16,7 +16,6 @@ namespace kestd
 	{
 		enum Enum
 		{
-			AppDataBase,
 			SystemDataBase,
 			Protocol,
 			Config,
@@ -26,7 +25,12 @@ namespace kestd
 
 	struct IOConfig final
 	{
-		std::filesystem::path systemDirs[SystemDirs::Count];
+		std::filesystem::path systemDirs[SystemDirs::Count]
+		{
+			"../DB",
+			"../Proto",
+			"../Config",
+		};
 		std::vector<std::filesystem::path> additionalRequiredDirectories;
 	};
 }

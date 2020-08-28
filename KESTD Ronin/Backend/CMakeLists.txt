@@ -15,6 +15,7 @@ target_sources("KestdRonin" PRIVATE
 "Backend/Detail/Platform/WindowSystem.hpp" 
 "Backend/Detail/Platform/WindowSystem.cpp" 
 "Backend/Kernel/LegacySubsystemBuilder.cpp" 
+"Backend/Kernel/LegacySubsystemBuilder.hpp" 
 "Backend/Detail/Renderer/RenderSystem.hpp" 
 "Backend/Detail/Renderer/RenderSystem.cpp" 
 "Backend/Detail/Renderer/Context.hpp" 

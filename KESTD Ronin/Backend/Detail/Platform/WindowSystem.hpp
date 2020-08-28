@@ -21,7 +21,7 @@ namespace kestd::detail
 	class WindowSystem final : public kernel::ISubsystem
 	{
 	public:
-		WindowSystem(const BootConfig& cfg);
+		WindowSystem(const BootConfig& cfg, Environment& env);
 		WindowSystem(const WindowSystem&) = delete;
 		WindowSystem(WindowSystem&&) = delete;
 		WindowSystem& operator=(const WindowSystem&) = delete;

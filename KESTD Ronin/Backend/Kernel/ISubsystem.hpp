@@ -22,6 +22,7 @@ namespace kestd::kernel
 			OnPrepare = 1 << 1,
 			OnTick = 1 << 2,
 			OnShutdown = 1 << 3,
+			Exhaustive = std::numeric_limits<std::uint_fast8_t>::max()
 		};
 	};
 
@@ -60,30 +61,30 @@ namespace kestd::kernel
 		                    const std::underlying_type<Event::Enum>::type events = Event::None) noexcept;
 
 		/// <summary>
-		/// Called on startup.
+		/// Early kernel startup.
 		/// </summary>
 		/// <param name=""></param>
 		/// <returns></returns>
 		virtual auto onStartup(Environment&) -> bool;
 
 		/// <summary>
-		/// Called before entering the runtime loop.
+		/// Late kernel startup.
 		/// </summary>
-		/// <param name=""></param>
+		/// <param name="">Current runtime environment.</param>
 		/// <returns></returns>
 		virtual auto onPrepare(Environment&) -> bool;
 
 		/// <summary>
 		/// Frame tick.
 		/// </summary>
-		/// <param name=""></param>
+		/// <param name="">Current runtime environment.</param>
 		/// <returns></returns>
 		virtual auto onTick(Environment&) -> bool;
 
 		/// <summary>
 		/// Early kernel shutdown.
 		/// </summary>
-		/// <param name=""></param>
+		/// <param name="">Current runtime environment.</param>
 		virtual void onShutdown(Environment&);
 	};
 }

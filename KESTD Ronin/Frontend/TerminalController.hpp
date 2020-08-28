@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include "BufferedProtocolLogger.hpp"
-
 namespace kestd
 {
 	/// <summary>

@@ -7,6 +7,7 @@
 // =============================================================
 
 #include "Kernel.hpp"
+#include "LegacySubsystemBuilder.hpp"
 #include "../../Frontend/PlatformInfo.hpp"
 #include "../../Frontend/Environment.hpp"
 #include <fmt/core.h>
@@ -14,8 +15,6 @@
 
 namespace kestd::kernel
 {
-	extern void InitializeLegacySubsystens(const BootConfig& cfg, std::vector<std::unique_ptr<ISubsystem>>&);
-
 	struct Kernel::Pimpl final
 	{
 		volatile bool trapFlag = false;
@@ -43,14 +42,15 @@ namespace kestd::kernel
 		proto << "[Kernel] Booting kernel & subsystems...";
 
 		// Allocate subsystems and dispatch onStartup() event:
-		InitializeLegacySubsystens(core->env.getBootConfig(), core->systems); // Create and initialize subsystems
+		InitializeLegacySubsystens(core->env.getBootConfig(), core->env, core->systems);
+		// Create and initialize subsystems
 
 		// Dispatch onStartup()
 		for (const auto& sys : core->systems)
 		{
 			if (sys->events & Event::OnStartup && !sys->onStartup(core->env))
 			{
-				throw std::runtime_error("[Kernel] Failed to dispatch 'OnPreStartup' on system: " + sys->name);
+				throw std::runtime_error("[Kernel] Failed to dispatch 'OnStartup' on system: " + sys->name);
 			}
 		}
 
@@ -63,13 +63,12 @@ namespace kestd::kernel
 		core->state = SystemState::Ready;
 	}
 
-	auto Kernel::execute() const -> std::tuple<bool, uint32_t>
+	auto Kernel::execute() const -> std::uint32_t
 	{
 		// Check if system is ready:
 		if (core->systems.empty() || core->state != SystemState::Ready)
 		{
-			core->env.getProtocol() & "System is not ready for execution! Invalid state or subsystem container!";
-			return std::make_tuple(false, 0);
+			throw std::runtime_error("System is not ready for execution! Invalid state or subsystem container!");
 		}
 
 		{
@@ -82,8 +81,7 @@ namespace kestd::kernel
 			{
 				if (sys->events & Event::OnPrepare && !sys->onPrepare(core->env))
 				{
-					proto & "[Kernel] Failed to dispatch 'OnPreStartup' on system: " + sys->name;
-					break;
+					throw std::runtime_error("[Kernel] Failed to dispatch 'OnStartup' on system : " + sys->name);
 				}
 			}
 
@@ -93,13 +91,13 @@ namespace kestd::kernel
 			for (std::size_t i = 0; i < core->systems.size(); ++i)
 			{
 				const auto& sys = core->systems[i];
-				const auto* const typeinfo = typeid(decltype(*sys)).name();
-				proto >> fmt::format("\tSubsystem[{}] -> Name: {}, IsLegacy: {}, EventMask: {:08b}, Type: {}",
+				const auto* const type = typeid(decltype(*sys)).name();
+				proto >> fmt::format("\tSubsystem[{}] -> Name: {}, IsLegacy: {}, EventMask: {:08b} Type: {}",
 				                     i,
 				                     sys->name,
 				                     sys->isLegacy,
 				                     sys->events,
-				                     typeinfo);
+				                     type);
 			}
 
 			const auto bootTime = std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -141,7 +139,7 @@ namespace kestd::kernel
 		}
 
 		core->state = SystemState::Ready;
-		return std::make_tuple(true, cycles);
+		return cycles;
 	}
 
 	Kernel::~Kernel()
@@ -154,7 +152,7 @@ namespace kestd::kernel
 		core->env.getProtocol() << "Shutting down kernel & subsystems...";
 
 		// Dispatch onShutdown()
-		for (std::size_t i = core->systems.size() - 1; i; --i)
+		for (std::size_t i = core->systems.size() - 1; i -- > 0;)
 		{
 			const auto& sys = core->systems[i];
 			if (sys->events & Event::OnShutdown)
@@ -194,7 +192,6 @@ namespace kestd::kernel
 		protocol << "[Kernel] Initializing native engine runtime...";
 		protocol << "[Kernel] Compiler: " COM_NAME;
 		protocol << "[Kernel] STD: C++20";
-		protocol << fmt::format("[Kernel] WorkingDir: \"{}\"", std::filesystem::current_path().string());
 		protocol << fmt::format("[Kernel] KernelSize: {}B", sizeof(Kernel) + sizeof(Pimpl));
 		protocol << fmt::format("[Kernel] SystemSize: {}B", sizeof(Environment));
 		protocol << fmt::format("[Kernel] EngineSize: {}B", sizeof(Environment) + sizeof(Kernel) + sizeof(Pimpl));

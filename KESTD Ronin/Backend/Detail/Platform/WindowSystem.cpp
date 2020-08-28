@@ -29,7 +29,10 @@ extern kestd::ScreenInfo G_SCREEN;
 
 namespace kestd::detail
 {
-	WindowSystem::WindowSystem(const BootConfig& cfg): ISubsystem("WindowInputSystem", true, Event::OnTick)
+	WindowSystem::WindowSystem(const BootConfig& cfg, Environment& env): ISubsystem(
+		"WindowInputSystem",
+		true,
+		Event::OnTick)
 	{
 		if (!glfwInit())
 		{

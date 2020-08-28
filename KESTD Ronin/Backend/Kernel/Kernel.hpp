@@ -13,7 +13,6 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include <tuple>
 
 namespace kestd::kernel
 {
@@ -71,7 +70,7 @@ namespace kestd::kernel
 		/// Executes the kernel and enters the game loop.
 		/// </summary>
 		/// <returns>The number of cycles before interrupt!</returns>
-		[[nodiscard]] auto execute() const -> std::tuple<bool, uint32_t>;
+		[[nodiscard]] auto execute() const -> std::uint32_t;
 
 		/// <summary>
 		/// Returns the current state of the system.

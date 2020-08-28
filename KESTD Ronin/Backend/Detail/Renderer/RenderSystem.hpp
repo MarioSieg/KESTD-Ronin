@@ -19,7 +19,7 @@ namespace kestd::detail
 	class RenderSystem final : public kernel::ISubsystem
 	{
 	public:
-		RenderSystem(const BootConfig& cfg);
+		RenderSystem(const BootConfig& cfg, Environment& env);
 		RenderSystem(const RenderSystem&) = delete;
 		RenderSystem(RenderSystem&&) = delete;
 		RenderSystem& operator=(const RenderSystem&) = delete;
