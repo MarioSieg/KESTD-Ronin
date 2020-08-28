@@ -136,7 +136,7 @@ namespace kestd::kernel
 		/// <param name="wanted"></param>
 		/// <param name="pin"></param>
 		/// <returns></returns>
-		auto logIn(const User wanted, const Pin pin) noexcept -> bool;
+		auto logIn(User wanted, Pin pin) noexcept -> bool;
 
 		/// <summary>
 		/// Log off into normal user mode.

@@ -2,11 +2,11 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// WindowSystem.cpp
+// SS_Platform.cpp
 // 09.08.2020 10:43
 // =============================================================
 
-#include "WindowSystem.hpp"
+#include "SS_Platform.hpp"
 #include "../../Frontend/PlatformInfo.hpp"
 #include "../../Frontend/Environment.hpp"
 
@@ -20,6 +20,7 @@ using namespace kestd::kernel;
 #elif SYS_MAC
 #define GLFW_EXPOSE_NATIVE_COCOA
 #endif
+#include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
 
 void* NativeDisplayHandle = nullptr;
@@ -29,7 +30,7 @@ extern kestd::ScreenInfo G_SCREEN;
 
 namespace kestd::detail::platform
 {
-	WindowSystem::WindowSystem(const BootConfig& cfg, Environment& env): ISubsystem(
+	WindowSystem::WindowSystem(Environment& env): ISubsystem(
 		"WindowInputSystem",
 		true,
 		Event::OnTick | Event::OnPrepare)
@@ -53,7 +54,7 @@ namespace kestd::detail::platform
 		const auto* const videoMode = glfwGetVideoMode(monitor);
 		if (!videoMode)
 		{
-			throw std::runtime_error("Failed to query main video mode frpm monitor!");
+			throw std::runtime_error("Failed to query main video mode from monitor!");
 		}
 
 		auto* const win = glfwCreateWindow(videoMode->width,
@@ -93,7 +94,7 @@ namespace kestd::detail::platform
 		return true;
 	}
 
-	auto WindowSystem::onTick(Environment& sys) -> bool
+	auto WindowSystem::onTick(Environment&) -> bool
 	{
 		glfwPollEvents();
 		return !glfwWindowShouldClose(window);

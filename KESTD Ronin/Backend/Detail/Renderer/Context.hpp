@@ -21,7 +21,7 @@ namespace kestd::detail::renderer
 	class RenderContext final
 	{
 	public:
-		RenderContext(const std::size_t fontSize, const AutoTecTheme& style);
+		RenderContext(std::size_t fontSize, const AutoTecTheme& style);
 		RenderContext(const RenderContext&) = delete;
 		RenderContext(RenderContext&&) = delete;
 		auto operator=(const RenderContext&) -> RenderContext& = delete;

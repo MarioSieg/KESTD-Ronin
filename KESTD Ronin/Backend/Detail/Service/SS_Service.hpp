@@ -2,7 +2,7 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// ServiceSystem.hpp
+// SS_Service.hpp
 // 27.08.2020 12:30
 // =============================================================
 
@@ -16,7 +16,7 @@ namespace kestd::detail::service
 	class ServiceSystem final : public kernel::ISubsystem
 	{
 	public:
-		ServiceSystem(const BootConfig& cfg, Environment& env);
+		ServiceSystem(Environment& env);
 		ServiceSystem(const ServiceSystem&) = delete;
 		ServiceSystem(ServiceSystem&&) = delete;
 		ServiceSystem& operator=(const ServiceSystem&) = delete;

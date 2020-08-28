@@ -38,23 +38,28 @@ namespace kestd::kernel
 	};
 
 	/// <summary>
+	/// Configuration to boot the kernel.
+	/// </summary>
+	struct KernelDescriptor final
+	{
+		std::string appName;
+		std::string companyName;
+		User user = User::Normal;
+		Pin pin = Pin::Invalid;
+		bool pushLegacySubsystems = true;
+	};
+
+	/// <summary>
 	/// Represents the engine kernel and handle.
 	/// </summary>
 	class Kernel final
 	{
 	public:
-
 		/// <summary>
-		/// Creates a new engine kernel and initializes all resources.
+		/// Creates a new engine kernel, initializes all resources and starts all systems.
 		/// </summary>
-		/// <param name="appName"></param>
-		/// <param name="companyName"></param>
-		/// <param name="usr"></param>
-		/// <param name="pin"></param>
-		explicit Kernel(std::string&& appName,
-		                std::string&& companyName,
-		                const User usr = User::Normal,
-		                const Pin pin = Pin::Invalid);
+		/// <param name="desc">Boot description.</param>
+		explicit Kernel(KernelDescriptor&& desc);
 
 		Kernel(const Kernel&) = delete;
 
@@ -65,6 +70,26 @@ namespace kestd::kernel
 		auto operator=(Kernel&&) -> Kernel& = delete;
 
 		~Kernel();
+
+		/// <summary>
+		/// Allocates and pushes a new subsystem into the kernel.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <typeparam name="...Args"></typeparam>
+		/// <param name="args">Additional parameters for subsystem constructor.</param>
+		/// <returns></returns>
+		template<typename T, typename... Args> requires std::is_base_of_v<ISubsystem, T>
+		auto makeSubsystem(Args&&... args) -> std::size_t
+		{
+			return pushSubsystem(std::make_unique<T>(const_cast<Environment &>(getEnvironment()), args...));
+		}
+
+		/// <summary>
+		/// Pushes a new subsystem into the kernel.
+		/// </summary>
+		/// <param name="ptr"></param>
+		/// <returns></returns>
+		auto pushSubsystem(std::unique_ptr<ISubsystem>&& ptr) const -> std::size_t;
 
 		/// <summary>
 		/// Executes the kernel and enters the game loop.
@@ -89,6 +114,12 @@ namespace kestd::kernel
 		/// </summary>
 		/// <returns></returns>
 		[[nodiscard]] auto getSystems() const noexcept -> const std::vector<std::unique_ptr<ISubsystem>>&;
+
+		/// <summary>
+		/// Returns the current runtime environment.
+		/// </summary>
+		/// <returns></returns>
+		[[nodiscard]] auto getEnvironment() const noexcept -> const Environment&;
 
 		/// <summary>
 		/// Interrupts execution, ending the application.

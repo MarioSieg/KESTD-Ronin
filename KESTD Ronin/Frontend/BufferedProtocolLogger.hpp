@@ -96,7 +96,7 @@ namespace kestd
 		/// <summary>
 		/// Initialize a new logger with n capacity.
 		/// </summary>
-		BufferedProtocolLogger(const std::size_t reserve = 64);
+		BufferedProtocolLogger(std::size_t reserve = 64);
 
 		/// <summary>
 		/// Returns the current buffer.

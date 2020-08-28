@@ -57,8 +57,8 @@ namespace kestd::kernel
 
 	protected:
 		explicit ISubsystem(std::string&& name,
-		                    const bool isLegacy,
-		                    const std::underlying_type<Event::Enum>::type events = Event::None) noexcept;
+		                    bool isLegacy,
+		                    std::underlying_type<Event::Enum>::type events = Event::None) noexcept;
 
 		/// <summary>
 		/// Early kernel startup.

@@ -2,18 +2,15 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// Entry.cpp
-// 09.08.2020 07:24
+// LegacySubsystemBuilder.hpp
+// 28.08.2020 01:57
 // =============================================================
 
-#include "../Backend/Kernel/Kernel.hpp"
+#pragma once
 
-using namespace kestd::kernel;
+#include "Kernel/ISubsystem.hpp"
 
-auto main() -> int
+namespace kestd::kernel
 {
-	KernelDescriptor desc;
-	const auto kernel = Kernel(std::move(desc));
-	kernel.execute();
-	return 0;
+	extern void PushLegacySubsystens(Kernel& ker);
 }

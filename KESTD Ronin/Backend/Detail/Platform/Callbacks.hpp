@@ -12,8 +12,8 @@ struct GLFWwindow;
 
 namespace kestd::detail::platform
 {
-	void MouseButtonCallback(GLFWwindow* const win, const int button, const int action, const int mods);
-	void ScrollCallback(GLFWwindow* const win, const double x, const double y);
-	void KeyCallback(GLFWwindow* const win, const int key, const int scancode, const int action, const int mods);
-	void CharCallback(GLFWwindow* const win, const unsigned c);
+	void MouseButtonCallback(GLFWwindow* win, int button, int action, int mods);
+	void ScrollCallback(GLFWwindow* win, double x, double y);
+	void KeyCallback(GLFWwindow* win, int key, int scancode, int action, int mods);
+	void CharCallback(GLFWwindow* win, unsigned c);
 }

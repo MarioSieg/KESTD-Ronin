@@ -20,7 +20,7 @@ namespace kestd::detail::systemgui
 	class SystemGui final
 	{
 	public:
-		SystemGui(const std::size_t fontSize);
+		SystemGui(std::size_t fontSize);
 		SystemGui(const SystemGui&) = delete;
 		SystemGui(SystemGui&) = delete;
 		auto operator=(const SystemGui&) -> SystemGui& = delete;
@@ -29,7 +29,7 @@ namespace kestd::detail::systemgui
 
 		void beginFrame();
 		void endFrame() const;
-		static void ApplyTheme(const AutoTecTheme& sty, const bool applyColors = true);
+		static void ApplyTheme(const AutoTecTheme& sty, bool applyColors = true);
 
 	private:
 		void beginDockSpace() const;

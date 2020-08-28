@@ -2,17 +2,17 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// ServiceSystem.cpp
+// SS_Service.cpp
 // 27.08.2020 12:31
 // =============================================================
 
-#include "ServiceSystem.hpp"
+#include "SS_Service.hpp"
 #include "../../../Frontend/Environment.hpp"
 #include <fmt/core.h>
 
 namespace kestd::detail::service
 {
-	ServiceSystem::ServiceSystem(const BootConfig& cfg, Environment& env) : ISubsystem("ServiceSystem",
+	ServiceSystem::ServiceSystem(Environment& env) : ISubsystem("ServiceSystem",
 	                                                                                   true,
 	                                                                                   kernel::Event::Exhaustive)
 	{
@@ -21,7 +21,7 @@ namespace kestd::detail::service
 		protocol << fmt::format("Verifying working dir \"{}\"...", std::filesystem::current_path().string());
 
 		// Verify all system directories:
-		for (const auto& dir : cfg.io.systemDirs)
+		for (const auto& dir : env.getBootConfig().io.systemDirs)
 		{
 			if (is_directory(dir))
 			{
@@ -34,7 +34,7 @@ namespace kestd::detail::service
 		}
 
 		// Verify all custom directories:
-		for (const auto& dir : cfg.io.additionalRequiredDirectories)
+		for (const auto& dir : env.getBootConfig().io.additionalRequiredDirectories)
 		{
 			if (is_directory(dir))
 			{

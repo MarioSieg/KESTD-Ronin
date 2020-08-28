@@ -18,21 +18,21 @@ namespace bgfx
 namespace kestd::detail::renderer
 {
 	auto checkAvailTransientBuffers(
-		const std::uint32_t numVertices,
+		std::uint32_t numVertices,
 		const bgfx::VertexLayout& layout,
-		const std::uint16_t numIndices
+		std::uint16_t numIndices
 	) -> bool;
 
-	auto encodeNormalRgba8(const float x,
-	                       const float y = .0f,
-	                       const float z = .0f,
-	                       const float w = .0f) -> std::uint32_t;
+	auto encodeNormalRgba8(float x,
+	                       float y = .0f,
+	                       float z = .0f,
+	                       float w = .0f) -> std::uint32_t;
 
 	void calcTangents(
-		void* const vertices,
+		void* vertices,
 		std::uint16_t numVertices,
 		bgfx::VertexLayout layout,
-		const std::uint16_t* const indices,
+		const std::uint16_t* indices,
 		std::uint32_t numIndices
 	);
 }

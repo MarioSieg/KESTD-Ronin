@@ -7,7 +7,7 @@
 // =============================================================
 
 #include "Kernel.hpp"
-#include "LegacySubsystemBuilder.hpp"
+#include "../LegacySubsystemBuilder.hpp"
 #include "../../Frontend/PlatformInfo.hpp"
 #include "../../Frontend/Environment.hpp"
 #include <fmt/core.h>
@@ -25,10 +25,9 @@ namespace kestd::kernel
 		Environment env = {};
 	};
 
-	Kernel::Kernel(std::string&& appName, std::string&& companyName, const User usr, const Pin pin) : core(
-		std::make_unique<Pimpl>())
+	Kernel::Kernel(KernelDescriptor&& desc) : core(std::make_unique<Pimpl>())
 	{
-		core->info = std::make_tuple(std::move(appName), std::move(companyName));
+		core->info = std::make_tuple(std::move(desc.appName), std::move(desc.companyName));
 
 		// Setup stopwatch:
 		const auto stopwatch = std::chrono::high_resolution_clock::now();
@@ -42,7 +41,15 @@ namespace kestd::kernel
 		proto << "[Kernel] Booting kernel & subsystems...";
 
 		// Allocate subsystems and dispatch onStartup() event:
-		InitializeLegacySubsystens({ core->env.getBootConfig(), core->env, core->systems });
+		if (desc.pushLegacySubsystems)
+		{
+			PushLegacySubsystens(*this);
+		}
+		else
+		{
+			proto | "No legacy subsystem pushed - it was disabled in the boot config!";
+		}
+
 		// Create and initialize subsystems
 
 		// Dispatch onStartup()
@@ -61,6 +68,24 @@ namespace kestd::kernel
 
 		// System is ready now:
 		core->state = SystemState::Ready;
+	}
+
+	auto Kernel::pushSubsystem(std::unique_ptr<ISubsystem>&& ptr) const -> std::size_t
+	{
+		// Begin stopwatch:
+		const auto stopwatch = std::chrono::high_resolution_clock::now();
+
+		// Construct subsystem:
+		core->systems.emplace_back(std::move(ptr));
+
+		// Profile boot time:
+		const auto bootTime = std::chrono::duration_cast<std::chrono::milliseconds>(
+			std::chrono::high_resolution_clock::now() - stopwatch).count() / 1000.f;
+
+		// Log boot time:
+		core->env.getProtocol() % fmt::format("Subsystem[{}] BootTime: {}s", core->systems.back()->name, bootTime);
+
+		return core->systems.size();
 	}
 
 	auto Kernel::execute() const -> std::uint32_t
@@ -180,6 +205,11 @@ namespace kestd::kernel
 	auto Kernel::getSystems() const noexcept -> const std::vector<std::unique_ptr<ISubsystem>>&
 	{
 		return core->systems;
+	}
+
+	auto Kernel::getEnvironment() const noexcept -> const Environment&
+	{
+		return core->env;
 	}
 
 	void Kernel::dumpBootInfo() const

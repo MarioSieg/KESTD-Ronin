@@ -19,9 +19,9 @@ namespace kestd::detail::renderer
 	class SystemGuiRenderer final
 	{
 	public:
-		SystemGuiRenderer(const std::size_t fontSize);
+		SystemGuiRenderer(std::size_t fontSize);
 		~SystemGuiRenderer();
-		void draw(const ImDrawData* const data) const;
+		void draw(const ImDrawData* data) const;
 
 	private:
 		ImFont* font = nullptr;

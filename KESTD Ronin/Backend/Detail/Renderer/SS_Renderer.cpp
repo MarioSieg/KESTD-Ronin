@@ -2,11 +2,11 @@
 // © Copyright KerboGames®, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// RenderSystem.cpp
+// SS_Renderer.cpp
 // 09.08.2020 10:43
 // =============================================================
 
-#include "RenderSystem.hpp"
+#include "SS_Renderer.hpp"
 #include "../../Frontend/Environment.hpp"
 
 using namespace kestd::kernel;
@@ -15,9 +15,9 @@ kestd::ScreenInfo G_SCREEN;
 
 namespace kestd::detail::renderer
 {
-	RenderSystem::RenderSystem(const BootConfig& cfg, Environment& env) :
+	RenderSystem::RenderSystem(Environment& env) :
 		ISubsystem("RenderSystem", true, Event::OnTick),
-		context(cfg.autoTec.fontSize, cfg.autoTec.theme)
+		context(env.getBootConfig().autoTec.fontSize, env.getBootConfig().autoTec.theme)
 	{
 		G_SCREEN.width = 1920;
 		G_SCREEN.height = 1080;
