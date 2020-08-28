@@ -9,10 +9,10 @@
 #include "EmbeddedShaders.hpp"
 #include "GuiRenderer.hpp"
 #include "../Renderer/Utils.hpp"
-#include "../SystemGui/IconsFontAwesome5.hpp"
 #include <bx/math.h>
 #include <imgui.h>
 #include <algorithm>
+#include <fontawesome/icons_font_awesome5.h>
 
 namespace kestd::detail::renderer
 {

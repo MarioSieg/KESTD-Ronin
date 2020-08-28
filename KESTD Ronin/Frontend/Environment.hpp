@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "BufferedProtocolLogger.hpp"
+#include "BufLogger.hpp"
 #include "ScreenInfo.hpp"
 #include "TerminalController.hpp"
 #include "BootConfig.hpp"
@@ -29,12 +29,11 @@ namespace kestd
 		auto operator=(Environment&&) -> Environment& = delete;
 		~Environment();
 
-
 		/// <summary>
 		/// Returns the current log protocol.
 		/// </summary>
 		/// <returns></returns>
-		[[nodiscard]] auto getProtocol() noexcept -> BufferedProtocolLogger&;
+		[[nodiscard]] auto getProtocol() noexcept -> BufLogger&;
 
 		/// <summary>
 		/// Returns info about the current getBootConfig, machine and system.
@@ -61,36 +60,10 @@ namespace kestd
 		[[nodiscard]] auto getBootConfig() noexcept -> BootConfig&;
 
 	private:
-		BufferedProtocolLogger logger;
+		BufLogger logger;
 		PlatformInfo platform;
 		ScreenInfo screen;
 		TerminalController terminal;
 		BootConfig config;
 	};
-
-
-	inline auto Environment::getProtocol() noexcept -> BufferedProtocolLogger&
-	{
-		return this->logger;
-	}
-
-	inline auto Environment::getPlatformInfo() const noexcept -> const PlatformInfo&
-	{
-		return this->platform;
-	}
-
-	inline auto Environment::getScreenInfo() const noexcept -> const ScreenInfo&
-	{
-		return this->screen;
-	}
-
-	inline auto Environment::getTerminal() noexcept -> TerminalController&
-	{
-		return this->terminal;
-	}
-
-	inline auto Environment::getBootConfig() noexcept -> BootConfig&
-	{
-		return this->config;
-	}
 }

@@ -10,23 +10,38 @@
 
 namespace kestd
 {
+	class AutoTecTheme;
 	class BootConfig;
 	class Environment;
+	enum class AutoTecColorTheme;
 }
 
-namespace kestd::detail::systemgui
+namespace kestd
 {
 	class AutoTec final
 	{
 	public:
-		void updateAndRender(Environment& env);
-
-	private:
+		AutoTec() noexcept;
+		AutoTec(const AutoTec&) = delete;
+		AutoTec(AutoTec&&) = delete;
+		AutoTec& operator=(const AutoTec&) = delete;
+		AutoTec& operator=(AutoTec&&) = delete;
+		~AutoTec() = default;
+		
 		bool showSettingsEditor = false;
 		bool showDiagnosticsProfiler = false;
-		
+		void updateAndRender(Environment& env);
 		void mainMenu();
 		void configEditor(BootConfig& bcfg);
 		void diagnosticsProfiler();
+		void applyTheme(const AutoTecTheme& theme);
+		void styleDark() const noexcept;
+		void styleLight() const noexcept;
+		void styleCherry() const noexcept;
+		void styleBlue() const noexcept;
+		void styleGreen() const noexcept;
+
+	private:
+		AutoTecColorTheme currentColorTheme;
 	};
 }

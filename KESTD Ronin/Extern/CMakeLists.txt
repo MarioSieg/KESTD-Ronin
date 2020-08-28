@@ -17,3 +17,5 @@ target_link_libraries("KestdRonin" "imgui")
 include_directories("Extern/fmt/include/")
 add_subdirectory("Extern/fmt/")
 target_link_libraries("KestdRonin" "fmt")
+
+include_directories("Extern/fontawesome/include/")

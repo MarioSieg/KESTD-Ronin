@@ -12,7 +12,7 @@ namespace kestd::detail::renderer
 {
 	RenderContext::RenderContext(const std::size_t fontSize, const AutoTecTheme& style) : gui(fontSize)
 	{
-		systemgui::SystemGui::ApplyTheme(style);
+		
 	}
 
 	RenderContext::~RenderContext() = default;

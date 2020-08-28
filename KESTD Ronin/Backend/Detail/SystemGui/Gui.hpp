@@ -29,7 +29,6 @@ namespace kestd::detail::systemgui
 
 		void beginFrame();
 		void endFrame() const;
-		static void ApplyTheme(const AutoTecTheme& sty, bool applyColors = true);
 
 	private:
 		void beginDockSpace() const;

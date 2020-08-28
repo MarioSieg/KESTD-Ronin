@@ -7,14 +7,14 @@
 // =============================================================
 
 #include "Terminal.hpp"
-#include "IconsFontAwesome5.hpp"
 #include <imgui.h>
+#include <fontawesome/icons_font_awesome5.h>
 
 using namespace ImGui;
 
 namespace kestd::detail::systemgui
 {
-	void Terminal::updateAndRender(const BufferedProtocolLogger& protocol, bool& display)
+	void Terminal::updateAndRender(const BufLogger& protocol, bool& display)
 	{
 		if (!display)
 		{

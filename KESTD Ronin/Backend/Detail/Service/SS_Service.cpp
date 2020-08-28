@@ -18,14 +18,14 @@ namespace kestd::detail::service
 	{
 		auto& protocol = env.getProtocol();
 
-		protocol << fmt::format("Verifying working dir \"{}\"...", std::filesystem::current_path().string());
+		protocol.log(MessageType::Info, "Verifying working dir \"{}\"...", std::filesystem::current_path().string());
 
 		// Verify all system directories:
 		for (const auto& dir : env.getBootConfig().io.systemDirs)
 		{
 			if (is_directory(dir))
 			{
-				protocol % fmt::format("[SysDir] {}", dir.string());
+				protocol.log(MessageType::Success, "[SysDir] {}", dir.string());
 			}
 			else
 			{
@@ -38,7 +38,7 @@ namespace kestd::detail::service
 		{
 			if (is_directory(dir))
 			{
-				protocol % fmt::format("[UsrDir] {}", dir.string());
+				protocol.log(MessageType::Success, "[UsrDir] {}", dir.string());
 			}
 			else
 			{
@@ -47,20 +47,20 @@ namespace kestd::detail::service
 		}
 
 		// Perform system analysis and dump it into the protocol:
-		protocol << "Performing system analysis...";
+		protocol.log(MessageType::Info, "Performing system analysis...");
 		auto& platformInfo = const_cast<PlatformInfo &>(env.getPlatformInfo());
 
 		platformInfo.osInfo.query();
-		protocol ^ platformInfo.osInfo.toStr();
+		protocol.logDump(platformInfo.osInfo.toStr());
 
 		platformInfo.cpuInfo.query();
-		protocol ^ platformInfo.cpuInfo.toStr();
+		protocol.logDump(platformInfo.cpuInfo.toStr());
 
 		platformInfo.gpuInfos.query();
-		protocol ^ platformInfo.gpuInfos.toStr();
+		protocol.logDump(platformInfo.gpuInfos.toStr());
 
 		platformInfo.peripheryInfo.query();
-		protocol ^ platformInfo.peripheryInfo.toStr();
+		protocol.logDump(platformInfo.peripheryInfo.toStr());
 	}
 
 	ServiceSystem::~ServiceSystem() = default;
@@ -73,7 +73,7 @@ namespace kestd::detail::service
 	auto ServiceSystem::onPrepare(Environment& env) -> bool
 	{
 		auto& proto = env.getProtocol();
-		proto >> fmt::format("Compressing protocol... Streamcapacity: {}, Length: {}",
+		proto.log(MessageType::Trace, "Compressing protocol... Streamcapacity: {}, Length: {}",
 		                     proto.getBuffer().capacity(),
 		                     proto.getBuffer().size());
 		// Compress all logged messages to minimize memory usage:

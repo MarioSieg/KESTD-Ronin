@@ -7,7 +7,7 @@
 // =============================================================
 
 #include "PlatformInfo.hpp"
-#include "BufferedProtocolLogger.hpp"
+#include "BufLogger.hpp"
 #include <infoware/infoware.hpp>
 #include <fmt/core.h>
 #include <bgfx/bgfx.h>

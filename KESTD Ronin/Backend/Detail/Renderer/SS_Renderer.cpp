@@ -17,7 +17,7 @@ namespace kestd::detail::renderer
 {
 	RenderSystem::RenderSystem(Environment& env) :
 		ISubsystem("RenderSystem", true, Event::OnTick),
-		context(env.getBootConfig().autoTec.fontSize, env.getBootConfig().autoTec.theme)
+		context(env.getBootConfig().autoTec.getFontSize(), env.getBootConfig().autoTec.getTheme())
 	{
 		G_SCREEN.width = 1920;
 		G_SCREEN.height = 1080;

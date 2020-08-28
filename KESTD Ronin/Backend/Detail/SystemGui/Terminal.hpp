@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "../../Frontend/BufferedProtocolLogger.hpp"
+#include "../../Frontend/BufLogger.hpp"
 #include "../../Frontend/TerminalController.hpp"
 
 namespace kestd::detail::systemgui
@@ -23,7 +23,7 @@ namespace kestd::detail::systemgui
 		Terminal& operator=(Terminal&&) = delete;
 		~Terminal() = default;
 
-		void updateAndRender(const BufferedProtocolLogger& protocol, bool& display);
+		void updateAndRender(const BufLogger& protocol, bool& display);
 		auto getBuffer() const noexcept -> const char(&)[TerminalController::MAX_COMMAND_LEN];
 
 	private:

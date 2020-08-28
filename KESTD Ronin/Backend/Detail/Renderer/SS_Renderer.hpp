@@ -10,7 +10,7 @@
 
 #include "../../Kernel/ISubsystem.hpp"
 #include "../SystemGui/Terminal.hpp"
-#include "../SystemGui/AutoTec.hpp"
+#include "../../AutoTec/AutoTec.hpp"
 #include "Context.hpp"
 
 namespace kestd::detail::renderer
@@ -30,6 +30,6 @@ namespace kestd::detail::renderer
 
 		RenderContext context;
 		systemgui::Terminal terminalRenderer;
-		systemgui::AutoTec autoTec;
+		AutoTec autoTec;
 	};
 }
