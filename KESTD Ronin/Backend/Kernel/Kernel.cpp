@@ -42,7 +42,7 @@ namespace kestd::kernel
 		proto << "[Kernel] Booting kernel & subsystems...";
 
 		// Allocate subsystems and dispatch onStartup() event:
-		InitializeLegacySubsystens(core->env.getBootConfig(), core->env, core->systems);
+		InitializeLegacySubsystens({ core->env.getBootConfig(), core->env, core->systems });
 		// Create and initialize subsystems
 
 		// Dispatch onStartup()

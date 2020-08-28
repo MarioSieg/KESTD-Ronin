@@ -13,7 +13,7 @@ using namespace kestd::kernel;
 
 kestd::ScreenInfo G_SCREEN;
 
-namespace kestd::detail
+namespace kestd::detail::renderer
 {
 	RenderSystem::RenderSystem(const BootConfig& cfg, Environment& env) :
 		ISubsystem("RenderSystem", true, Event::OnTick),

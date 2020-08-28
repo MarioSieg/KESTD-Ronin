@@ -12,15 +12,15 @@
 
 using namespace bgfx;
 
-extern void* G_NDT;
-extern void* G_NWH;
+extern void* NativeDisplayHandle;
+extern void* WindowHandle;
 extern kestd::ScreenInfo G_SCREEN;
 
-namespace kestd::detail
+namespace kestd::detail::renderer
 {
 	Drivers::Drivers()
 	{
-		if (!G_NWH)
+		if (!WindowHandle)
 		{
 			return;
 		}
@@ -30,8 +30,8 @@ namespace kestd::detail
 		initData.resolution.width = G_SCREEN.width;
 		initData.resolution.height = G_SCREEN.height;
 		initData.resolution.reset = BGFX_RESET_MSAA_X16;
-		initData.platformData.nwh = G_NWH;
-		initData.platformData.ndt = G_NDT;
+		initData.platformData.nwh = WindowHandle;
+		initData.platformData.ndt = NativeDisplayHandle;
 
 		if (!init(initData))
 		{

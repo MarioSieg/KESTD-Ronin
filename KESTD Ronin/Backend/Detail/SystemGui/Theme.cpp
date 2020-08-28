@@ -9,7 +9,7 @@
 #include "Gui.hpp"
 #include "../../Frontend/AutoTec.hpp"
 
-namespace kestd::detail::sysgui
+namespace kestd::detail::systemgui
 {
 	void SystemGui::ApplyTheme(const AutoTecTheme& sty, const bool applyColors)
 	{

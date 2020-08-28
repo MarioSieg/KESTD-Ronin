@@ -12,7 +12,15 @@
 
 namespace kestd::kernel
 {
-	extern void InitializeLegacySubsystens(const BootConfig& cfg,
-	                                       Environment& env,
-	                                       std::vector<std::unique_ptr<ISubsystem>>&);
+	struct LegacySubsystemBuildDescriptor final
+	{
+		const BootConfig& cfg;
+		Environment& env;
+		std::vector<std::unique_ptr<ISubsystem>>& sysref;
+	};
+	
+	extern void InitializeLegacySubsystens(LegacySubsystemBuildDescriptor desc);
+
+	template<typename T, typename... Args> requires std::is_base_of_v<ISubsystem, T>
+	extern void PushSubsystem(LegacySubsystemBuildDescriptor desc, Args&&... args);
 }

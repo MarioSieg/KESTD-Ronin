@@ -16,7 +16,7 @@
 
 using namespace ImGui;
 
-namespace kestd::detail::sysgui
+namespace kestd::detail::systemgui
 {
 	void AutoTec::updateAndRender(Environment& env)
 	{

@@ -14,7 +14,7 @@
 #include <imgui.h>
 #include <algorithm>
 
-namespace kestd::detail
+namespace kestd::detail::renderer
 {
 	constexpr bgfx::ViewId GUI_VIEW_ID = 0xff;
 
@@ -23,16 +23,16 @@ namespace kestd::detail
 		auto& io = ImGui::GetIO();
 		const auto type = bgfx::getRendererType();
 		guiProgram = createProgram(
-			createEmbeddedShader(INTERNAL_SHADERS, type, "VS_GUI"),
-			createEmbeddedShader(INTERNAL_SHADERS, type, "FS_GUI"),
+			createEmbeddedShader(EmbeddedShaders, type, "VS_GUI"),
+			createEmbeddedShader(EmbeddedShaders, type, "FS_GUI"),
 			true
 		);
 
 		imageLodEnabled = createUniform("u_imageLodEnabled", bgfx::UniformType::Vec4);
 
 		guiImageProgram = createProgram(
-			createEmbeddedShader(INTERNAL_SHADERS, type, "VS_GUI_IMAGE"),
-			createEmbeddedShader(INTERNAL_SHADERS, type, "FS_GUI_IMAGE"),
+			createEmbeddedShader(EmbeddedShaders, type, "VS_GUI_IMAGE"),
+			createEmbeddedShader(EmbeddedShaders, type, "FS_GUI_IMAGE"),
 			true
 		);
 

@@ -18,16 +18,16 @@
 #define MAP_BUTTON(NAV_NO, BUTTON_NO)       { if (buttonsCount > BUTTON_NO && buttons[BUTTON_NO] == GLFW_PRESS) io.NavInputs[NAV_NO] = 1.0f; }
 #define MAP_ANALOG(NAV_NO, AXIS_NO, V0, V1) { float v = (axesCount > AXIS_NO) ? axes[AXIS_NO] : V0; v = (v - V0) / (V1 - V0); if (v > 1.0f) v = 1.0f; if (io.NavInputs[NAV_NO] < v) io.NavInputs[NAV_NO] = v; }
 
-extern void* G_NWH;
-extern void* G_WIN;
-extern bool G_MOUSE_PRESSED[ImGuiMouseButton_COUNT];
+extern void* WindowHandle;
+extern void* NativeWindowHandle;
+extern bool MouseButtonsState[ImGuiMouseButton_COUNT];
 
 namespace
 {
 	GLFWcursor* G_CURSORS[ImGuiMouseCursor_COUNT] = {};
 }
 
-namespace kestd::detail
+namespace kestd::detail::platform
 {
 	SystemGuiInput::SystemGuiInput()
 	{
@@ -102,8 +102,8 @@ namespace kestd::detail
 	{
 		int w, h;
 		int displayW, displayH;
-		glfwGetWindowSize(static_cast<GLFWwindow *>(G_WIN), &w, &h);
-		glfwGetFramebufferSize(static_cast<GLFWwindow *>(G_WIN), &displayW, &displayH);
+		glfwGetWindowSize(static_cast<GLFWwindow *>(NativeWindowHandle), &w, &h);
+		glfwGetFramebufferSize(static_cast<GLFWwindow *>(NativeWindowHandle), &displayW, &displayH);
 		auto& io = ImGui::GetIO();
 		io.DisplaySize = ImVec2(static_cast<float>(w), static_cast<float>(h));
 		io.DisplayFramebufferScale = ImVec2(static_cast<float>(displayW) / w, static_cast<float>(displayH) / h);
@@ -120,13 +120,13 @@ namespace kestd::detail
 
 	void SystemGuiInput::updateMouse()
 	{
-		auto* const win = static_cast<GLFWwindow *>(G_WIN);
+		auto* const win = static_cast<GLFWwindow *>(NativeWindowHandle);
 		auto& io = ImGui::GetIO();
 
 		for (std::size_t i = 0; i < sizeof io.MouseDown / sizeof *io.MouseDown; i++)
 		{
-			io.MouseDown[i] = G_MOUSE_PRESSED[i] || glfwGetMouseButton(win, i);
-			G_MOUSE_PRESSED[i] = false;
+			io.MouseDown[i] = MouseButtonsState[i] || glfwGetMouseButton(win, i);
+			MouseButtonsState[i] = false;
 		}
 
 		// Update mouse position:
@@ -152,7 +152,7 @@ namespace kestd::detail
 
 	void SystemGuiInput::updateCursor()
 	{
-		auto* const win = static_cast<GLFWwindow *>(G_WIN);
+		auto* const win = static_cast<GLFWwindow *>(NativeWindowHandle);
 		auto& io = ImGui::GetIO();
 		if (io.ConfigFlags & ImGuiConfigFlags_NoMouseCursorChange || glfwGetInputMode(win, GLFW_CURSOR) ==
 			GLFW_CURSOR_DISABLED)
@@ -215,10 +215,10 @@ namespace kestd::detail
 
 	void SystemGuiInput::installCallbackProcedures()
 	{
-		auto* const win = static_cast<GLFWwindow *>(G_WIN);
-		glfwSetMouseButtonCallback(win, mouseButtonCallback);
-		glfwSetScrollCallback(win, scrollCallback);
-		glfwSetKeyCallback(win, keyCallback);
-		glfwSetCharCallback(win, charCallback);
+		auto* const win = static_cast<GLFWwindow *>(NativeWindowHandle);
+		glfwSetMouseButtonCallback(win, MouseButtonCallback);
+		glfwSetScrollCallback(win, ScrollCallback);
+		glfwSetKeyCallback(win, KeyCallback);
+		glfwSetCharCallback(win, CharCallback);
 	}
 }

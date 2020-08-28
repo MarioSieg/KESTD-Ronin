@@ -10,7 +10,7 @@
 
 using namespace ImGui;
 
-namespace kestd::detail::sysgui
+namespace kestd::detail::systemgui
 {
 	void SystemGui::beginDockSpace() const
 	{

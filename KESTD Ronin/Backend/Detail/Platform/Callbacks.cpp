@@ -10,27 +10,27 @@
 #include <GLFW/glfw3.h>
 #include <imgui.h>
 
-bool G_MOUSE_PRESSED[ImGuiMouseButton_COUNT];
+bool MouseButtonsState[ImGuiMouseButton_COUNT];
 
-namespace kestd::detail
+namespace kestd::detail::platform
 {
-	void mouseButtonCallback(GLFWwindow* const win, const int button, const int action, const int mods)
+	void MouseButtonCallback(GLFWwindow* const win, const int button, const int action, const int mods)
 	{
-		if (action == GLFW_PRESS && button >= 0 && button < static_cast<int>(sizeof G_MOUSE_PRESSED / sizeof *
-			G_MOUSE_PRESSED))
+		if (action == GLFW_PRESS && button >= 0 && button < static_cast<int>(sizeof MouseButtonsState / sizeof *
+			MouseButtonsState))
 		{
-			G_MOUSE_PRESSED[button] = true;
+			MouseButtonsState[button] = true;
 		}
 	}
 
-	void scrollCallback(GLFWwindow* const win, const double x, const double y)
+	void ScrollCallback(GLFWwindow* const win, const double x, const double y)
 	{
 		auto& io = ImGui::GetIO();
 		io.MouseWheelH += static_cast<float>(x);
 		io.MouseWheel += static_cast<float>(y);
 	}
 
-	void keyCallback(GLFWwindow* const win, const int key, const int scancode, const int action, const int mods)
+	void KeyCallback(GLFWwindow* const win, const int key, const int scancode, const int action, const int mods)
 	{
 		auto& io = ImGui::GetIO();
 		if (action == GLFW_PRESS)
@@ -51,7 +51,7 @@ namespace kestd::detail
 #endif
 	}
 
-	void charCallback(GLFWwindow* const win, const unsigned c)
+	void CharCallback(GLFWwindow* const win, const unsigned c)
 	{
 		auto& io = ImGui::GetIO();
 		io.AddInputCharacter(c);

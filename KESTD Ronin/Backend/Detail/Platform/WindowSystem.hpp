@@ -16,7 +16,7 @@ namespace kestd
 	struct BootConfig;
 }
 
-namespace kestd::detail
+namespace kestd::detail::platform
 {
 	class WindowSystem final : public kernel::ISubsystem
 	{
@@ -29,6 +29,7 @@ namespace kestd::detail
 		~WindowSystem() override;
 
 	private:
+		auto onPrepare(Environment&) -> bool override;
 		auto onTick(Environment& sys) -> bool override;
 		GLFWwindow* window = nullptr;
 	};

@@ -13,11 +13,14 @@
 #include "Shaders/GuiImageVs.bin.inl"
 #include "Shaders/GuiImageFs.bin.inl"
 
-const bgfx::EmbeddedShader INTERNAL_SHADERS[]
+namespace kestd::detail::renderer
 {
-	BGFX_EMBEDDED_SHADER(VS_GUI),
-	BGFX_EMBEDDED_SHADER(FS_GUI),
-	BGFX_EMBEDDED_SHADER(VS_GUI_IMAGE),
-	BGFX_EMBEDDED_SHADER(FS_GUI_IMAGE),
-	BGFX_EMBEDDED_SHADER_END(),
-};
+	const bgfx::EmbeddedShader EmbeddedShaders[]
+	{
+		BGFX_EMBEDDED_SHADER(VS_GUI),
+		BGFX_EMBEDDED_SHADER(FS_GUI),
+		BGFX_EMBEDDED_SHADER(VS_GUI_IMAGE),
+		BGFX_EMBEDDED_SHADER(FS_GUI_IMAGE),
+		BGFX_EMBEDDED_SHADER_END(),
+	};
+}

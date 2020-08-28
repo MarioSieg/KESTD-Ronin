@@ -16,29 +16,27 @@
 
 namespace kestd::kernel
 {
-	template<typename T> requires std::is_base_of_v<ISubsystem, T>
-	void PushSubsystem(const BootConfig& cfg, Environment& env, std::vector<std::unique_ptr<ISubsystem>>& services)
+	template<typename T, typename... Args> requires std::is_base_of_v<ISubsystem, T>
+	void PushSubsystem(LegacySubsystemBuildDescriptor desc, Args&&... args)
 	{
 		// Begin stopwatch:
 		const auto stopwatch = std::chrono::high_resolution_clock::now();
 
 		// Construct subsystem:
-		services.emplace_back(std::make_unique<T>(cfg, env));
+		desc.sysref.emplace_back(std::make_unique<T>(desc.cfg, desc.env, args...));
 
 		// Profile boot time:
 		const auto bootTime = std::chrono::duration_cast<std::chrono::milliseconds>(
 			std::chrono::high_resolution_clock::now() - stopwatch).count() / 1000.f;
 
 		// Log boot time:
-		env.getProtocol() % fmt::format("Subsystem[{}] BootTime: {}s", services.back()->name, bootTime);
+		desc.env.getProtocol() % fmt::format("Subsystem[{}] BootTime: {}s", desc.sysref.back()->name, bootTime);
 	}
 
-	void InitializeLegacySubsystens(const BootConfig& cfg,
-	                                Environment& env,
-	                                std::vector<std::unique_ptr<ISubsystem>>& services)
+	void InitializeLegacySubsystens(LegacySubsystemBuildDescriptor desc)
 	{
-		PushSubsystem<detail::service::ServiceSystem>(cfg, env, services);
-		PushSubsystem<detail::WindowSystem>(cfg, env, services);
-		PushSubsystem<detail::RenderSystem>(cfg, env, services);
+		PushSubsystem<detail::service::ServiceSystem>(desc);
+		PushSubsystem<detail::platform::WindowSystem>(desc);
+		PushSubsystem<detail::renderer::RenderSystem>(desc);
 	}
 }

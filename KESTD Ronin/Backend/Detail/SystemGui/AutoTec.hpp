@@ -14,7 +14,7 @@ namespace kestd
 	class Environment;
 }
 
-namespace kestd::detail::sysgui
+namespace kestd::detail::systemgui
 {
 	class AutoTec final
 	{

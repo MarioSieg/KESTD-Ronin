@@ -11,7 +11,7 @@
 #include "../../Frontend/BufferedProtocolLogger.hpp"
 #include "../../Frontend/TerminalController.hpp"
 
-namespace kestd::detail::sysgui
+namespace kestd::detail::systemgui
 {
 	class Terminal final
 	{

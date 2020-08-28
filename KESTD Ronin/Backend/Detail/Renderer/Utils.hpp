@@ -15,7 +15,7 @@ namespace bgfx
 	struct VertexLayout;
 }
 
-namespace kestd::detail
+namespace kestd::detail::renderer
 {
 	auto checkAvailTransientBuffers(
 		const std::uint32_t numVertices,

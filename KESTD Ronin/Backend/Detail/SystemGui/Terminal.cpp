@@ -12,7 +12,7 @@
 
 using namespace ImGui;
 
-namespace kestd::detail::sysgui
+namespace kestd::detail::systemgui
 {
 	void Terminal::updateAndRender(const BufferedProtocolLogger& protocol, bool& display)
 	{

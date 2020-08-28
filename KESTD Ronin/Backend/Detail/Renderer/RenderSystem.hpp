@@ -14,7 +14,7 @@
 #include "../SystemGui/AutoTec.hpp"
 #include "Context.hpp"
 
-namespace kestd::detail
+namespace kestd::detail::renderer
 {
 	class RenderSystem final : public kernel::ISubsystem
 	{
@@ -30,7 +30,7 @@ namespace kestd::detail
 		auto onTick(Environment& sys) -> bool override;
 
 		RenderContext context;
-		sysgui::Terminal terminalRenderer;
-		sysgui::AutoTec autoTec;
+		systemgui::Terminal terminalRenderer;
+		systemgui::AutoTec autoTec;
 	};
 }

@@ -12,7 +12,7 @@
 #include <bgfx/bgfx.h>
 #include <bx/pixelformat.h>
 
-namespace kestd::detail
+namespace kestd::detail::renderer
 {
 	auto checkAvailTransientBuffers(
 		const uint32_t numVertices,

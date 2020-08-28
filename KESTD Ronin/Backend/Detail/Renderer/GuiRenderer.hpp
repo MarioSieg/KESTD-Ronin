@@ -14,7 +14,7 @@
 struct ImFont;
 struct ImDrawData;
 
-namespace kestd::detail
+namespace kestd::detail::renderer
 {
 	class SystemGuiRenderer final
 	{

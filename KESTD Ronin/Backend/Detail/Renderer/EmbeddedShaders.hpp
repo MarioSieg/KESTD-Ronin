@@ -10,4 +10,7 @@
 
 #include <bgfx/embedded_shader.h>
 
-extern const bgfx::EmbeddedShader INTERNAL_SHADERS[];
+namespace kestd::detail::renderer
+{
+	extern const bgfx::EmbeddedShader EmbeddedShaders[];
+}

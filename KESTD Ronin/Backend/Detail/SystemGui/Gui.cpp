@@ -11,7 +11,7 @@
 
 extern kestd::ScreenInfo G_SCREEN;
 
-namespace kestd::detail::sysgui
+namespace kestd::detail::systemgui
 {
 	SystemGui::SystemGui(const std::size_t fontSize) : renderer(fontSize)
 	{

@@ -16,7 +16,7 @@ namespace kestd
 	struct AutoTecTheme;
 }
 
-namespace kestd::detail
+namespace kestd::detail::renderer
 {
 	class RenderContext final
 	{
@@ -29,6 +29,6 @@ namespace kestd::detail
 		~RenderContext();
 
 		Drivers drivers;
-		sysgui::SystemGui gui;
+		systemgui::SystemGui gui;
 	};
 }

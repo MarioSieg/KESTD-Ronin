@@ -15,7 +15,7 @@
 #include "../Platform/GuiInput.hpp"
 #include "../Renderer/GuiRenderer.hpp"
 
-namespace kestd::detail::sysgui
+namespace kestd::detail::systemgui
 {
 	class SystemGui final
 	{
@@ -35,7 +35,7 @@ namespace kestd::detail::sysgui
 		void beginDockSpace() const;
 		void endDockSpace() const;
 		ImGuiContext* context{ImGui::CreateContext()};
-		SystemGuiRenderer renderer;
-		SystemGuiInput input;
+		renderer::SystemGuiRenderer renderer;
+		platform::SystemGuiInput input;
 	};
 }

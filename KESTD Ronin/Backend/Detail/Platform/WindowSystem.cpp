@@ -22,37 +22,38 @@ using namespace kestd::kernel;
 #endif
 #include <GLFW/glfw3native.h>
 
-void* G_NDT = nullptr;
-void* G_NWH = nullptr;
-void* G_WIN = nullptr;
+void* NativeDisplayHandle = nullptr;
+void* WindowHandle = nullptr;
+void* NativeWindowHandle = nullptr;
 extern kestd::ScreenInfo G_SCREEN;
 
-namespace kestd::detail
+namespace kestd::detail::platform
 {
 	WindowSystem::WindowSystem(const BootConfig& cfg, Environment& env): ISubsystem(
 		"WindowInputSystem",
 		true,
-		Event::OnTick)
+		Event::OnTick | Event::OnPrepare)
 	{
 		if (!glfwInit())
 		{
-			return;
+			throw std::runtime_error("Failed to initialize glfw!");
 		}
 
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 		glfwWindowHint(GLFW_NATIVE_CONTEXT_API, GLFW_NO_API);
+		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
 		glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
 		auto* const monitor = glfwGetPrimaryMonitor();
 		if (!monitor)
 		{
-			return;
+			throw std::runtime_error("Failed to query primary monitor!");
 		}
 
 		const auto* const videoMode = glfwGetVideoMode(monitor);
 		if (!videoMode)
 		{
-			return;
+			throw std::runtime_error("Failed to query main video mode frpm monitor!");
 		}
 
 		auto* const win = glfwCreateWindow(videoMode->width,
@@ -62,7 +63,7 @@ namespace kestd::detail
 		                                   nullptr);
 		if (!win)
 		{
-			return;
+			throw std::runtime_error("Failed to create window!");
 		}
 		//glfwSetWindowMonitor(win, monitor, 0, 0, videoMode->width, videoMode->height, 144);
 
@@ -73,33 +74,35 @@ namespace kestd::detail
 		G_SCREEN.height = static_cast<std::uint16_t>(height);
 
 		window = win;
-		G_WIN = win;
-
+		NativeWindowHandle = win;
 
 #if SYS_LINUX
-		G_NDT = glfwGetX11Display();
-		G_NWH = reinterpret_cast<void*>(reinterpret_cast<std::uintptr_t>(glfwGetX11Window(win)));
+		NativeDisplayHandle = glfwGetX11Display();
+		WindowHandle = reinterpret_cast<void*>(reinterpret_cast<std::uintptr_t>(glfwGetX11Window(win)));
 #elif SYS_WINDOWS
-		G_NWH = glfwGetWin32Window(win);
+		WindowHandle = glfwGetWin32Window(win);
 #elif SYS_MAC
-		G_NWH = glfwGetCocoaWindow(win);
+		WindowHandle = glfwGetCocoaWindow(win);
 #endif
+	}
 
+	auto WindowSystem::onPrepare(Environment&) -> bool
+	{
 		glfwShowWindow(window);
 		glfwFocusWindow(window);
+		return true;
+	}
+
+	auto WindowSystem::onTick(Environment& sys) -> bool
+	{
+		glfwPollEvents();
+		return !glfwWindowShouldClose(window);
 	}
 
 	WindowSystem::~WindowSystem()
 	{
 		glfwDestroyWindow(window);
 		glfwTerminate();
-		G_NDT = G_NWH = G_WIN = nullptr;
-	}
-
-	auto WindowSystem::onTick(Environment& sys) -> bool
-	{
-		glfwPollEvents();
-		//glfwWaitEvents();
-		return !glfwWindowShouldClose(window);
+		NativeDisplayHandle = WindowHandle = NativeWindowHandle = nullptr;
 	}
 }

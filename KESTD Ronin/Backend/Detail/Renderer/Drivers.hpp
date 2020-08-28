@@ -8,7 +8,7 @@
 
 #pragma once
 
-namespace kestd::detail
+namespace kestd::detail::renderer
 {
 	class Drivers final
 	{
