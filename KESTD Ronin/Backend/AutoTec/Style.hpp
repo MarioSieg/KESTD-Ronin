@@ -2,25 +2,19 @@
 // (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// GuiInput.hpp
-// 10.08.2020 14:07
+// Style.hpp
+// 28.08.2020 22:56
 // =============================================================
 
 #pragma once
 
-namespace kestd::detail::platform
+namespace kestd
 {
-	class SystemGuiInput final
-	{
-	public:
-		SystemGuiInput();
-		~SystemGuiInput();
-		void update();
-
-	private:
-		void updateMouse();
-		void updateCursor();
-		void updateGamepads();
-		void installCallbackProcedures();
-	};
+	void StyleDark() noexcept;
+	void StyleLight() noexcept;
+	void StyleCherry() noexcept;
+	void StyleBlue() noexcept;
+	void StyleGreen() noexcept;
+	void StyleRoundingRound() noexcept;
+	void StyleRoundingAngular() noexcept;
 }

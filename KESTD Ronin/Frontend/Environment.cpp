@@ -1,5 +1,5 @@
 // =============================================================
-// © Copyright KerboGames®, Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // Environment.cpp
@@ -15,26 +15,36 @@ namespace kestd
 
 	auto Environment::getProtocol() noexcept -> BufLogger&
 	{
-		return this->logger;
+		return bufLogger;
+	}
+
+	auto Environment::getProtocol() const noexcept -> const BufLogger&
+	{
+		return bufLogger;
 	}
 
 	auto Environment::getPlatformInfo() const noexcept -> const PlatformInfo&
 	{
-		return this->platform;
-	}
-
-	auto Environment::getScreenInfo() const noexcept -> const ScreenInfo&
-	{
-		return this->screen;
+		return platformInfo;
 	}
 
 	auto Environment::getTerminal() noexcept -> TerminalController&
 	{
-		return this->terminal;
+		return terminalController;
 	}
 
-	auto Environment::getBootConfig() noexcept -> BootConfig&
+	auto Environment::getTerminal() const noexcept -> const TerminalController&
 	{
-		return this->config;
+		return terminalController;
+	}
+
+	auto Environment::getBootConfig() noexcept -> Config&
+	{
+		return bootConfig;
+	}
+
+	auto Environment::getBootConfig() const noexcept -> const Config&
+	{
+		return bootConfig;
 	}
 }

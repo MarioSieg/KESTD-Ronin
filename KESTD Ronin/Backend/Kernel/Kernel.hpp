@@ -1,5 +1,5 @@
 // =============================================================
-// © Copyright KerboGames®, Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // Kernel.hpp
@@ -51,7 +51,7 @@ namespace kestd::kernel
 	};
 
 	/// <summary>
-	/// Represents the engine kernel and handle.
+	/// Represents the engine kernel which manages the runtime and all subsystems.
 	/// </summary>
 	class Kernel final
 	{

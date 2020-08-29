@@ -1,8 +1,8 @@
 // =============================================================
-// © Copyright KerboGames®, Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// AutoTec.hpp
+// ConfigAutoTec.hpp
 // 26.08.2020 00:19
 // =============================================================
 
@@ -23,19 +23,19 @@ namespace kestd
 		Cherry,
 		Green,
 	};
-	
+
 	/// <summary>
 	/// Represents a style and color theme for the AutoTec and terminal gui.
 	/// </summary>
-	class AutoTecTheme final
+	class ConfigAutoTec final
 	{
 		friend class AutoTec;
-		
+
 	public:
 		/// <summary>
-		/// Returns the current child rounding. (Valid between 0.0f - 10.0f)
+		///
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The current child rounding. (Valid between 0.0f - 10.0f)</returns>
 		[[nodiscard]]
 		auto getChildRounding() const noexcept -> float;
 
@@ -43,12 +43,12 @@ namespace kestd
 		/// Sets the current child rounding. (Valid between 0.0f - 10.0f)
 		/// </summary>
 		/// <returns></returns>
-		void setChildRounding(const float val) noexcept;
+		void setChildRounding(float val) noexcept;
 
 		/// <summary>
-		/// Returns the current frame rounding. (Valid between 0.0f - 10.0f)
+		/// 
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The current frame rounding. (Valid between 0.0f - 10.0f)</returns>
 		[[nodiscard]]
 		auto getFrameRounding() const noexcept -> float;
 
@@ -57,12 +57,12 @@ namespace kestd
 		/// </summary>
 		/// <param name="val"></param>
 		/// <returns></returns>
-		void setFrameRounding(const float val) noexcept;
+		void setFrameRounding(float val) noexcept;
 
 		/// <summary>
-		/// Returns the current grab rounding. (Valid between 0.0f - 10.0f)
+		/// 
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The current grab rounding. (Valid between 0.0f - 10.0f)</returns>
 		[[nodiscard]]
 		auto getGrabRounding() const noexcept -> float;
 
@@ -71,12 +71,12 @@ namespace kestd
 		/// </summary>
 		/// <param name="val"></param>
 		/// <returns></returns>
-		void setGrabRounding(const float val) noexcept;
+		void setGrabRounding(float val) noexcept;
 
 		/// <summary>
-		/// Returns the current popup rounding. (Valid between 0.0f - 10.0f)
+		/// 
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The current popup rounding. (Valid between 0.0f - 10.0f)</returns>
 		[[nodiscard]]
 		auto getPopupRounding() const noexcept -> float;
 
@@ -85,12 +85,12 @@ namespace kestd
 		/// </summary>
 		/// <param name="val"></param>
 		/// <returns></returns>
-		void setPopupRounding(const float val) noexcept;
+		void setPopupRounding(float val) noexcept;
 
 		/// <summary>
-		/// Returns the current scrollbar rounding. (Valid between 0.0f - 10.0f)
+		/// 
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The current scrollbar rounding. (Valid between 0.0f - 10.0f)</returns>
 		[[nodiscard]]
 		auto getScrollbarRounding() const noexcept -> float;
 
@@ -99,12 +99,12 @@ namespace kestd
 		/// </summary>
 		/// <param name="val"></param>
 		/// <returns></returns>
-		void setScrollbarRounding(const float val) noexcept;
+		void setScrollbarRounding(float val) noexcept;
 
 		/// <summary>
-		/// Returns the current tab rounding. (Valid between 0.0f - 10.0f)
+		/// 
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The current tab rounding. (Valid between 0.0f - 10.0f)</returns>
 		[[nodiscard]]
 		auto getTabRounding() const noexcept -> float;
 
@@ -113,12 +113,12 @@ namespace kestd
 		/// </summary>
 		/// <param name="val"></param>
 		/// <returns></returns>
-		void setTabRounding(const float val) noexcept;
+		void setTabRounding(float val) noexcept;
 
 		/// <summary>
-		/// Returns the current window rounding. (Valid between 0.0f - 10.0f)
+		/// 
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The current window rounding. (Valid between 0.0f - 10.0f)</returns>
 		[[nodiscard]]
 		auto getWindowRounding() const noexcept -> float;
 
@@ -127,12 +127,12 @@ namespace kestd
 		/// </summary>
 		/// <param name="val"></param>
 		/// <returns></returns>
-		void setWindowRounding(const float val) noexcept;
+		void setWindowRounding(float val) noexcept;
 
 		/// <summary>
-		/// Returns the current colorTheme.
+		/// 
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The current colorTheme.</returns>
 		[[nodiscard]]
 		auto getColorTheme() const noexcept -> AutoTecColorTheme;
 
@@ -141,7 +141,7 @@ namespace kestd
 		/// </summary>
 		/// <param name="val"></param>
 		/// <returns></returns>
-		void setColorTheme(const AutoTecColorTheme val) noexcept;
+		void setColorTheme(AutoTecColorTheme val) noexcept;
 
 	private:
 		float childRounding = .0f;
@@ -162,9 +162,9 @@ namespace kestd
 		friend class AutoTec;
 	public:
 		/// <summary>
-		/// Returns the current font size.
+		/// 
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The current font size.</returns>
 		[[nodiscard]]
 		auto getFontSize() const noexcept -> std::uint8_t;
 
@@ -173,30 +173,30 @@ namespace kestd
 		/// </summary>
 		/// <param name="val"></param>
 		/// <returns></returns>
-		void setFontSize(const std::uint8_t val) noexcept;
+		void setFontSize(std::uint8_t val) noexcept;
 
 		/// <summary>
-		/// Returns the current colorTheme.
+		/// 
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The current colorTheme.</returns>
 		[[nodiscard]]
-		auto getTheme() noexcept -> AutoTecTheme&;
+		auto getTheme() noexcept -> ConfigAutoTec&;
 
 		/// <summary>
-		/// Returns the current colorTheme.
+		///
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The current colorTheme.</returns>
 		[[nodiscard]]
-		auto getTheme() const noexcept -> const AutoTecTheme&;
+		auto getTheme() const noexcept -> const ConfigAutoTec&;
 
 		/// <summary>
 		/// Sets the current colorTheme to a whole new one.
 		/// </summary>
 		/// <param name="newtheme"></param>
-		void setTheme(const AutoTecTheme& newtheme) noexcept;
-		
+		void setTheme(const ConfigAutoTec& newtheme) noexcept;
+
 	private:
 		std::uint8_t fontSize = 18;
-		AutoTecTheme theme;
+		ConfigAutoTec theme;
 	};
 }

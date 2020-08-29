@@ -1,12 +1,11 @@
 // =============================================================
-// © Copyright KerboGames®, Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // Drivers.cpp
 // 10.08.2020 13:41
 // =============================================================
 
-#include "../../Frontend/ScreenInfo.hpp"
 #include "Drivers.hpp"
 #include <stdexcept>
 #include <bgfx/bgfx.h>
@@ -15,11 +14,10 @@ using namespace bgfx;
 
 extern void* NativeDisplayHandle;
 extern void* WindowHandle;
-extern kestd::ScreenInfo G_SCREEN;
 
 namespace kestd::detail::renderer
 {
-	Drivers::Drivers()
+	Drivers::Drivers(const ConfigGraphics& cfg)
 	{
 		if (!WindowHandle)
 		{
@@ -28,8 +26,8 @@ namespace kestd::detail::renderer
 
 		Init initData;
 		initData.type = RendererType::Vulkan;
-		initData.resolution.width = G_SCREEN.width;
-		initData.resolution.height = G_SCREEN.height;
+		initData.resolution.width = cfg.getWidth();
+		initData.resolution.height = cfg.getHeight();
 		initData.resolution.reset = BGFX_RESET_MSAA_X16;
 		initData.platformData.nwh = WindowHandle;
 		initData.platformData.ndt = NativeDisplayHandle;
@@ -48,7 +46,7 @@ namespace kestd::detail::renderer
 		             0
 		);
 
-		setViewRect(0, 0, 0, G_SCREEN.width, G_SCREEN.height);
+		setViewRect(0, 0, 0, cfg.getWidth(), cfg.getHeight());
 	}
 
 	Drivers::~Drivers()

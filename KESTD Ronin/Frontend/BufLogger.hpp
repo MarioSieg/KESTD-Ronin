@@ -1,5 +1,5 @@
 // =============================================================
-// © Copyright KerboGames®, Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // BufLogger.hpp
@@ -67,46 +67,46 @@ namespace kestd
 	};
 
 	/// <summary>
-	/// Represents an automatically flushing, buffered logger.
+	/// Represents an automatically flushing, buffered bufLogger.
 	/// </summary>
 	class BufLogger final
 	{
 	public:
 
 		/// <summary>
-		/// Initializes a new buffered logger and reserved capacity.
+		/// Initializes a new buffered bufLogger and reserved capacity.
 		/// </summary>
 		/// <param name="reserve">The capacity (number of log messages) to reserve memory for.</param>
 		explicit BufLogger(std::size_t reserve = 64);
-		
-		BufLogger(const BufLogger&);
-		
-		BufLogger(BufLogger&&) noexcept;
-		
-		BufLogger& operator=(const BufLogger&);
-		
-		BufLogger& operator=(BufLogger&&) noexcept;
-		
-		~BufLogger();
+
+		BufLogger(const BufLogger&) = default;
+
+		BufLogger(BufLogger&&) noexcept = default;
+
+		BufLogger& operator=(const BufLogger&) = default;
+
+		BufLogger& operator=(BufLogger&&) noexcept = default;
+
+		~BufLogger() = default;
 
 		/// <summary>
-		/// Returns the buffer of this logger.
+		/// 
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The buffer containing the messages.</returns>
 		[[nodiscard]]
 		auto getBuffer() const noexcept -> const std::vector<Message>&;
 
 		/// <summary>
-		/// Returns the number of warning messages.
+		/// .
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The number of warning messages.</returns>
 		[[nodiscard]]
 		auto getWarningMessageCount() const noexcept -> std::uint16_t;
 
 		/// <summary>
-		/// Returns the number of error messages.
+		///
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>The number of error messages.</returns>
 		[[nodiscard]]
 		auto getErrorMessageCount() const noexcept -> std::uint16_t;
 
@@ -116,7 +116,7 @@ namespace kestd
 		void clear();
 
 		/// <summary>
-		/// Log to the logger.
+		/// Log to the bufLogger.
 		/// </summary>
 		/// <param name="type"></param>
 		/// <param name="msg"></param>
@@ -129,15 +129,15 @@ namespace kestd
 		}
 
 		/// <summary>
-		/// Log to the logger without any time or type info formatting.
+		/// Log to the bufLogger without any time or type info formatting.
 		/// </summary>
 		/// <param name="msg"></param>
 		void logDump(std::string&& msg);
 
 		/// <summary>
-		/// Flush the logger to the logfile and clear the buffer.
+		/// Flush the bufLogger to the logfile and clear the buffer.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>True if the disk write was successful, else false!</returns>
 		auto flush() -> bool;
 
 		/// <summary>

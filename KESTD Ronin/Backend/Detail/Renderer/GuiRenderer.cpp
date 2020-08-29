@@ -1,5 +1,5 @@
 // =============================================================
-// © Copyright KerboGames®, Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // GuiRenderer.cpp
@@ -54,18 +54,18 @@ namespace kestd::detail::renderer
 			config.FontDataOwnedByAtlas = false;
 			config.MergeMode = false;
 
-			io.Fonts->AddFontFromFileTTF("../DB/Fonts/JetBrainsMono.ttf", fontSize - 3.f, &config, ranges);
+			io.Fonts->AddFontFromFileTTF("DB/Fonts/JetBrainsMono.ttf", fontSize - 3.f, &config, ranges);
 
 			config.MergeMode = true;
 			ImWchar mergeRanges[3] = {};
 
 			mergeRanges[0] = ICON_MIN_FA;
 			mergeRanges[1] = ICON_MAX_FA;
-			io.Fonts->AddFontFromFileTTF("../DB/Fonts/FontAwesome5.ttf", fontSize - 3.f, &config, mergeRanges);
+			io.Fonts->AddFontFromFileTTF("DB/Fonts/FontAwesome5.ttf", fontSize - 3.f, &config, mergeRanges);
 
 			/*mergeRanges[0] = ICON_MIN_KI;
 			mergeRanges[1] = ICON_MAX_KI;
-			io.Fonts->AddFontFromFileTTF("../DB/Fonts/KenneyIconFont.ttf", fontSize - 3.f, &config, mergeRanges);*/
+			io.Fonts->AddFontFromFileTTF("DB/Fonts/KenneyIconFont.ttf", fontSize - 3.f, &config, mergeRanges);*/
 
 
 			/*

@@ -1,5 +1,5 @@
 // =============================================================
-// © Copyright KerboGames®, Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // Gui.hpp
@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "../../../Frontend/AutoTec.hpp"
+#include <cstdint>
 #include "../Platform/GuiInput.hpp"
 #include "../Renderer/GuiRenderer.hpp"
 
@@ -20,7 +20,7 @@ namespace kestd::detail::systemgui
 	class SystemGui final
 	{
 	public:
-		SystemGui(std::size_t fontSize);
+		SystemGui(std::uint8_t fontSize, std::uint16_t width, std::uint16_t heigth); //TODO Replace with Resolution
 		SystemGui(const SystemGui&) = delete;
 		SystemGui(SystemGui&) = delete;
 		auto operator=(const SystemGui&) -> SystemGui& = delete;

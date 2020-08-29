@@ -1,5 +1,5 @@
 // =============================================================
-// © Copyright KerboGames®, Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // SS_Service.cpp
@@ -8,7 +8,6 @@
 
 #include "SS_Service.hpp"
 #include "../../../Frontend/Environment.hpp"
-#include <fmt/core.h>
 
 namespace kestd::detail::service
 {
@@ -18,49 +17,50 @@ namespace kestd::detail::service
 	{
 		auto& protocol = env.getProtocol();
 
-		protocol.log(MessageType::Info, "Verifying working dir \"{}\"...", std::filesystem::current_path().string());
+		protocol.log(MessageType::Trace,
+		             R"(Switching working dir from "{}" to "{}")",
+		             std::filesystem::current_path().string(),
+		             env.getBootConfig().getConfigForIo().getWorkingDir().string());
+		current_path(env.getBootConfig().getConfigForIo().getWorkingDir());
+
+		protocol.log(MessageType::Trace, "Verifying working dir...");
 
 		// Verify all system directories:
-		for (const auto& dir : env.getBootConfig().io.systemDirs)
+		for (const auto& dir : env.getBootConfig().getConfigForIo().getRequiredDirectories())
 		{
-			if (is_directory(dir))
+			if (is_directory(std::get<0>(dir)))
 			{
-				protocol.log(MessageType::Success, "[SysDir] {}", dir.string());
+				protocol.log(MessageType::Trace, "[DirOk] {}", std::get<0>(dir).string());
 			}
 			else
 			{
-				throw std::runtime_error("Required system directory not found: " + dir.string());
-			}
-		}
-
-		// Verify all custom directories:
-		for (const auto& dir : env.getBootConfig().io.additionalRequiredDirectories)
-		{
-			if (is_directory(dir))
-			{
-				protocol.log(MessageType::Success, "[UsrDir] {}", dir.string());
-			}
-			else
-			{
-				throw std::runtime_error("Additional user required directory not found: " + dir.string());
+				if (std::get<1>(dir) == DirectoryMissingAction::Create)
+				{
+					const auto ok = create_directory(std::get<0>(dir));
+					protocol.log(MessageType::Warning, "Missing directory {}, created it? {}", ok);
+				}
+				else
+				{
+					throw std::runtime_error("Required directory not found: " + std::get<0>(dir).string());
+				}
 			}
 		}
 
 		// Perform system analysis and dump it into the protocol:
-		protocol.log(MessageType::Info, "Performing system analysis...");
-		auto& platformInfo = const_cast<PlatformInfo &>(env.getPlatformInfo());
+		protocol.log(MessageType::Trace, "Performing system analysis...");
+		const auto& platformInfo = env.getPlatformInfo();
 
-		platformInfo.osInfo.query();
-		protocol.logDump(platformInfo.osInfo.toStr());
+		const_cast<OsInfo &>(platformInfo.getOs()).query();
+		protocol.logDump(platformInfo.getOs().toStr());
 
-		platformInfo.cpuInfo.query();
-		protocol.logDump(platformInfo.cpuInfo.toStr());
+		const_cast<CpuInfo &>(platformInfo.getCpu()).query();
+		protocol.logDump(platformInfo.getCpu().toStr());
 
-		platformInfo.gpuInfos.query();
-		protocol.logDump(platformInfo.gpuInfos.toStr());
+		const_cast<GpuInfoCollection &>(platformInfo.getGpu()).query();
+		protocol.logDump(platformInfo.getGpu().toStr());
 
-		platformInfo.peripheryInfo.query();
-		protocol.logDump(platformInfo.peripheryInfo.toStr());
+		const_cast<PeripheryInfo &>(platformInfo.getPeriphery()).query();
+		protocol.logDump(platformInfo.getPeriphery().toStr());
 	}
 
 	ServiceSystem::~ServiceSystem() = default;
@@ -73,9 +73,10 @@ namespace kestd::detail::service
 	auto ServiceSystem::onPrepare(Environment& env) -> bool
 	{
 		auto& proto = env.getProtocol();
-		proto.log(MessageType::Trace, "Compressing protocol... Streamcapacity: {}, Length: {}",
-		                     proto.getBuffer().capacity(),
-		                     proto.getBuffer().size());
+		proto.log(MessageType::Trace,
+		          "Compressing protocol... Streamcapacity: {}, Length: {}",
+		          proto.getBuffer().capacity(),
+		          proto.getBuffer().size());
 		// Compress all logged messages to minimize memory usage:
 		proto.compressMessages();
 		return true;

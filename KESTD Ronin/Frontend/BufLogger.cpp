@@ -1,5 +1,5 @@
 // =============================================================
-// © Copyright KerboGames®, Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // BufLogger.cpp
@@ -18,16 +18,6 @@ namespace kestd
 	{
 		buffer.reserve(reserve);
 	}
-
-	BufLogger::BufLogger(const BufLogger&) = default;
-
-	BufLogger::BufLogger(BufLogger&&) noexcept = default;
-
-	BufLogger& BufLogger::operator=(const BufLogger&) = default;
-
-	BufLogger& BufLogger::operator=(BufLogger&&) noexcept = default;
-
-	BufLogger::~BufLogger() = default;
 
 	auto BufLogger::getBuffer() const noexcept -> const std::vector<Message>&
 	{
@@ -98,9 +88,9 @@ namespace kestd
 		auto message = Message
 		{
 			fmt::format("{:%H:%M:%S} [{}] {}",
-						fmt::localtime(std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())),
-						MessageTypeMnemonics[static_cast<std::size_t>(type)],
-						msg),
+			            fmt::localtime(std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())),
+			            MessageTypeMnemonics[static_cast<std::size_t>(type)],
+			            msg),
 			type,
 		};
 

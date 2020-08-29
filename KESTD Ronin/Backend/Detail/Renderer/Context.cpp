@@ -1,5 +1,5 @@
 // =============================================================
-// © Copyright KerboGames®, Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // Context.cpp
@@ -7,13 +7,14 @@
 // =============================================================
 
 #include "Context.hpp"
+#include "../../Frontend/Config.hpp"
 
 namespace kestd::detail::renderer
 {
-	RenderContext::RenderContext(const std::size_t fontSize, const AutoTecTheme& style) : gui(fontSize)
+	RenderContext::RenderContext(const Config& cfg) : drivers(cfg.getConfigForGraphics()),
+	                                                  gui(cfg.getConfigForAutoTec().getFontSize(),
+	                                                      cfg.getConfigForGraphics().getWidth(),
+	                                                      cfg.getConfigForGraphics().getHeight())
 	{
-		
 	}
-
-	RenderContext::~RenderContext() = default;
 }

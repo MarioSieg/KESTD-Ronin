@@ -1,5 +1,5 @@
 // =============================================================
-// © Copyright KerboGames®, Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // AutoTec.hpp
@@ -10,8 +10,8 @@
 
 namespace kestd
 {
-	class AutoTecTheme;
-	class BootConfig;
+	class ConfigAutoTec;
+	class Config;
 	class Environment;
 	enum class AutoTecColorTheme;
 }
@@ -27,19 +27,14 @@ namespace kestd
 		AutoTec& operator=(const AutoTec&) = delete;
 		AutoTec& operator=(AutoTec&&) = delete;
 		~AutoTec() = default;
-		
+
 		bool showSettingsEditor = false;
 		bool showDiagnosticsProfiler = false;
 		void updateAndRender(Environment& env);
 		void mainMenu();
-		void configEditor(BootConfig& bcfg);
+		void configEditor(Config& bcfg);
 		void diagnosticsProfiler();
-		void applyTheme(const AutoTecTheme& theme);
-		void styleDark() const noexcept;
-		void styleLight() const noexcept;
-		void styleCherry() const noexcept;
-		void styleBlue() const noexcept;
-		void styleGreen() const noexcept;
+		void applyTheme(const ConfigAutoTec& theme) const;
 
 	private:
 		AutoTecColorTheme currentColorTheme;

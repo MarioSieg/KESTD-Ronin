@@ -1,5 +1,5 @@
 // =============================================================
-// © Copyright KerboGames®, Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // Kernel.cpp
@@ -8,7 +8,7 @@
 
 #include "Kernel.hpp"
 #include "../LegacySubsystemBuilder.hpp"
-#include "../../Frontend/PlatformInfo.hpp"
+#include "../../Frontend/Platform.hpp"
 #include "../../Frontend/Environment.hpp"
 #include <fmt/core.h>
 #include <chrono>
@@ -84,7 +84,10 @@ namespace kestd::kernel
 			std::chrono::high_resolution_clock::now() - stopwatch).count() / 1000.f;
 
 		// Log boot time:
-		core->env.getProtocol().log(MessageType::Success, "Subsystem[{}] BootTime: {}s", core->systems.back()->name, bootTime);
+		core->env.getProtocol().log(MessageType::Success,
+		                            "Subsystem[{}] BootTime: {}s",
+		                            core->systems.back()->name,
+		                            bootTime);
 
 		return core->systems.size();
 	}
@@ -118,18 +121,21 @@ namespace kestd::kernel
 			{
 				const auto& sys = core->systems[i];
 				const auto* const type = typeid(decltype(*sys)).name();
-				proto.log(MessageType::Trace, "\tSubsystem[{}] -> Name: {}, IsLegacy: {}, EventMask: {:08b} Type: {}",
-				                     i,
-				                     sys->name,
-				                     sys->isLegacy,
-				                     sys->events,
-				                     type);
+				proto.log(MessageType::Trace,
+				          "\tSubsystem[{}] -> Name: {}, IsLegacy: {}, EventMask: {:08b} Type: {}",
+				          i,
+				          sys->name,
+				          sys->isLegacy,
+				          sys->events,
+				          type);
 			}
 
 			const auto bootTime = std::chrono::duration_cast<std::chrono::milliseconds>(
 				std::chrono::high_resolution_clock::now() - stopwatch).count();
 
-			proto.log(MessageType::Success, "[Kernel] System prepared for executing! PrepareTime: {:.1f}s", bootTime / 1000.f);
+			proto.log(MessageType::Success,
+			          "[Kernel] System prepared for executing! PrepareTime: {:.1f}s",
+			          bootTime / 1000.f);
 			proto.log(MessageType::Success, "[Kernel] Executing runtime...");
 		}
 
@@ -219,9 +225,13 @@ namespace kestd::kernel
 
 		//Print boot info:
 		protocol.logDump("KESTD Ronin Game Engine (C) Copyright KerboGames(R), Germany 2020! All rights reserved!");
-		protocol.log(MessageType::Info, "[Kernel] Initializing native engine runtime...\n[Kernel] Compiler: " COM_NAME "\n[Kernel] STD: C++20");
+		protocol.log(MessageType::Info,
+		             "[Kernel] Initializing native engine runtime...\n[Kernel] Compiler: " COM_NAME
+		             "\n[Kernel] STD: C++20");
 		protocol.log(MessageType::Info, "[Kernel] KernelSize: {}B", sizeof(Kernel) + sizeof(Pimpl));
 		protocol.log(MessageType::Info, "[Kernel] SystemSize: {}B", sizeof(Environment));
-		protocol.log(MessageType::Info, "[Kernel] EngineSize: {}B", sizeof(Environment) + sizeof(Kernel) + sizeof(Pimpl));
+		protocol.log(MessageType::Info,
+		             "[Kernel] EngineSize: {}B",
+		             sizeof(Environment) + sizeof(Kernel) + sizeof(Pimpl));
 	}
 }

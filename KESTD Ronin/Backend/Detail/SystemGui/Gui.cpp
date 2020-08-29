@@ -1,5 +1,5 @@
 // =============================================================
-// © Copyright KerboGames®, Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // Gui.cpp
@@ -7,20 +7,22 @@
 // =============================================================
 
 #include "Gui.hpp"
-#include "../../Frontend/ScreenInfo.hpp"
 #include <imgui.h>
 #include <implot.h>
 
-extern kestd::ScreenInfo G_SCREEN;
+#include "../../../Frontend/ConfigGraphics.hpp"
 
 namespace kestd::detail::systemgui
 {
-	SystemGui::SystemGui(const std::size_t fontSize) : guiContext(ImGui::CreateContext()), plotContext(ImPlot::CreateContext()), renderer(fontSize)
+	SystemGui::SystemGui(const std::uint8_t fontSize, const std::uint16_t width, const std::uint16_t heigth) :
+		guiContext(ImGui::CreateContext()),
+		plotContext(ImPlot::CreateContext()),
+		renderer(fontSize)
 	{
 		// Initialize ImGui:
 		ImGui::StyleColorsDark();
 		auto& io = ImGui::GetIO();
-		io.DisplaySize = ImVec2{static_cast<float>(G_SCREEN.width), static_cast<float>(G_SCREEN.height)};
+		io.DisplaySize = ImVec2{static_cast<float>(width), static_cast<float>(heigth)};
 		io.IniFilename = nullptr;
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	}

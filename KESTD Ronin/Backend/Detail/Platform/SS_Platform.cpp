@@ -1,5 +1,5 @@
 // =============================================================
-// © Copyright KerboGames®, Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // SS_Platform.cpp
@@ -7,7 +7,7 @@
 // =============================================================
 
 #include "SS_Platform.hpp"
-#include "../../Frontend/PlatformInfo.hpp"
+#include "../../Frontend/Platform.hpp"
 #include "../../Frontend/Environment.hpp"
 
 using namespace kestd::kernel;
@@ -26,7 +26,6 @@ using namespace kestd::kernel;
 void* NativeDisplayHandle = nullptr;
 void* WindowHandle = nullptr;
 void* NativeWindowHandle = nullptr;
-extern kestd::ScreenInfo G_SCREEN;
 
 namespace kestd::detail::platform
 {
@@ -40,10 +39,16 @@ namespace kestd::detail::platform
 			throw std::runtime_error("Failed to initialize glfw!");
 		}
 
+		const auto windowMode = env.getBootConfig().getConfigForGraphics().getWindowMode();
+
+		// TODO: Replace with Resolution
+		const auto width = env.getBootConfig().getConfigForGraphics().getWidth();
+		const auto height = env.getBootConfig().getConfigForGraphics().getHeight();
+
 		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 		glfwWindowHint(GLFW_NATIVE_CONTEXT_API, GLFW_NO_API);
 		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-		glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+		glfwWindowHint(GLFW_MAXIMIZED, windowMode == WindowMode::WindowedMaximized ? GLFW_TRUE : GLFW_FALSE);
 
 		auto* const monitor = glfwGetPrimaryMonitor();
 		if (!monitor)
@@ -54,25 +59,26 @@ namespace kestd::detail::platform
 		const auto* const videoMode = glfwGetVideoMode(monitor);
 		if (!videoMode)
 		{
-			throw std::runtime_error("Failed to query main video mode from monitor!");
+			throw std::runtime_error("Failed to query primary video mode!");
 		}
 
-		auto* const win = glfwCreateWindow(videoMode->width,
-		                                   videoMode->height,
+		auto* const win = glfwCreateWindow(windowMode == WindowMode::FullScreen ? videoMode->width : width,
+		                                   windowMode == WindowMode::FullScreen ? videoMode->height : height,
 		                                   "KESTD Ronin Engine",
-		                                   nullptr,
+		                                   windowMode == WindowMode::FullScreen ? monitor : nullptr,
 		                                   nullptr);
 		if (!win)
 		{
 			throw std::runtime_error("Failed to create window!");
 		}
-		//glfwSetWindowMonitor(win, monitor, 0, 0, videoMode->width, videoMode->height, 144);
 
-		int width, height;
-		glfwGetFramebufferSize(win, &width, &height);
-
-		G_SCREEN.width = static_cast<std::uint16_t>(width);
-		G_SCREEN.height = static_cast<std::uint16_t>(height);
+		if (windowMode != WindowMode::Windowed)
+		{
+			int w, h;
+			glfwGetFramebufferSize(win, &w, &h);
+			env.getBootConfig().getConfigForGraphics().setWidth(w);
+			env.getBootConfig().getConfigForGraphics().setHeight(h);
+		}
 
 		window = win;
 		NativeWindowHandle = win;
