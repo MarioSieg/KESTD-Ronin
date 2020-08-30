@@ -3,14 +3,14 @@
 // KESTD-Ronin                                                                    
 // Mario
 // Gui.cpp
-// 09.08.2020 07:24
+// 30.08.2020 12:40
 // =============================================================
 
 #include "Gui.hpp"
 #include <imgui.h>
 #include <implot.h>
 
-#include "../../../Frontend/Config/GraphicsConfig.hpp"
+#include "../../../Frontend/Export/KESTD/Config.hpp"
 
 namespace kestd::detail::systemgui
 {

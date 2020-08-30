@@ -3,13 +3,13 @@
 // KESTD-Ronin                                                                    
 // Mario
 // Kernel.cpp
-// 09.08.2020 10:43
+// 30.08.2020 12:40
 // =============================================================
 
 #include "Kernel.hpp"
 #include "../LegacySubsystemBuilder.hpp"
-#include "../../Frontend/Platform.hpp"
-#include "../../Frontend/Environment.hpp"
+#include "../../Frontend/Export/KESTD/Platform.hpp"
+#include "../../Frontend/Export/KESTD/Environment.hpp"
 #include <fmt/core.h>
 #include <chrono>
 

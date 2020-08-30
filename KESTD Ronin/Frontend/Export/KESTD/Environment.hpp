@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include "BufLogger.hpp"
+#include "Logger.hpp"
 #include "TerminalController.hpp"
-#include "Config/Config.hpp"
+#include "Config.hpp"
 #include "Platform.hpp"
 
 namespace kestd
@@ -33,14 +33,14 @@ namespace kestd
 		/// </summary>
 		/// <returns></returns>
 		[[nodiscard]]
-		auto getProtocol() noexcept -> BufLogger&;
+		auto getProtocol() noexcept -> Logger&;
 
 		/// <summary>
 		/// Returns the current log protocol.
 		/// </summary>
 		/// <returns></returns>
 		[[nodiscard]]
-		auto getProtocol() const noexcept -> const BufLogger&;
+		auto getProtocol() const noexcept -> const Logger&;
 
 		/// <summary>
 		/// Returns info about the current getBootConfig, machine and system.
@@ -78,7 +78,7 @@ namespace kestd
 		auto getBootConfig() const noexcept -> const Config&;
 
 	private:
-		BufLogger bufLogger;
+		Logger bufLogger;
 		PlatformDiagnostics platformDiagnostics;
 		TerminalController terminalController;
 		Config bootConfig;

@@ -3,7 +3,7 @@
 // KESTD-Ronin                                                                    
 // Mario
 // Terminal.cpp
-// 24.08.2020 13:52
+// 30.08.2020 12:40
 // =============================================================
 
 #include "Terminal.hpp"
@@ -14,7 +14,7 @@ using namespace ImGui;
 
 namespace kestd::detail::systemgui
 {
-	void Terminal::updateAndRender(const BufLogger& protocol, bool& display)
+	void Terminal::updateAndRender(const Logger& protocol, bool& display)
 	{
 		if (!display)
 		{

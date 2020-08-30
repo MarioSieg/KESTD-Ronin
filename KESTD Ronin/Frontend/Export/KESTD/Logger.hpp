@@ -2,8 +2,8 @@
 // (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// BufLogger.hpp
-// 09.08.2020 07:24
+// Logger.hpp
+// 30.08.2020 12:40
 // =============================================================
 
 #pragma once
@@ -69,7 +69,7 @@ namespace kestd
 	/// <summary>
 	/// Represents an automatically flushing, buffered bufLogger.
 	/// </summary>
-	class BufLogger final
+	class Logger final
 	{
 	public:
 
@@ -77,17 +77,17 @@ namespace kestd
 		/// Initializes a new buffered bufLogger and reserved capacity.
 		/// </summary>
 		/// <param name="reserve">The capacity (number of log messages) to reserve memory for.</param>
-		explicit BufLogger(std::size_t reserve = 64);
+		explicit Logger(std::size_t reserve = 64);
 
-		BufLogger(const BufLogger&) = default;
+		Logger(const Logger&) = default;
 
-		BufLogger(BufLogger&&) noexcept = default;
+		Logger(Logger&&) noexcept = default;
 
-		BufLogger& operator=(const BufLogger&) = default;
+		Logger& operator=(const Logger&) = default;
 
-		BufLogger& operator=(BufLogger&&) noexcept = default;
+		Logger& operator=(Logger&&) noexcept = default;
 
-		~BufLogger() = default;
+		~Logger() = default;
 
 		/// <summary>
 		/// 

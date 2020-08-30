@@ -1,3 +1,11 @@
+// =============================================================
+// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
+// KESTD-Ronin                                                                    
+// Mario
+// KernelStats.hpp
+// 30.08.2020 12:40
+// =============================================================
+
 #pragma once
 
 #include <vector>
@@ -44,7 +52,7 @@ namespace kestd
 		/// <returns>The Dtor() call time in ms.</returns>
 		[[nodiscard]]
 		auto getDeinitializeTime() const noexcept -> float;
-		
+
 	private:
 		float initializeTime = .0;
 		float prepareTime = .0;
@@ -52,11 +60,11 @@ namespace kestd
 		float shutdownTime = .0;
 		float deinitializeTime = .0;
 	};
-	
+
 	class StatsKernel final
 	{
 	public:
-		
+
 	private:
 		std::vector<SubsystemStats> subsystemStats = {};
 		float initializeTime = .0f;

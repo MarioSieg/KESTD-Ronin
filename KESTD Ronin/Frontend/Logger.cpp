@@ -2,11 +2,11 @@
 // (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// BufLogger.cpp
-// 09.08.2020 07:24
+// Logger.cpp
+// 30.08.2020 12:40
 // =============================================================
 
-#include "BufLogger.hpp"
+#include "Export/KESTD/Logger.hpp"
 #include <fstream>
 #include <chrono>
 #include <fmt/core.h>
@@ -14,30 +14,31 @@
 
 namespace kestd
 {
-	BufLogger::BufLogger(const std::size_t reserve)
+	Logger::Logger(const std::size_t reserve)
 	{
 		buffer.reserve(reserve);
 	}
 
-	auto BufLogger::getBuffer() const noexcept -> const std::vector<Message>&
+	auto Logger::getBuffer() const noexcept -> const std::vector<Message>&
 	{
 		return buffer;
 	}
 
-	auto BufLogger::getWarningMessageCount() const noexcept -> std::uint16_t
+	auto Logger::getWarningMessageCount() const noexcept -> std::uint16_t
 	{
 		return warningMessageCount;
 	}
 
-	auto BufLogger::getErrorMessageCount() const noexcept -> std::uint16_t
+	auto Logger::getErrorMessageCount() const noexcept -> std::uint16_t
 	{
 		return errorMessageCount;
 	}
 
-	auto BufLogger::flush() -> bool
+	auto Logger::flush() -> bool
 	{
 		const auto now = std::time(nullptr);
-		std::ofstream handle(logFile.value_or(fmt::format("Proto/KESTD-Ronin-{:%d-%m-%Y-%H-%M-%S}.log", fmt::localtime(now))));
+		std::ofstream handle(
+			logFile.value_or(fmt::format("Proto/KESTD-Ronin-{:%d-%m-%Y-%H-%M-%S}.log", fmt::localtime(now))));
 		if (!handle)
 		{
 			return false;
@@ -53,7 +54,7 @@ namespace kestd
 		return true;
 	}
 
-	void BufLogger::compressMessages()
+	void Logger::compressMessages()
 	{
 		for (auto& msg : buffer)
 		{
@@ -61,12 +62,12 @@ namespace kestd
 		}
 	}
 
-	void BufLogger::compressBuffer()
+	void Logger::compressBuffer()
 	{
 		buffer.shrink_to_fit();
 	}
 
-	void BufLogger::clear()
+	void Logger::clear()
 	{
 		buffer.clear();
 		buffer.shrink_to_fit();
@@ -82,7 +83,7 @@ namespace kestd
 		"Success"
 	};
 
-	void BufLogger::log(const MessageType type, std::string&& msg)
+	void Logger::log(const MessageType type, std::string&& msg)
 	{
 		auto message = Message
 		{
@@ -105,7 +106,7 @@ namespace kestd
 		}
 	}
 
-	void BufLogger::logDump(std::string&& msg)
+	void Logger::logDump(std::string&& msg)
 	{
 		buffer.emplace_back(
 			Message

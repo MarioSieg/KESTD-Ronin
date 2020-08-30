@@ -3,13 +3,13 @@
 // KESTD-Ronin                                                                    
 // Mario
 // Terminal.hpp
-// 24.08.2020 13:52
+// 30.08.2020 12:40
 // =============================================================
 
 #pragma once
 
-#include "../../Frontend/BufLogger.hpp"
-#include "../../Frontend/TerminalController.hpp"
+#include "../../Frontend/Export/KESTD/Logger.hpp"
+#include "../../Frontend/Export/KESTD/TerminalController.hpp"
 
 namespace kestd::detail::systemgui
 {
@@ -23,7 +23,7 @@ namespace kestd::detail::systemgui
 		Terminal& operator=(Terminal&&) = delete;
 		~Terminal() = default;
 
-		void updateAndRender(const BufLogger& protocol, bool& display);
+		void updateAndRender(const Logger& protocol, bool& display);
 		auto getBuffer() const noexcept -> const char(&)[TerminalController::MAX_COMMAND_LEN];
 
 	private:

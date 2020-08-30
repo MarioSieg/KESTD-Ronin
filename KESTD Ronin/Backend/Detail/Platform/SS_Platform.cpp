@@ -3,12 +3,12 @@
 // KESTD-Ronin                                                                    
 // Mario
 // SS_Platform.cpp
-// 09.08.2020 10:43
+// 30.08.2020 12:40
 // =============================================================
 
 #include "SS_Platform.hpp"
-#include "../../Frontend/Platform.hpp"
-#include "../../Frontend/Environment.hpp"
+#include "../../Frontend/Export/KESTD/Platform.hpp"
+#include "../../Frontend/Export/KESTD/Environment.hpp"
 
 using namespace kestd::kernel;
 

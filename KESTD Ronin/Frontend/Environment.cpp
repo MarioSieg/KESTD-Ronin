@@ -3,22 +3,22 @@
 // KESTD-Ronin                                                                    
 // Mario
 // Environment.cpp
-// 09.08.2020 07:24
+// 30.08.2020 12:40
 // =============================================================
 
-#include "Environment.hpp"
+#include "Export/KESTD/Environment.hpp"
 
 namespace kestd
 {
 	Environment::Environment() = default;
 	Environment::~Environment() = default;
 
-	auto Environment::getProtocol() noexcept -> BufLogger&
+	auto Environment::getProtocol() noexcept -> Logger&
 	{
 		return bufLogger;
 	}
 
-	auto Environment::getProtocol() const noexcept -> const BufLogger&
+	auto Environment::getProtocol() const noexcept -> const Logger&
 	{
 		return bufLogger;
 	}

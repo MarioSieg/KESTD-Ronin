@@ -3,11 +3,11 @@
 // KESTD-Ronin                                                                    
 // Mario
 // Platform.cpp
-// 09.08.2020 07:24
+// 30.08.2020 12:40
 // =============================================================
 
-#include "Platform.hpp"
-#include "BufLogger.hpp"
+#include "Export/KESTD/Platform.hpp"
+#include "Export/KESTD/Logger.hpp"
 #include <infoware/infoware.hpp>
 #include <fmt/core.h>
 #include <bgfx/bgfx.h>
