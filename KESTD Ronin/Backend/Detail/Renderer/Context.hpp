@@ -14,7 +14,7 @@
 namespace kestd
 {
 	class Config;
-	class ConfigAutoTec;
+	class AutoTecTheme;
 }
 
 namespace kestd::detail::renderer

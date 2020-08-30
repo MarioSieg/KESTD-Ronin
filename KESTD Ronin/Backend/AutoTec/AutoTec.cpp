@@ -8,6 +8,7 @@
 
 #include "AutoTec.hpp"
 #include "../../Frontend/Environment.hpp"
+#include "../../Frontend/Config/Config.hpp"
 #include <fontawesome/icons_font_awesome5.h>
 #include <imgui.h>
 #include <implot.h>
@@ -161,7 +162,7 @@ namespace kestd
 		ImPlot::ShowDemoWindow();
 	}
 
-	void AutoTec::applyTheme(const ConfigAutoTec& theme) const
+	void AutoTec::applyTheme(const AutoTecTheme& theme) const
 	{
 		auto& style = GetStyle();
 		style.ChildRounding = theme.childRounding;

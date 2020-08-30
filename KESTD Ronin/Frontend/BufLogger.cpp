@@ -37,8 +37,7 @@ namespace kestd
 	auto BufLogger::flush() -> bool
 	{
 		const auto now = std::time(nullptr);
-		std::ofstream handle(
-			logFile.value_or(fmt::format("../Proto/KESTD-Ronin-{:%d-%m-%Y-%H-%M-%S}.log", fmt::localtime(now))));
+		std::ofstream handle(logFile.value_or(fmt::format("Proto/KESTD-Ronin-{:%d-%m-%Y-%H-%M-%S}.log", fmt::localtime(now))));
 		if (!handle)
 		{
 			return false;

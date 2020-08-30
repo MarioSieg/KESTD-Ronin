@@ -35,7 +35,7 @@ namespace kestd::kernel
 
 		// Fetch environment data:
 		auto& proto = core->env.getProtocol();
-		const auto& platformInfo = core->env.getPlatformInfo();
+		const auto& platformInfo = core->env.getPlatformDiagnostics();
 
 		// Write engine info to protocol:
 		dumpBootInfo();
@@ -226,8 +226,7 @@ namespace kestd::kernel
 		//Print boot info:
 		protocol.logDump("KESTD Ronin Game Engine (C) Copyright KerboGames(R), Germany 2020! All rights reserved!");
 		protocol.log(MessageType::Info,
-		             "[Kernel] Initializing native engine runtime...\n[Kernel] Compiler: " COM_NAME
-		             "\n[Kernel] STD: C++20");
+		             "[Kernel] Initializing native engine runtime... Compiler: " COM_NAME " STD: C++20");
 		protocol.log(MessageType::Info, "[Kernel] KernelSize: {}B", sizeof(Kernel) + sizeof(Pimpl));
 		protocol.log(MessageType::Info, "[Kernel] SystemSize: {}B", sizeof(Environment));
 		protocol.log(MessageType::Info,

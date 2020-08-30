@@ -17,7 +17,7 @@ extern void* WindowHandle;
 
 namespace kestd::detail::renderer
 {
-	Drivers::Drivers(const ConfigGraphics& cfg)
+	Drivers::Drivers(const GraphicsConfig& cfg)
 	{
 		if (!WindowHandle)
 		{

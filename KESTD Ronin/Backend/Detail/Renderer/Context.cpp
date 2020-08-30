@@ -7,7 +7,7 @@
 // =============================================================
 
 #include "Context.hpp"
-#include "../../Frontend/Config.hpp"
+#include "../../Frontend/Config/Config.hpp"
 
 namespace kestd::detail::renderer
 {

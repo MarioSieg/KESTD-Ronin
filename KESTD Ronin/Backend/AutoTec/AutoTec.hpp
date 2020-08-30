@@ -10,10 +10,10 @@
 
 namespace kestd
 {
-	class ConfigAutoTec;
+	class AutoTecTheme;
 	class Config;
-	class Environment;
 	enum class AutoTecColorTheme;
+	class Environment;
 }
 
 namespace kestd
@@ -34,7 +34,7 @@ namespace kestd
 		void mainMenu();
 		void configEditor(Config& bcfg);
 		void diagnosticsProfiler();
-		void applyTheme(const ConfigAutoTec& theme) const;
+		void applyTheme(const AutoTecTheme& theme) const;
 
 	private:
 		AutoTecColorTheme currentColorTheme;

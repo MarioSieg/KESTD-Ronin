@@ -48,7 +48,7 @@ namespace kestd::detail::service
 
 		// Perform system analysis and dump it into the protocol:
 		protocol.log(MessageType::Trace, "Performing system analysis...");
-		const auto& platformInfo = env.getPlatformInfo();
+		const auto& platformInfo = env.getPlatformDiagnostics();
 
 		const_cast<OsInfo &>(platformInfo.getOs()).query();
 		protocol.logDump(platformInfo.getOs().toStr());

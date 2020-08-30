@@ -6,34 +6,34 @@
 // 28.08.2020 22:33
 // =============================================================
 
-#include "ConfigIO.hpp"
+#include "IoConfig.hpp"
 
 namespace kestd
 {
-	auto ConfigIo::getRequiredDirectories() noexcept -> std::vector<std::tuple<
+	auto IoConfig::getRequiredDirectories() noexcept -> std::vector<std::tuple<
 		std::filesystem::path, DirectoryMissingAction>>&
 	{
 		return requiredDirectories;
 	}
 
-	auto ConfigIo::getRequiredDirectories() const noexcept -> const std::vector<std::tuple<
+	auto IoConfig::getRequiredDirectories() const noexcept -> const std::vector<std::tuple<
 		std::filesystem::path, DirectoryMissingAction>>&
 	{
 		return requiredDirectories;
 	}
 
-	void ConfigIo::setRequiredDirectories(
+	void IoConfig::setRequiredDirectories(
 		std::vector<std::tuple<std::filesystem::path, DirectoryMissingAction>>&& val) noexcept
 	{
 		requiredDirectories = std::move(val);
 	}
 
-	auto ConfigIo::getWorkingDir() const noexcept -> const std::filesystem::path&
+	auto IoConfig::getWorkingDir() const noexcept -> const std::filesystem::path&
 	{
 		return workingDir;
 	}
 
-	void ConfigIo::setWorkingDir(std::filesystem::path&& val) noexcept
+	void IoConfig::setWorkingDir(std::filesystem::path&& val) noexcept
 	{
 		workingDir = std::move(val);
 	}

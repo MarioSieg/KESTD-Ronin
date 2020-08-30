@@ -23,9 +23,9 @@ namespace kestd
 		return bufLogger;
 	}
 
-	auto Environment::getPlatformInfo() const noexcept -> const PlatformInfo&
+	auto Environment::getPlatformDiagnostics() const noexcept -> const PlatformDiagnostics&
 	{
-		return platformInfo;
+		return platformDiagnostics;
 	}
 
 	auto Environment::getTerminal() noexcept -> TerminalController&

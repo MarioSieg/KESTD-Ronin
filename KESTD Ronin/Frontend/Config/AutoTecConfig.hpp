@@ -2,7 +2,7 @@
 // (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// ConfigAutoTec.hpp
+// AutoTecConfig.hpp
 // 26.08.2020 00:19
 // =============================================================
 
@@ -27,10 +27,9 @@ namespace kestd
 	/// <summary>
 	/// Represents a style and color theme for the AutoTec and terminal gui.
 	/// </summary>
-	class ConfigAutoTec final
+	class AutoTecTheme final
 	{
 		friend class AutoTec;
-
 	public:
 		/// <summary>
 		///
@@ -180,23 +179,23 @@ namespace kestd
 		/// </summary>
 		/// <returns>The current colorTheme.</returns>
 		[[nodiscard]]
-		auto getTheme() noexcept -> ConfigAutoTec&;
+		auto getTheme() noexcept -> AutoTecTheme&;
 
 		/// <summary>
 		///
 		/// </summary>
 		/// <returns>The current colorTheme.</returns>
 		[[nodiscard]]
-		auto getTheme() const noexcept -> const ConfigAutoTec&;
+		auto getTheme() const noexcept -> const AutoTecTheme&;
 
 		/// <summary>
 		/// Sets the current colorTheme to a whole new one.
 		/// </summary>
 		/// <param name="newtheme"></param>
-		void setTheme(const ConfigAutoTec& newtheme) noexcept;
+		void setTheme(const AutoTecTheme& newtheme) noexcept;
 
 	private:
 		std::uint8_t fontSize = 18;
-		ConfigAutoTec theme;
+		AutoTecTheme theme;
 	};
 }

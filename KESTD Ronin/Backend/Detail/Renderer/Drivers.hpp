@@ -8,14 +8,14 @@
 
 #pragma once
 
-#include "../../Frontend/ConfigGraphics.hpp"
+#include "../../Frontend/Config/GraphicsConfig.hpp"
 
 namespace kestd::detail::renderer
 {
 	class Drivers final
 	{
 	public:
-		Drivers(const ConfigGraphics& cfg); //TODO: Replace with Resolution
+		Drivers(const GraphicsConfig& cfg); //TODO: Replace with Resolution
 		Drivers(const Drivers&) = delete;
 		Drivers(Drivers&&) = delete;
 		Drivers& operator=(const Drivers&) = delete;

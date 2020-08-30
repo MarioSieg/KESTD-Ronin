@@ -10,7 +10,7 @@
 #include <imgui.h>
 #include <implot.h>
 
-#include "../../../Frontend/ConfigGraphics.hpp"
+#include "../../../Frontend/Config/GraphicsConfig.hpp"
 
 namespace kestd::detail::systemgui
 {

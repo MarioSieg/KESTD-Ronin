@@ -577,7 +577,7 @@ namespace kestd
 	/// <summary>
 	/// Contains GPU info.
 	/// </summary>
-	class GpuInfo final
+	class GpuDevice final
 	{
 		friend class GpuInfoCollection;
 	public:
@@ -838,7 +838,7 @@ namespace kestd
 		/// </summary>
 		/// <returns>A list with all GPU devices the system has.</returns>
 		[[nodiscard]]
-		auto getDeviceList() const noexcept -> const std::vector<GpuInfo>&;
+		auto getDeviceList() const noexcept -> const std::vector<GpuDevice>&;
 
 		/// <summary>
 		/// 
@@ -860,7 +860,7 @@ namespace kestd
 		auto toStr() const -> std::string;
 
 	private:
-		std::vector<GpuInfo> allGpus;
+		std::vector<GpuDevice> allGpus;
 		GpuAdapterLimits adapterLimits;
 	};
 
@@ -1053,7 +1053,7 @@ namespace kestd
 	/// <summary>
 	/// Contains information about the current platform, operating system and hardware.
 	/// </summary>
-	class PlatformInfo final
+	class PlatformDiagnostics final
 	{
 	public:
 		/// <summary>

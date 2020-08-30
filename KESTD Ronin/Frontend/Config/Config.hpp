@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include "ConfigAutoTec.hpp"
-#include "ConfigIO.hpp"
-#include "ConfigGraphics.hpp"
+#include "AutoTecConfig.hpp"
+#include "IoConfig.hpp"
+#include "GraphicsConfig.hpp"
 
 namespace kestd
 {
@@ -40,32 +40,32 @@ namespace kestd
 		/// </summary>
 		/// <returns>The boot config for disk input output.</returns>
 		[[nodiscard]]
-		auto getConfigForIo() const noexcept -> const ConfigIo&;
+		auto getConfigForIo() const noexcept -> const IoConfig&;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns>The boot config for disk input output.</returns>
 		[[nodiscard]]
-		auto getConfigForIo() noexcept -> ConfigIo&;
+		auto getConfigForIo() noexcept -> IoConfig&;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns>The boot config for graphics and display.</returns>
 		[[nodiscard]]
-		auto getConfigForGraphics() const noexcept -> const ConfigGraphics&;
+		auto getConfigForGraphics() const noexcept -> const GraphicsConfig&;
 
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <returns>The boot config for graphics and display.</returns>
 		[[nodiscard]]
-		auto getConfigForGraphics() noexcept -> ConfigGraphics&;
+		auto getConfigForGraphics() noexcept -> GraphicsConfig&;
 
 	private:
 		AutoTecConfig autoTec = {};
-		ConfigIo io = {};
-		ConfigGraphics graphics = {};
+		IoConfig io = {};
+		GraphicsConfig graphics = {};
 	};
 }

@@ -2,7 +2,7 @@
 // (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// ConfigGraphics.hpp
+// GraphicsConfig.hpp
 // 29.08.2020 13:43
 // =============================================================
 
@@ -80,7 +80,7 @@ namespace kestd
 	/// <summary>
 	/// Contains graphics and display configuration.
 	/// </summary>
-	class ConfigGraphics final
+	class GraphicsConfig final
 	{
 	public:
 		/// <summary>

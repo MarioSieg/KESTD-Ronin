@@ -10,9 +10,8 @@
 *.userosscache
 *.sln.docstates
 
-out/
 Bin/
-KESTD Ronin/out
+Proto/
 KESTD Ronin/CMakeSettings.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)

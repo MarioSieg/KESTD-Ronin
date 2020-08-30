@@ -10,7 +10,7 @@
 
 #include "BufLogger.hpp"
 #include "TerminalController.hpp"
-#include "Config.hpp"
+#include "Config/Config.hpp"
 #include "Platform.hpp"
 
 namespace kestd
@@ -47,8 +47,7 @@ namespace kestd
 		/// </summary>
 		/// <returns></returns>
 		[[nodiscard]]
-		auto getPlatformInfo() const noexcept -> const PlatformInfo&;
-
+		auto getPlatformDiagnostics() const noexcept -> const PlatformDiagnostics&;
 
 		/// <summary>
 		/// Returns the terminal controller.
@@ -80,7 +79,7 @@ namespace kestd
 
 	private:
 		BufLogger bufLogger;
-		PlatformInfo platformInfo;
+		PlatformDiagnostics platformDiagnostics;
 		TerminalController terminalController;
 		Config bootConfig;
 	};

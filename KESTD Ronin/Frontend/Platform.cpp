@@ -189,27 +189,27 @@ namespace kestd
 		return ret;
 	}
 
-	auto GpuInfo::getVendor() const noexcept -> GpuVendor
+	auto GpuDevice::getVendor() const noexcept -> GpuVendor
 	{
 		return vendor;
 	}
 
-	auto GpuInfo::getModelName() const noexcept -> const std::string&
+	auto GpuDevice::getModelName() const noexcept -> const std::string&
 	{
 		return name;
 	}
 
-	auto GpuInfo::getMemorySize() const noexcept -> std::size_t
+	auto GpuDevice::getMemorySize() const noexcept -> std::size_t
 	{
 		return memorySize;
 	}
 
-	auto GpuInfo::getCacheSize() const noexcept -> std::size_t
+	auto GpuDevice::getCacheSize() const noexcept -> std::size_t
 	{
 		return cacheSize;
 	}
 
-	auto GpuInfo::getMaxFrequency() const noexcept -> std::size_t
+	auto GpuDevice::getMaxFrequency() const noexcept -> std::size_t
 	{
 		return maxFrequency;
 	}
@@ -334,7 +334,7 @@ namespace kestd
 		return maxTransientIbSize;
 	}
 
-	auto GpuInfoCollection::getDeviceList() const noexcept -> const std::vector<GpuInfo>&
+	auto GpuInfoCollection::getDeviceList() const noexcept -> const std::vector<GpuDevice>&
 	{
 		return allGpus;
 	}
@@ -356,7 +356,7 @@ namespace kestd
 		allGpus.reserve(info.size());
 		for (auto& gpu : info)
 		{
-			GpuInfo ginfo;
+			GpuDevice ginfo;
 			ginfo.vendor = static_cast<GpuVendor>(gpu.vendor);
 			ginfo.name = std::move(gpu.name);
 			ginfo.memorySize = gpu.memory_size;
@@ -642,22 +642,22 @@ namespace kestd
 		return ret;
 	}
 
-	auto PlatformInfo::getCpu() const noexcept -> const CpuInfo&
+	auto PlatformDiagnostics::getCpu() const noexcept -> const CpuInfo&
 	{
 		return cpuInfo;
 	}
 
-	auto PlatformInfo::getGpu() const noexcept -> const GpuInfoCollection&
+	auto PlatformDiagnostics::getGpu() const noexcept -> const GpuInfoCollection&
 	{
 		return gpuInfos;
 	}
 
-	auto PlatformInfo::getOs() const noexcept -> const OsInfo&
+	auto PlatformDiagnostics::getOs() const noexcept -> const OsInfo&
 	{
 		return osInfo;
 	}
 
-	auto PlatformInfo::getPeriphery() const noexcept -> const PeripheryInfo&
+	auto PlatformDiagnostics::getPeriphery() const noexcept -> const PeripheryInfo&
 	{
 		return peripheryInfo;
 	}

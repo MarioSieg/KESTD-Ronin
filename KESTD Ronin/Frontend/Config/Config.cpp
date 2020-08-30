@@ -20,22 +20,22 @@ namespace kestd
 		return autoTec;
 	}
 
-	auto Config::getConfigForIo() const noexcept -> const ConfigIo&
+	auto Config::getConfigForIo() const noexcept -> const IoConfig&
 	{
 		return io;
 	}
 
-	auto Config::getConfigForIo() noexcept -> ConfigIo&
+	auto Config::getConfigForIo() noexcept -> IoConfig&
 	{
 		return io;
 	}
 
-	auto Config::getConfigForGraphics() const noexcept -> const ConfigGraphics&
+	auto Config::getConfigForGraphics() const noexcept -> const GraphicsConfig&
 	{
 		return graphics;
 	}
 
-	auto Config::getConfigForGraphics() noexcept -> ConfigGraphics&
+	auto Config::getConfigForGraphics() noexcept -> GraphicsConfig&
 	{
 		return graphics;
 	}
