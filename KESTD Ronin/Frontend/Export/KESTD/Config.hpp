@@ -1,7 +1,14 @@
+// =============================================================
+// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
+// KESTD-Ronin                                                                    
+// Mario
+// Config.hpp
+// 30.08.2020 13:27
+// =============================================================
+
 #pragma once
 
 #include <cstdint>
-#include <string_view>
 #include <filesystem>
 
 namespace kestd
