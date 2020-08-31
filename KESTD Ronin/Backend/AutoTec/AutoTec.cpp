@@ -1,9 +1,9 @@
 ﻿// =============================================================
-// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R) Mario Sieg, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // AutoTec.cpp
-// 30.08.2020 12:40
+// 31.08.2020 15:09
 // =============================================================
 
 #include "AutoTec.hpp"

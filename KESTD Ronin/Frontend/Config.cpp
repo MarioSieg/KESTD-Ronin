@@ -1,9 +1,9 @@
 // =============================================================
-// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R) Mario Sieg, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // Config.cpp
-// 30.08.2020 13:29
+// 31.08.2020 15:10
 // =============================================================
 
 #include "Export/KESTD/Config.hpp"

@@ -1,9 +1,9 @@
 // =============================================================
-// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R) Mario Sieg, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // Platform.cpp
-// 30.08.2020 12:40
+// 31.08.2020 15:10
 // =============================================================
 
 #include "Export/KESTD/Platform.hpp"
@@ -123,7 +123,8 @@ namespace kestd
 		constexpr auto HZ2GHZ = 1000.f * 1000.f * 1000.f;
 		constexpr auto B2MB = 1000.f * 1000.f;
 		auto ret = fmt::format(
-			"--------CPU--------\n"
+			"===========================================================================\n"
+			"CPU:\n"
 			"LogicalCores: {}\n"
 			"PhysicalCores: {}\n"
 			"Sockets: {}\n"
@@ -148,6 +149,7 @@ namespace kestd
 			"\tAssociativity: {}\n"
 			"\tLineSize: {}B\n"
 			"\tSize: {}B -> {}MB\n"
+			"===========================================================================\n"
 			"SupportedInstructionSets:\n",
 			logical,
 			physical,
@@ -179,7 +181,7 @@ namespace kestd
 		for (std::size_t i = 0; i < sizeof CpuInstructionSetNames / sizeof *CpuInstructionSetNames; ++i)
 		{
 			const auto arch = CpuInstructionSetNames[i];
-			ret += fmt::format("\t{}: {}\n",
+			ret += fmt::format("{}: {}\n",
 			                   arch,
 			                   std::find(supportedInstructionSets.begin(),
 			                             supportedInstructionSets.end(),
@@ -378,7 +380,8 @@ namespace kestd
 		{
 			const auto& gpu = allGpus[i];
 			ret += fmt::format(
-				"--------GPU{}--------\n"
+				"===========================================================================\n"
+				"GPU{}:\n"
 				"GpuVendor: {}\n"
 				"Name: {}\n"
 				"MemorySize(VRAM): {}B -> {}MB ~ {}GB\n"
@@ -398,7 +401,8 @@ namespace kestd
 			);
 		}
 		ret += fmt::format(
-			"--------GPU Adapter--------\n"
+			"===========================================================================\n"
+			"GPU Adapter:\n"
 			"MaxDrawCalls: {}\n"
 			"MaxBlitCalls: {}\n"
 			"MaxTextureSize: {}\n"
@@ -545,7 +549,8 @@ namespace kestd
 		constexpr auto B2GB = 1024.f * 1024.f * 1024.f;
 
 		return fmt::format(
-			"--------OS--------\n"
+			"===========================================================================\n"
+			"OS:\n"
 			"Name: {}\n"
 			"AvailablePhysicalMemory(RAM):\n\t{}B\n\t{}MB\n\t~{}GB\n"
 			"TotalPhysicalMemory(RAM):\n\t{}B\n\t{}MB\n\t~{}GB\n"
@@ -625,7 +630,8 @@ namespace kestd
 		{
 			const auto& dis = displays[i];
 			ret += fmt::format(
-				"--------DISPLAY{}--------\n"
+				"===========================================================================\n"
+				"Display{}:\n"
 				"Width: {}\n"
 				"Height: {}\n"
 				"DPI: {}\n"

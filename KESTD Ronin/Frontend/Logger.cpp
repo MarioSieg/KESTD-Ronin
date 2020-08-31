@@ -1,9 +1,9 @@
 // =============================================================
-// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R) Mario Sieg, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // Logger.cpp
-// 30.08.2020 12:40
+// 31.08.2020 15:10
 // =============================================================
 
 #include "Export/KESTD/Logger.hpp"
@@ -104,6 +104,11 @@ namespace kestd
 		{
 			++warningMessageCount;
 		}
+	}
+
+	void Logger::separator()
+	{
+		logDump("===========================================================================");
 	}
 
 	void Logger::logDump(std::string&& msg)

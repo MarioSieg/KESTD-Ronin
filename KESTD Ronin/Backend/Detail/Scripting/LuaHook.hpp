@@ -1,24 +1,24 @@
 // =============================================================
-// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R) Mario Sieg, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // LuaHook.hpp
-// 31.08.2020 03:29
+// 31.08.2020 15:09
 // =============================================================
 
 #pragma once
 
-#include "../../Frontend/Export/KESTD/Logger.hpp"
 #include <lua.hpp>
 #include <optional>
 #include <filesystem>
+#include <functional>
 
 namespace kestd::detail::scripting
 {
 	class LuaHook final
 	{
 	public:
-		LuaHook(Logger& logger);
+		LuaHook();
 		LuaHook(const LuaHook&) = delete;
 		LuaHook(LuaHook&&) = delete;
 		LuaHook& operator=(const LuaHook&) = delete;
@@ -45,8 +45,37 @@ namespace kestd::detail::scripting
 		[[nodiscard]]
 		auto fetchScalar(std::string_view identifier) const -> std::optional<float>;
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns>Returns the number in the current stack.</returns>
+		[[nodiscard]]
+		auto getStackHeight() const noexcept -> int;
+
+		/// <summary>
+		/// Iterates over the stack and maps the callback procoedure to each element. i is the stack index.
+		/// </summary>
+		void traverseStack(const std::function<void(int)>& callback) const;
+
+		/// <summary>
+		/// Returns a string containg the formatted stack.
+		/// </summary>
+		[[nodiscard]]
+		auto dumpStack() -> std::string;
+
+		/// <summary>
+		/// Returns a string containg all opcodes.
+		/// </summary>
+		[[nodiscard]]
+		auto dumpOpcodes() -> std::string;
+
+		/// <summary>
+		/// Returns a short info avout opcode formats.
+		/// </summary>
+		[[nodiscard]]
+		auto getOpcodeInfo() -> std::string;
+
 	private:
-		Logger& proto;
-		lua_State* luaState;
+		lua_State* state;
 	};
 }

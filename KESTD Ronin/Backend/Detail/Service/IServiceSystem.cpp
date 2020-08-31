@@ -1,9 +1,9 @@
 // =============================================================
-// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R) Mario Sieg, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // IServiceSystem.cpp
-// 30.08.2020 12:40
+// 31.08.2020 15:09
 // =============================================================
 
 #include "IServiceSystem.hpp"
@@ -17,29 +17,29 @@ namespace kestd::detail::service
 	                                                              true,
 	                                                              kernel::Event::Exhaustive)
 	{
-		auto& protocol = env.getProtocol();
+		auto& proto = env.getProtocol();
 
-		protocol.info(
+		proto.info(
 			STR R"(Switching working dir from "{}" to "{}")",
 			std::filesystem::current_path().string(),
 			env.getBootConfig().getConfigForIo().getWorkingDir().string());
 		current_path(env.getBootConfig().getConfigForIo().getWorkingDir());
 
-		protocol.info(STR "Verifying working dir...");
+		proto.info(STR "Verifying working dir...");
 
 		// Verify all system directories:
 		for (const auto& dir : env.getBootConfig().getConfigForIo().getRequiredDirectories())
 		{
 			if (is_directory(std::get<0>(dir)))
 			{
-				protocol.info(STR "[DirOk] {}", std::get<0>(dir).string());
+				proto.info(STR "[DirOk] {}", std::get<0>(dir).string());
 			}
 			else
 			{
 				if (std::get<1>(dir) == DirectoryMissingAction::Create)
 				{
 					const auto ok = create_directory(std::get<0>(dir));
-					protocol.warning(STR "Missing directory {}, created it? {}", ok);
+					proto.warning(STR "Missing directory {}, created it? {}", ok);
 				}
 				else
 				{
@@ -49,20 +49,20 @@ namespace kestd::detail::service
 		}
 
 		// Perform system analysis and dump it into the protocol:
-		protocol.info(STR "Performing system diagnostic...");
+		proto.info(STR "Performing system diagnostic...");
 		const auto& platformInfo = env.getPlatformDiagnostics();
 
 		const_cast<OsInfo &>(platformInfo.getOs()).query();
-		protocol.logDump(platformInfo.getOs().toStr());
+		proto.logDump(platformInfo.getOs().toStr());
 
 		const_cast<CpuInfo &>(platformInfo.getCpu()).query();
-		protocol.logDump(platformInfo.getCpu().toStr());
+		proto.logDump(platformInfo.getCpu().toStr());
 
 		const_cast<GpuInfoCollection &>(platformInfo.getGpu()).query();
-		protocol.logDump(platformInfo.getGpu().toStr());
+		proto.logDump(platformInfo.getGpu().toStr());
 
 		const_cast<PeripheryInfo &>(platformInfo.getPeriphery()).query();
-		protocol.logDump(platformInfo.getPeriphery().toStr());
+		proto.logDump(platformInfo.getPeriphery().toStr());
 	}
 
 	IServiceSystem::~IServiceSystem() = default;

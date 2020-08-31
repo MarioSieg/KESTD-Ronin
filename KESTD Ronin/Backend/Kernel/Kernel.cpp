@@ -1,9 +1,9 @@
 // =============================================================
-// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R) Mario Sieg, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // Kernel.cpp
-// 30.08.2020 12:40
+// 31.08.2020 15:09
 // =============================================================
 
 #include "Kernel.hpp"
@@ -22,9 +22,11 @@ namespace kestd::kernel
 	{
 	public:
 		volatile bool trapFlag = false;
-		SystemState state = SystemState::Offline;
+		std::uint32_t cycles = 0;
 		std::vector<std::unique_ptr<ISubsystem>> systems = {};
 		std::tuple<std::string, std::string> info = {};
+		std::chrono::system_clock::time_point begin = {};
+		SystemState state = SystemState::Offline;
 		SecurityManager securityManager;
 		Environment env = {};
 	};
@@ -42,7 +44,6 @@ namespace kestd::kernel
 
 		// Write engine info to protocol:
 		dumpBootInfo();
-		proto.info(STR "Booting kernel & subsystems...");
 
 		// Allocate subsystems and dispatch onStartup() event:
 		if (desc.pushLegacySubsystems)
@@ -147,8 +148,8 @@ namespace kestd::kernel
 		// OnPrepare for runtime:
 		core->state = SystemState::Online;
 		core->systems.shrink_to_fit();
+		core->begin = std::chrono::system_clock::now();
 		core->trapFlag = true;
-		std::uint32_t cycles = 0;
 
 		// Engine tick procedure:
 		auto tick = [&]
@@ -162,7 +163,7 @@ namespace kestd::kernel
 				}
 			}
 
-			++cycles;
+			++core->cycles;
 			return true;
 		};
 
@@ -176,7 +177,7 @@ namespace kestd::kernel
 		}
 
 		core->state = SystemState::Ready;
-		return cycles;
+		return core->cycles;
 	}
 
 	Kernel::~Kernel()
@@ -186,7 +187,10 @@ namespace kestd::kernel
 			return;
 		}
 
+		const auto end = std::chrono::duration_cast<std::chrono::minutes>(std::chrono::system_clock::now() - core->begin).count();
+
 		core->env.getProtocol().info(STR "Shutting down kernel & subsystems...");
+		core->env.getProtocol().info(STR "Uptime: {}h, Cycles: {}", end / 60.f, core->cycles);
 
 		// Dispatch onShutdown()
 		for (std::size_t i = core->systems.size() - 1; i -- > 0;)
@@ -226,17 +230,14 @@ namespace kestd::kernel
 
 	void Kernel::dumpBootInfo() const
 	{
-		auto& protocol = core->env.getProtocol();
+		auto& proto = core->env.getProtocol();
 
 		//Print boot info:
-		protocol.logDump(fmt::format("{:%d.%m.%Y %H:%M:%S}", fmt::localtime(std::time(nullptr))));
-		protocol.logDump("KESTD Ronin Game Engine (C) Copyright KerboGames(R), Germany 2020! All rights reserved!");
-		protocol.info(
-			STR "Initializing native engine runtime... Compiler: " COM_NAME " STD: C++20");
-		protocol.info(STR "KernelSize: {}B", sizeof(Kernel) + sizeof(Pimpl));
-		protocol.info(STR "SystemSize: {}B", sizeof(Environment));
-		protocol.info(
-			STR "EngineSize: {}B",
-			sizeof(Environment) + sizeof(Kernel) + sizeof(Pimpl));
+		proto.logDump(fmt::format("{:%d.%m.%Y %H:%M:%S}", fmt::localtime(std::time(nullptr))));
+		proto.logDump("KESTD Ronin Game Engine (C) Copyright KerboGames(R), Germany 2020! All rights reserved!");
+		proto.info(STR "Initializing native engine runtime... Compiler: " COM_NAME " STD: C++20");
+		proto.info(STR "EnvironmentSize: {}B", sizeof(Environment));
+		proto.info(STR "Booting kernel & subsystems...");
+		proto.separator();
 	}
 }

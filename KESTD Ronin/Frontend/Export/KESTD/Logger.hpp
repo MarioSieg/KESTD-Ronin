@@ -1,9 +1,9 @@
 // =============================================================
-// (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
+// (C) Copyright KerboGames(R) Mario Sieg, Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
 // Logger.hpp
-// 30.08.2020 12:40
+// 31.08.2020 15:10
 // =============================================================
 
 #pragma once
@@ -157,6 +157,11 @@ namespace kestd
 		{
 			log(MessageType::Error, fmt::format(msg, args...));
 		}
+
+		/// <summary>
+		/// Insert a separator.
+		/// </summary>
+		void separator();
 
 		/// <summary>
 		/// Log to the bufLogger without any time or type info formatting.
