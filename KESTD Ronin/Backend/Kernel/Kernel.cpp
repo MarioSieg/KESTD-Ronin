@@ -11,6 +11,7 @@
 #include "../../Frontend/Export/KESTD/Platform.hpp"
 #include "../../Frontend/Export/KESTD/Environment.hpp"
 #include <fmt/core.h>
+#include <fmt/chrono.h>
 #include <chrono>
 
 #define STR "[Kernel] "
@@ -228,6 +229,7 @@ namespace kestd::kernel
 		auto& protocol = core->env.getProtocol();
 
 		//Print boot info:
+		protocol.logDump(fmt::format("{:%d.%m.%Y %H:%M:%S}", fmt::localtime(std::time(nullptr))));
 		protocol.logDump("KESTD Ronin Game Engine (C) Copyright KerboGames(R), Germany 2020! All rights reserved!");
 		protocol.info(
 			STR "Initializing native engine runtime... Compiler: " COM_NAME " STD: C++20");
