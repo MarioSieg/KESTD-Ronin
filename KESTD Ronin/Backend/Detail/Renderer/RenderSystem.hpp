@@ -2,7 +2,7 @@
 // (C) Copyright KerboGames(R), Germany 2020! All rights reserved!
 // KESTD-Ronin                                                                    
 // Mario
-// SS_Renderer.hpp
+// RenderSystem.hpp
 // 30.08.2020 12:40
 // =============================================================
 

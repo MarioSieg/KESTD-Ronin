@@ -58,7 +58,8 @@ namespace kestd::kernel
 		{
 			if (sys->events & Event::OnStartup && !sys->onStartup(core->env))
 			{
-				throw std::runtime_error("[Kernel] Failed to dispatch 'OnStartup' on system: " + sys->name);
+				throw std::runtime_error(
+					"[Kernel] Failed to dispatch 'OnStartup' on system: " + std::string(sys->name));
 			}
 		}
 
@@ -110,7 +111,8 @@ namespace kestd::kernel
 			{
 				if (sys->events & Event::OnPrepare && !sys->onPrepare(core->env))
 				{
-					throw std::runtime_error("[Kernel] Failed to dispatch 'OnStartup' on system : " + sys->name);
+					throw std::runtime_error(
+						"[Kernel] Failed to dispatch 'OnStartup' on system : " + std::string(sys->name));
 				}
 			}
 
@@ -125,7 +127,7 @@ namespace kestd::kernel
 				          "\tSubsystem[{}] -> Name: {}, IsLegacy: {}, EventMask: {:08b} Type: {}",
 				          i,
 				          sys->name,
-				          sys->isLegacy,
+				          sys->legacy,
 				          sys->events,
 				          type);
 			}

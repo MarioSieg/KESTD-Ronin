@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include <string>
 #include "../../Frontend/Export/KESTD/Environment.hpp"
 
 namespace kestd::kernel
@@ -36,29 +35,35 @@ namespace kestd::kernel
 	public:
 		ISubsystem(const ISubsystem&) = delete;
 		ISubsystem(ISubsystem&&) = delete;
-		auto operator =(const ISubsystem&) -> ISubsystem& = delete;
-		auto operator =(ISubsystem&&) -> ISubsystem& = delete;
+		ISubsystem& operator =(const ISubsystem&) = delete;
+		ISubsystem& operator =(ISubsystem&&) = delete;
 		virtual ~ISubsystem() = default;
 
-		/// <summary>
-		/// The name of this subsystem.
-		/// </summary>
-		const std::string name;
+		using EventFlags = std::underlying_type<Event::Enum>::type;
 
 		/// <summary>
-		/// Is this a legacy or a buildin subsystem?
+		/// 
 		/// </summary>
-		const bool isLegacy;
+		/// <returns>The name of this subsystem.</returns>
+		[[nodiscard]]
+		auto getName() const noexcept -> std::string_view;
 
 		/// <summary>
-		/// Subscribed events.
+		/// 
 		/// </summary>
-		const std::underlying_type<Event::Enum>::type events;
+		/// <returns>True if this subsystem is a legacy (buildin) system, else false.</returns>
+		[[nodiscard]]
+		auto isLegacy() const noexcept -> bool;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns>A bitmask containing subscribed events.</returns>
+		[[nodiscard]]
+		auto getEventFlags() const noexcept -> EventFlags;
 
 	protected:
-		explicit ISubsystem(std::string&& name,
-		                    bool isLegacy,
-		                    std::underlying_type<Event::Enum>::type events = Event::None) noexcept;
+		explicit ISubsystem(std::string_view name, bool isLegacy, EventFlags events = Event::None) noexcept;
 
 		/// <summary>
 		/// Early kernel startup.
@@ -86,5 +91,10 @@ namespace kestd::kernel
 		/// </summary>
 		/// <param name="">Current runtime environment.</param>
 		virtual void onShutdown(Environment&);
+
+	private:
+		std::string_view name = {};
+		bool legacy = true;
+		EventFlags events = Event::None;
 	};
 }

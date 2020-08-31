@@ -7,9 +7,9 @@
 // =============================================================
 
 #include "LegacySubsystemBuilder.hpp"
-#include "Detail/Platform/SS_Platform.hpp"
-#include "Detail/Renderer/SS_Renderer.hpp"
-#include "Detail/Service/SS_Service.hpp"
+#include "Detail/Platform/PlatformSystem.hpp"
+#include "Detail/Renderer/RenderSystem.hpp"
+#include "Detail/Service/ServiceSystem.hpp"
 #include "Kernel/Kernel.hpp"
 
 namespace kestd::kernel

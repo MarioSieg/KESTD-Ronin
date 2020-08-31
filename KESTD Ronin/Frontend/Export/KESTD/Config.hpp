@@ -210,30 +210,13 @@ namespace kestd
 		Direct3D12,
 		OpenGL2,
 		OpenGL3,
-		OpenGL_ES2,
-		OpenGL_ES3,
+		OpenGLES2,
+		OpenGLES3,
 		Vulkan,
 		Metal,
 		WebGL1,
 		WebGL2,
 		WebGPU,
-		Count
-	};
-
-	constexpr std::string_view GraphicsApiNames[static_cast<std::size_t>(GraphicsApi::Count)]
-	{
-		"Direct3D 9",
-		"Direct3D 11",
-		"Direct3D 12",
-		"OpenGL 2",
-		"OpenGL 3",
-		"OpenGL EmbeddedSystems 2",
-		"OpenGL EmbeddedSystems 3",
-		"Vulkan",
-		"Metal",
-		"WebGL 1",
-		"WebGL 2",
-		"WebGPU",
 	};
 
 	/// <summary>
@@ -270,6 +253,7 @@ namespace kestd
 	/// </summary>
 	class GraphicsConfig final
 	{
+		friend class AutoTec;
 	public:
 		/// <summary>
 		/// 
@@ -341,7 +325,7 @@ namespace kestd
 		void setMsaaMode(MultiSampleAntiAliasingMode mode) noexcept;
 
 	private:
-		GraphicsApi api = GraphicsApi::Vulkan;
+		GraphicsApi api = GetPrefferedPlatformGraphicsApi(false);
 		std::uint16_t width = 1920;  //TODO Replace with Resolution
 		std::uint16_t height = 1080; //TODO Replace with Resolution
 		WindowMode windowMode = WindowMode::WindowedMaximized;

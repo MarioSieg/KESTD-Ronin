@@ -8,15 +8,28 @@
 
 #include "ISubsystem.hpp"
 
-#include <utility>
-
 namespace kestd::kernel
 {
-	ISubsystem::ISubsystem(std::string&& name,
+	ISubsystem::ISubsystem(const std::string_view name,
 	                       const bool isLegacy,
-	                       const std::underlying_type<Event::Enum>::type events) noexcept
-		: name(std::move(name)), isLegacy(isLegacy), events(events)
+	                       const EventFlags events) noexcept
+		: name(name), legacy(isLegacy), events(events)
 	{
+	}
+
+	auto ISubsystem::getName() const noexcept -> std::string_view
+	{
+		return name;
+	}
+
+	auto ISubsystem::isLegacy() const noexcept -> bool
+	{
+		return legacy;
+	}
+
+	auto ISubsystem::getEventFlags() const noexcept -> EventFlags
+	{
+		return events;
 	}
 
 	auto ISubsystem::onStartup(Environment&) -> bool
