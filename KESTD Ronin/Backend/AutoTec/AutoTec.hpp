@@ -8,16 +8,13 @@
 
 #pragma once
 
-namespace kestd
-{
-	class AutoTecTheme;
-	class Config;
-	enum class AutoTecColorTheme;
-	class Environment;
-}
+#include "text_editor.h"
+#include "../../Frontend/Export/KESTD/Config.hpp"
+#include "../../Frontend/Export/KESTD/Environment.hpp"
+#include "Script.hpp"
 
 namespace kestd
-{
+{	
 	class AutoTec final
 	{
 	public:
@@ -30,13 +27,23 @@ namespace kestd
 
 		bool showSettingsEditor = false;
 		bool showDiagnosticsProfiler = false;
+		bool showScriptEditor = false;
 		void updateAndRender(Environment& env);
 		void mainMenu();
 		void configEditor(Config& bcfg);
 		void diagnosticsProfiler();
 		void applyTheme(const AutoTecTheme& theme) const;
+		void scriptEditor();
+		void scriptEditorPushFile(std::string&& path);
+		auto scriptEditorOpenFile() -> bool;
+		auto scriptEditorSetScript(const std::uint16_t id) -> bool;
+		auto scriptEditorSetCurrentScript() -> bool;
 
 	private:
-		AutoTecColorTheme currentColorTheme;
+		AutoTecColorTheme currentColorTheme = {};
+		TextEditor editor = {};
+		std::unordered_map<std::uint16_t, Script> openScripts = {};
+		std::uint16_t currentScript = 0;
+		std::uint16_t scriptHash = 0;
 	};
 }

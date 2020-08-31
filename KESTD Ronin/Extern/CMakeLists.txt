@@ -22,4 +22,8 @@ include_directories("Extern/lua/src/")
 add_subdirectory("Extern/lua/")
 target_link_libraries("KestdRonin" "liblua_static")
 
+include_directories("Extern/nativefiledialog/src/include/")
+add_subdirectory("Extern/nativefiledialog")
+target_link_libraries("KestdRonin" "nativefiledialog")
+
 include_directories("Extern/fontawesome/include/")

@@ -14,4 +14,5 @@ add_library("imgui" STATIC
 "implot_demo.cpp"
 "implot_internal.h"
 "implot_items.cpp"
-)
+"text_editor.cpp"
+"text_editor.h")

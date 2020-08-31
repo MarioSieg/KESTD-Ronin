@@ -7,15 +7,24 @@
 // =============================================================
 
 #include "AutoTec.hpp"
-#include "../../Frontend/Export/KESTD/Environment.hpp"
-#include "../../Frontend/Export/KESTD/Config.hpp"
+#include "Style.hpp"
+#include <fstream>
 #include <fontawesome/icons_font_awesome5.h>
 #include <imgui.h>
 #include <implot.h>
-
-#include "Style.hpp"
+#include <text_editor.h>
+#include <nfd.h>
 
 using namespace ImGui;
+
+/*
+ * Normally we are using std::string and std::string_view but in AutoTec
+ * we use C-Strings (char*, char[x]) for small strings, because ImGui is using them and converting from and to std::string
+ * and calling .data() all the time is really annoying. Also using a char array is just faster sometimes because we do not need any
+ * heap allocations. For big strings like scripts we still use std::string.
+ * The different string types might be annoying, but it's only here in AutoTec.
+ * The rest of the engine is still very modern C++ 20!
+ */
 
 namespace kestd
 {
@@ -23,6 +32,7 @@ namespace kestd
 	{
 		StyleDark();
 		StyleRoundingAngular();
+		editor.SetLanguageDefinition(TextEditor::LanguageDefinition::Lua());
 	}
 
 	void AutoTec::updateAndRender(Environment& env)
@@ -35,6 +45,10 @@ namespace kestd
 		if (showDiagnosticsProfiler)
 		{
 			diagnosticsProfiler();
+		}
+		if (showScriptEditor)
+		{
+			scriptEditor();
 		}
 	}
 
@@ -68,12 +82,17 @@ namespace kestd
 			}
 			if (BeginMenu("Tools"))
 			{
-				if (MenuItem("Diagnostics"))
+				if (MenuItem(ICON_FA_CODE " ScriptEditor"))
+				{
+					showScriptEditor = true;
+				}
+
+				if (MenuItem(ICON_FA_CHART_AREA " Diagnostics"))
 				{
 					showDiagnosticsProfiler = true;
 				}
 
-				if (MenuItem("Settings"))
+				if (MenuItem(ICON_FA_COG " Settings"))
 				{
 					showSettingsEditor = true;
 				}
@@ -166,6 +185,7 @@ namespace kestd
 				{
 					switch (msaa)
 					{
+						default:
 						case MultiSampleAntiAliasingMode::Off:
 							return MsaaModeNames[0];
 						case MultiSampleAntiAliasingMode::X2:
@@ -213,6 +233,7 @@ namespace kestd
 					"Cherry",
 					"Green"
 				};
+
 				const auto previous = cfg.autoTec.theme.colorTheme;
 				if (BeginCombo("Theme", ThemeNames[static_cast<std::size_t>(cfg.autoTec.theme.colorTheme)]))
 				{
@@ -240,6 +261,199 @@ namespace kestd
 	void AutoTec::diagnosticsProfiler()
 	{
 		ImPlot::ShowDemoWindow();
+	}
+
+	void AutoTec::scriptEditor()
+	{
+		SetNextWindowSize(ImVec2(800, 600), ImGuiCond_FirstUseEver);
+		if (Begin("ScriptEditor " ICON_FA_CODE, &showScriptEditor, ImGuiWindowFlags_MenuBar))
+		{
+			if (BeginMenuBar())
+			{
+				if (BeginMenu("File"))
+				{
+					if (MenuItem("Open", "Ctrl-O"))
+					{
+						scriptEditorOpenFile();
+					}
+					EndMenu();
+				}
+				if (BeginMenu("Edit"))
+				{
+					auto ro = editor.IsReadOnly();
+					if (MenuItem("Readonly Mode", nullptr, &ro))
+					{
+						editor.SetReadOnly(ro);
+					}
+					Separator();
+
+					if (MenuItem("Undo", "Ctrl-Z", nullptr, !ro && editor.CanUndo()))
+					{
+						editor.Undo();
+					}
+					if (MenuItem("Redo", "Ctrl-Y", nullptr, !ro && editor.CanRedo()))
+					{
+						editor.Redo();
+					}
+
+					Separator();
+
+					if (MenuItem("Copy", "Ctrl-C", nullptr, editor.HasSelection())) 
+					{
+						editor.Copy();
+					}
+					if (MenuItem("Cut", "Ctrl-X", nullptr, !ro && editor.HasSelection()))
+					{
+						editor.Cut();
+					}
+					if (MenuItem("Delete", "Del", nullptr, !ro && editor.HasSelection()))
+					{
+						editor.Delete();
+					}
+					if (MenuItem("Paste", "Ctrl-V", nullptr, !ro && GetClipboardText() != nullptr))
+					{
+						editor.Paste();
+					}
+
+					Separator();
+
+					if (MenuItem("Select All", "Ctrl-A", nullptr)) 
+					{
+						editor.SetSelection(TextEditor::Coordinates(), TextEditor::Coordinates(editor.GetTotalLines(), 0));
+					}
+
+					EndMenu();
+				}
+
+				if (BeginMenu("View"))
+				{
+					if (MenuItem("Dark Palette"))
+					{
+						editor.SetPalette(TextEditor::GetDarkPalette());
+					}
+					if (MenuItem("Light Palette"))
+					{
+						editor.SetPalette(TextEditor::GetLightPalette());
+					}
+					if (MenuItem("Retro Palette"))
+					{
+						editor.SetPalette(TextEditor::GetRetroBluePalette());
+					}
+					EndMenu();
+				}
+				EndMenuBar();
+			}
+			
+			if (BeginTabBar("##files"))
+			{
+				for(const auto& script : openScripts)
+				{
+					if(BeginTabItem(script.second.getFileName().c_str()))
+					{
+						if(currentScript != script.first)
+						{
+							scriptEditorSetScript(script.first);
+						}
+						EndTabItem();
+					}
+				}
+				EndTabBar();
+			}
+			
+			if (BeginChild("##editor"))
+			{
+				const auto cpos = editor.GetCursorPosition();
+				Text("%i/%-i %i Lines | %s | %s | %s", cpos.mLine + 1, cpos.mColumn + 1, editor.GetTotalLines(),
+					editor.IsOverwrite() ? ICON_FA_PEN : ICON_FA_PASTE,
+					editor.CanUndo() ? "*" : "!",
+					editor.GetLanguageDefinition().mName.c_str());
+
+				editor.Render("Script Editor " ICON_FA_CODE);
+			}
+			EndChild();
+		}
+		End();
+	}
+
+	void AutoTec::scriptEditorPushFile(std::string&& path)
+	{
+		openScripts.insert_or_assign(scriptHash, Script(std::move(path)));
+		currentScript = scriptHash;
+		++scriptHash;
+	}
+
+	auto AutoTec::scriptEditorOpenFile() -> bool
+	{
+		/*
+		nfdchar_t* outPath = nullptr;
+		const nfdresult_t result = NFD_OpenDialog(nullptr, nullptr, &outPath);
+
+		if (result == NFD_OKAY)
+		{
+			scriptEditorPushFile(outPath);
+			editor.SetText(openScripts.begin()->second.getContent());
+			free(outPath);
+			return true;
+		}
+
+		*/
+
+		// Allows to select multiple files:
+		nfdpathset_t outPaths;
+		const nfdresult_t result = NFD_OpenDialogMultiple(nullptr, nullptr, &outPaths);
+
+		if(result != NFD_OKAY)
+		{
+			return false;
+		}
+		
+		const auto num = NFD_PathSet_GetCount(&outPaths);
+		for (std::size_t i = 0; i < num; ++i)
+		{
+			auto path = std::string(NFD_PathSet_GetPath(&outPaths, i));
+
+			// Check if script is already loaded:
+			bool alreadyLoaded = false;
+			for(const auto& script : openScripts)
+			{
+				if(path == script.second.getFilePath())
+				{
+					alreadyLoaded = true;
+					currentScript = script.first;
+					scriptEditorSetCurrentScript();
+				}
+			}
+			if(alreadyLoaded)
+			{
+				continue;
+			}
+			scriptEditorPushFile(std::move(path));
+		}
+
+		currentScript = num - 1;
+
+		scriptEditorSetCurrentScript();
+
+		NFD_PathSet_Free(&outPaths);
+		
+		return true;
+	}
+
+	auto AutoTec::scriptEditorSetCurrentScript() -> bool
+	{
+		return scriptEditorSetScript(currentScript);
+	}
+
+	auto AutoTec::scriptEditorSetScript(const std::uint16_t id) -> bool
+	{
+		const auto fi = openScripts.find(id);
+		if(fi == openScripts.end())
+		{
+			return false;
+		}
+		editor.SetText(fi->second.getContent());
+		currentScript = id;
+		return true;
 	}
 
 	void AutoTec::applyTheme(const AutoTecTheme& theme) const
