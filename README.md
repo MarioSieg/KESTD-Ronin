@@ -1,13 +1,13 @@
 # KESTD-Ronin
 ## What is it?
-KESTD-Ronin is a lightweight, experiment friendly and cross platform game engine developed by KerboGames.
+KESTD-Ronin is a lightweight, experiment friendly and cross platform game engine developed by Mario Sieg.
 
 ## What is the usage?
 The engine and the integrated editor "AutoTec" can be used to create fully features 3D apps, simulations and games.
 The engine is designed to be very easy to use and flexible - hence "experiment friendly", because 
 it is also often used to test algorithms, rendering techiques or physics.
 Besides from games it can also be used to create visualizations of all kinds; for demos, architecture and art.
-Also it is currently used by KerboGames for various projects and demos.
+Also it is currently used by me for various projects and demos.
 
 ## What languages?
 The main engine is written in modern C++ 20.
