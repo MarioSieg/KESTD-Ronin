@@ -22,6 +22,7 @@ The main advantages:
 - :eight_pointed_black_star: Fast, low memory usage
 - :eight_pointed_black_star: Modern C++ 20 and idioms
 - :eight_pointed_black_star: Lua scripting
+- :eight_pointed_black_star: Python scripting
 
 ## Platforms:
 - :white_check_mark: Windows
@@ -39,5 +40,6 @@ The main advantages:
 - :white_check_mark: WebGL
 - :white_check_mark: Multithreaded rendering
 - :white_check_mark: SSE, AVX
+- :white_check_mark: Lua (Embedded Interpreter)
 
 ## Getting started:
