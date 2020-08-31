@@ -8,12 +8,11 @@
 
 #pragma once
 
-#include <cstdint>
 #include "../Platform/GuiInput.hpp"
 #include "../Renderer/GuiRenderer.hpp"
-
-struct ImGuiContext;
-struct ImPlotContext;
+#include <cstdint>
+#include <imgui.h>
+#include <implot.h>
 
 namespace kestd::detail::systemgui
 {

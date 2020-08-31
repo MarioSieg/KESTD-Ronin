@@ -26,10 +26,10 @@ file(GLOB_RECURSE KESTD_SRC
 )
 
 # Add engine:
-add_library("KestdRonin" SHARED ${KESTD_SRC} "Backend/Detail/Scripting/ScritpingSystem.hpp")
+add_library("KestdRonin" SHARED ${KESTD_SRC})
 
 include("Extern/CMakeLists.txt")
 
 # Add AutoTec:
-add_executable("AutoTec" "Frontend/Entry.cpp" "Backend/Detail/Scripting/ScritpingSystem.hpp")
+add_executable("AutoTec" "Frontend/Entry.cpp")
 target_link_libraries("AutoTec" "KestdRonin")

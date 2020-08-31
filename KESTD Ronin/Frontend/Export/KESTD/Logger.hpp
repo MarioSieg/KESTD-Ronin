@@ -128,6 +128,36 @@ namespace kestd
 			log(type, fmt::format(msg, args...));
 		}
 
+		template<typename... T>
+		void warning(std::string&& msg, T&&... args)
+		{
+			log(MessageType::Warning, fmt::format(msg, args...));
+		}
+
+		template<typename... T>
+		void info(std::string&& msg, T&&... args)
+		{
+			log(MessageType::Info, fmt::format(msg, args...));
+		}
+
+		template<typename... T>
+		void trace(std::string&& msg, T&&... args)
+		{
+			log(MessageType::Trace, fmt::format(msg, args...));
+		}
+
+		template<typename... T>
+		void success(std::string&& msg, T&&... args)
+		{
+			log(MessageType::Success, fmt::format(msg, args...));
+		}
+
+		template<typename... T>
+		void error(std::string&& msg, T&&... args)
+		{
+			log(MessageType::Error, fmt::format(msg, args...));
+		}
+
 		/// <summary>
 		/// Log to the bufLogger without any time or type info formatting.
 		/// </summary>

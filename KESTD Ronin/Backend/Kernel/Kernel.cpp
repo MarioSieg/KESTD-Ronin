@@ -13,6 +13,8 @@
 #include <fmt/core.h>
 #include <chrono>
 
+#define STR "[Kernel] "
+
 namespace kestd::kernel
 {
 	class Kernel::Pimpl final
@@ -39,7 +41,7 @@ namespace kestd::kernel
 
 		// Write engine info to protocol:
 		dumpBootInfo();
-		proto.log(MessageType::Info, "[Kernel] Booting kernel & subsystems...");
+		proto.info(STR "Booting kernel & subsystems...");
 
 		// Allocate subsystems and dispatch onStartup() event:
 		if (desc.pushLegacySubsystems)
@@ -48,7 +50,7 @@ namespace kestd::kernel
 		}
 		else
 		{
-			proto.log(MessageType::Warning, "No legacy subsystem pushed - it was disabled in the boot config!");
+			proto.warning(STR "No legacy subsystem pushed - it was disabled in the boot config!");
 		}
 
 		// Create and initialize subsystems
@@ -59,14 +61,14 @@ namespace kestd::kernel
 			if (sys->events & Event::OnStartup && !sys->onStartup(core->env))
 			{
 				throw std::runtime_error(
-					"[Kernel] Failed to dispatch 'OnStartup' on system: " + std::string(sys->name));
+					STR "Failed to dispatch 'OnStartup' on system: " + std::string(sys->name));
 			}
 		}
 
 		// Calculate boot time and print it:
 		const auto bootTime = std::chrono::duration_cast<std::chrono::milliseconds>(
 			std::chrono::high_resolution_clock::now() - stopwatch).count();
-		proto.log(MessageType::Success, "[Kernel] System online! BootTime: {:.1f}s", bootTime / 1000.f);
+		proto.success(STR "System online! BootTime: {:.1f}s", bootTime / 1000.f);
 
 		// System is ready now:
 		core->state = SystemState::Ready;
@@ -85,10 +87,10 @@ namespace kestd::kernel
 			std::chrono::high_resolution_clock::now() - stopwatch).count() / 1000.f;
 
 		// Log boot time:
-		core->env.getProtocol().log(MessageType::Success,
-		                            "Subsystem[{}] BootTime: {}s",
-		                            core->systems.back()->name,
-		                            bootTime);
+		core->env.getProtocol().success(
+			STR "Subsystem[{}] BootTime: {}s",
+			core->systems.back()->name,
+			bootTime);
 
 		return core->systems.size();
 	}
@@ -98,12 +100,12 @@ namespace kestd::kernel
 		// Check if system is ready:
 		if (core->systems.empty() || core->state != SystemState::Ready)
 		{
-			throw std::runtime_error("System is not ready for execution! Invalid state or subsystem container!");
+			throw std::runtime_error(STR "System is not ready for execution! Invalid state or subsystem container!");
 		}
 
 		{
 			auto& proto = core->env.getProtocol();
-			proto.log(MessageType::Info, "[Kernel] Preparing runtime...");
+			proto.info(STR "Preparing runtime...");
 			const auto stopwatch = std::chrono::high_resolution_clock::now();
 
 			// Dispatch onPrepare()
@@ -112,33 +114,33 @@ namespace kestd::kernel
 				if (sys->events & Event::OnPrepare && !sys->onPrepare(core->env))
 				{
 					throw std::runtime_error(
-						"[Kernel] Failed to dispatch 'OnStartup' on system : " + std::string(sys->name));
+						STR "Failed to dispatch 'OnStartup' on system : " + std::string(sys->name));
 				}
 			}
 
-			proto.log(MessageType::Trace, "FinalSubsystems -> {} Interfaces:", core->systems.size());
+			proto.info(STR "FinalSubsystems -> {} Interfaces:", core->systems.size());
 
 			// Print info about all final subsystems:
 			for (std::size_t i = 0; i < core->systems.size(); ++i)
 			{
 				const auto& sys = core->systems[i];
 				const auto* const type = typeid(decltype(*sys)).name();
-				proto.log(MessageType::Trace,
-				          "\tSubsystem[{}] -> Name: {}, IsLegacy: {}, EventMask: {:08b} Type: {}",
-				          i,
-				          sys->name,
-				          sys->legacy,
-				          sys->events,
-				          type);
+				proto.info(
+					"\tSubsystem[{}] -> Name: {}, IsLegacy: {}, EventMask: {:08b} Type: {}",
+					i,
+					sys->name,
+					sys->legacy,
+					sys->events,
+					type);
 			}
 
 			const auto bootTime = std::chrono::duration_cast<std::chrono::milliseconds>(
 				std::chrono::high_resolution_clock::now() - stopwatch).count();
 
-			proto.log(MessageType::Success,
-			          "[Kernel] System prepared for executing! PrepareTime: {:.1f}s",
-			          bootTime / 1000.f);
-			proto.log(MessageType::Success, "[Kernel] Executing runtime...");
+			proto.success(
+				STR "System prepared for executing! PrepareTime: {:.1f}s",
+				bootTime / 1000.f);
+			proto.success(STR "Executing runtime...");
 		}
 
 		// OnPrepare for runtime:
@@ -183,7 +185,7 @@ namespace kestd::kernel
 			return;
 		}
 
-		core->env.getProtocol().log(MessageType::Info, "Shutting down kernel & subsystems...");
+		core->env.getProtocol().info(STR "Shutting down kernel & subsystems...");
 
 		// Dispatch onShutdown()
 		for (std::size_t i = core->systems.size() - 1; i -- > 0;)
@@ -227,12 +229,12 @@ namespace kestd::kernel
 
 		//Print boot info:
 		protocol.logDump("KESTD Ronin Game Engine (C) Copyright KerboGames(R), Germany 2020! All rights reserved!");
-		protocol.log(MessageType::Info,
-		             "[Kernel] Initializing native engine runtime... Compiler: " COM_NAME " STD: C++20");
-		protocol.log(MessageType::Info, "[Kernel] KernelSize: {}B", sizeof(Kernel) + sizeof(Pimpl));
-		protocol.log(MessageType::Info, "[Kernel] SystemSize: {}B", sizeof(Environment));
-		protocol.log(MessageType::Info,
-		             "[Kernel] EngineSize: {}B",
-		             sizeof(Environment) + sizeof(Kernel) + sizeof(Pimpl));
+		protocol.info(
+			STR "Initializing native engine runtime... Compiler: " COM_NAME " STD: C++20");
+		protocol.info(STR "KernelSize: {}B", sizeof(Kernel) + sizeof(Pimpl));
+		protocol.info(STR "SystemSize: {}B", sizeof(Environment));
+		protocol.info(
+			STR "EngineSize: {}B",
+			sizeof(Environment) + sizeof(Kernel) + sizeof(Pimpl));
 	}
 }

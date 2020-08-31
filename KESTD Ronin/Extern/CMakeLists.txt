@@ -18,7 +18,7 @@ include_directories("Extern/fmt/include/")
 add_subdirectory("Extern/fmt/")
 target_link_libraries("KestdRonin" "fmt")
 
-include_directories("Extern/lua/src")
+include_directories("Extern/lua/src/")
 add_subdirectory("Extern/lua/")
 target_link_libraries("KestdRonin" "liblua_static")
 

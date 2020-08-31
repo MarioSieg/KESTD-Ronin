@@ -7,9 +7,6 @@
 // =============================================================
 
 #include "Gui.hpp"
-#include <imgui.h>
-#include <implot.h>
-
 #include "../../../Frontend/Export/KESTD/Config.hpp"
 
 namespace kestd::detail::systemgui
