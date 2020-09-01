@@ -1,3 +1,11 @@
+// =============================================================
+// (C) Copyright KerboGames(R) Mario Sieg, Germany 2020! All rights reserved!
+// KESTD-Ronin                                                                    
+// Mario
+// Script.hpp
+// 31.08.2020 23:01
+// =============================================================
+
 #pragma once
 
 #include <string>

@@ -1,3 +1,11 @@
+// =============================================================
+// (C) Copyright KerboGames(R) Mario Sieg, Germany 2020! All rights reserved!
+// KESTD-Ronin                                                                    
+// Mario
+// Script.cpp
+// 31.08.2020 23:01
+// =============================================================
+
 #include "Script.hpp"
 #include <fstream>
 #include <filesystem>
@@ -9,7 +17,7 @@ namespace kestd
 		std::ifstream t(filePath);
 		if (t)
 		{
-			content = std::string((std::istreambuf_iterator<char>(t)), std::istreambuf_iterator<char>());
+			content = std::string(std::istreambuf_iterator<char>(t), std::istreambuf_iterator<char>());
 			const std::filesystem::path path(filePath);
 			fileName = path.filename().string();
 		}

@@ -8,7 +8,6 @@
 
 #include "AutoTec.hpp"
 #include "Style.hpp"
-#include <fstream>
 #include <fontawesome/icons_font_awesome5.h>
 #include <imgui.h>
 #include <implot.h>
@@ -28,7 +27,7 @@ using namespace ImGui;
 
 namespace kestd
 {
-	AutoTec::AutoTec() noexcept : currentColorTheme(AutoTecColorTheme::Dark)
+	AutoTec::AutoTec() noexcept
 	{
 		StyleDark();
 		StyleRoundingAngular();
@@ -298,7 +297,7 @@ namespace kestd
 
 					Separator();
 
-					if (MenuItem("Copy", "Ctrl-C", nullptr, editor.HasSelection())) 
+					if (MenuItem("Copy", "Ctrl-C", nullptr, editor.HasSelection()))
 					{
 						editor.Copy();
 					}
@@ -317,7 +316,7 @@ namespace kestd
 
 					Separator();
 
-					if (MenuItem("Select All", "Ctrl-A", nullptr)) 
+					if (MenuItem("Select All", "Ctrl-A", nullptr))
 					{
 						editor.SetSelection(TextEditor::Coordinates(), TextEditor::Coordinates(editor.GetTotalLines(), 0));
 					}
@@ -343,14 +342,14 @@ namespace kestd
 				}
 				EndMenuBar();
 			}
-			
+
 			if (BeginTabBar("##files"))
 			{
-				for(const auto& script : openScripts)
+				for (const auto& script : openScripts)
 				{
-					if(BeginTabItem(script.second.getFileName().c_str()))
+					if (BeginTabItem(script.second.getFileName().c_str()))
 					{
-						if(currentScript != script.first)
+						if (currentScript != script.first)
 						{
 							scriptEditorSetScript(script.first);
 						}
@@ -359,14 +358,17 @@ namespace kestd
 				}
 				EndTabBar();
 			}
-			
+
 			if (BeginChild("##editor"))
 			{
 				const auto cpos = editor.GetCursorPosition();
-				Text("%i/%-i %i Lines | %s | %s | %s", cpos.mLine + 1, cpos.mColumn + 1, editor.GetTotalLines(),
-					editor.IsOverwrite() ? ICON_FA_PEN : ICON_FA_PASTE,
-					editor.CanUndo() ? "*" : "!",
-					editor.GetLanguageDefinition().mName.c_str());
+				Text("%i/%-i %i Lines | %s | %s | %s",
+				     cpos.mLine + 1,
+				     cpos.mColumn + 1,
+				     editor.GetTotalLines(),
+				     editor.IsOverwrite() ? ICON_FA_PEN : ICON_FA_PASTE,
+				     editor.CanUndo() ? "*" : "!",
+				     editor.GetLanguageDefinition().mName.c_str());
 
 				editor.Render("Script Editor " ICON_FA_CODE);
 			}
@@ -402,11 +404,11 @@ namespace kestd
 		nfdpathset_t outPaths;
 		const nfdresult_t result = NFD_OpenDialogMultiple(nullptr, nullptr, &outPaths);
 
-		if(result != NFD_OKAY)
+		if (result != NFD_OKAY)
 		{
 			return false;
 		}
-		
+
 		const auto num = NFD_PathSet_GetCount(&outPaths);
 		for (std::size_t i = 0; i < num; ++i)
 		{
@@ -414,16 +416,16 @@ namespace kestd
 
 			// Check if script is already loaded:
 			bool alreadyLoaded = false;
-			for(const auto& script : openScripts)
+			for (const auto& script : openScripts)
 			{
-				if(path == script.second.getFilePath())
+				if (path == script.second.getFilePath())
 				{
 					alreadyLoaded = true;
 					currentScript = script.first;
 					scriptEditorSetCurrentScript();
 				}
 			}
-			if(alreadyLoaded)
+			if (alreadyLoaded)
 			{
 				continue;
 			}
@@ -435,7 +437,7 @@ namespace kestd
 		scriptEditorSetCurrentScript();
 
 		NFD_PathSet_Free(&outPaths);
-		
+
 		return true;
 	}
 
@@ -447,7 +449,7 @@ namespace kestd
 	auto AutoTec::scriptEditorSetScript(const std::uint16_t id) -> bool
 	{
 		const auto fi = openScripts.find(id);
-		if(fi == openScripts.end())
+		if (fi == openScripts.end())
 		{
 			return false;
 		}

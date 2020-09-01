@@ -14,7 +14,7 @@
 #include "Script.hpp"
 
 namespace kestd
-{	
+{
 	class AutoTec final
 	{
 	public:
@@ -36,7 +36,7 @@ namespace kestd
 		void scriptEditor();
 		void scriptEditorPushFile(std::string&& path);
 		auto scriptEditorOpenFile() -> bool;
-		auto scriptEditorSetScript(const std::uint16_t id) -> bool;
+		auto scriptEditorSetScript(std::uint16_t id) -> bool;
 		auto scriptEditorSetCurrentScript() -> bool;
 
 	private:

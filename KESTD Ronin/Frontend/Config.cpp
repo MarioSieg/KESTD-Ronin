@@ -146,7 +146,7 @@ namespace kestd
 		return graphics;
 	}
 
-	auto GetPrefferedPlatformGraphicsApi(const bool modern) noexcept -> GraphicsApi
+	auto getPrefferedPlatformGraphicsApi(const bool modern) noexcept -> GraphicsApi
 	{
 #if SYS_WINDOWS
 		return modern ? GraphicsApi::Direct3D12 : GraphicsApi::Direct3D11;

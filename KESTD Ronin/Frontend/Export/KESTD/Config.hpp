@@ -224,7 +224,7 @@ namespace kestd
 	/// </summary>
 	/// <param name="modern">If true, it will return the more modern graphics API like Direct3D12 instead of Direct3D11 or Vulkan instead of OpenGL.</param>
 	/// <returns>The preferred graphics API on the current platform.</returns>
-	extern auto GetPrefferedPlatformGraphicsApi(bool modern) noexcept -> GraphicsApi;
+	extern auto getPrefferedPlatformGraphicsApi(bool modern) noexcept -> GraphicsApi;
 
 	/// <summary>
 	/// Represents window modes.
@@ -325,7 +325,7 @@ namespace kestd
 		void setMsaaMode(MultiSampleAntiAliasingMode mode) noexcept;
 
 	private:
-		GraphicsApi api = GetPrefferedPlatformGraphicsApi(false);
+		GraphicsApi api = getPrefferedPlatformGraphicsApi(false);
 		std::uint16_t width = 1920;  //TODO Replace with Resolution
 		std::uint16_t height = 1080; //TODO Replace with Resolution
 		WindowMode windowMode = WindowMode::WindowedMaximized;
