@@ -49,8 +49,9 @@ Scene from a school project made with KESTD Ronin:
 Scene from a school project made with KESTD Ronin:
 ![](https://i.imgur.com/zyCs9yA.png)
 
-PBR (Physically Based Rendering using BDRF) Demo:
+PBR (Physically Based Rendering) Demo:
 ![](https://i.imgur.com/fDpW76X.jpg)
+A BDRF (Bidirectional Reflectance Distribution Function) with GGX was used:
 ![](https://i.imgur.com/DSEGsN8.png)
 
 Embedded Lua script editor and virtual machine. Allows flexible and easy
