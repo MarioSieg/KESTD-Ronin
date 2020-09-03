@@ -42,4 +42,22 @@ The main advantages:
 - :white_check_mark: SSE, AVX
 - :white_check_mark: Lua (Embedded Interpreter)
 
-## Getting started:
+## Screenshots:
+Scene from a school project made with KESTD Ronin:
+![](https://i.imgur.com/hsalb8I.png)
+
+Scene from a school project made with KESTD Ronin:
+![](https://i.imgur.com/zyCs9yA.png)
+
+Embedded Lua script editor and virtual machine. Allows flexible and easy
+game programming, testing, debugging and prototyping:
+![](https://i.imgur.com/pxP9NIv.png)
+
+Full renderoc integration for easy render debugging:
+![](https://i.imgur.com/I77S9Z3.png)
+
+Feature rich Linux-like terminal for development and testing:
+![](https://i.imgur.com/G6wEpb8.png)
+
+VGA emulator for old text based games:
+![](https://i.imgur.com/h1A2El8.png)
