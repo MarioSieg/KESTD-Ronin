@@ -66,3 +66,7 @@ Feature rich Linux-like terminal for development and testing:
 
 VGA emulator for old text based games:
 ![](https://i.imgur.com/h1A2El8.png)
+
+## Note:
+There is still some code missing. I'm currently making
+a big cleanup and refractor then the code will appear!
