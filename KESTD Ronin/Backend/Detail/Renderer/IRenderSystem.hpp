@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "../../Kernel/ISubsystem.hpp"
+#include "../../Kernel/Export/KESTD/ISubsystem.hpp"
 #include "../SystemGui/Terminal.hpp"
 #include "../../AutoTec/AutoTec.hpp"
 #include "Context.hpp"

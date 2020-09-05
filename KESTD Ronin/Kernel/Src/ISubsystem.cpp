@@ -6,7 +6,7 @@
 // 31.08.2020 15:09
 // =============================================================
 
-#include "ISubsystem.hpp"
+#include "../Export/KESTD/ISubsystem.hpp"
 
 namespace kestd::kernel
 {
@@ -30,6 +30,11 @@ namespace kestd::kernel
 	auto ISubsystem::getEventFlags() const noexcept -> EventFlags
 	{
 		return events;
+	}
+
+	auto ISubsystem::getIndex() const noexcept -> std::size_t
+	{
+		return index;
 	}
 
 	auto ISubsystem::onStartup(Environment&) -> bool

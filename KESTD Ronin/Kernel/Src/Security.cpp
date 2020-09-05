@@ -6,7 +6,7 @@
 // 31.08.2020 15:09
 // =============================================================
 
-#include "Security.hpp"
+#include "../Export/KESTD/Security.hpp"
 
 namespace kestd::kernel
 {

@@ -12,215 +12,835 @@
 
 namespace kestd::pixelformat
 {
-	///
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argvalue"></param>
+	/// <param name="argscale"></param>
+	/// <returns></returns>
 	auto toUnorm(float argvalue, float argscale) noexcept -> std::uint32_t;
 
-	///
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argvalue"></param>
+	/// <param name="argscale"></param>
+	/// <returns></returns>
 	auto fromUnorm(std::uint32_t argvalue, float argscale) noexcept -> float;
 
-	///
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argvalue"></param>
+	/// <param name="argscale"></param>
+	/// <returns></returns>
 	auto toSnorm(float argvalue, float argscale) noexcept -> std::int32_t;
 
-	///
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argvalue"></param>
+	/// <param name="argscale"></param>
+	/// <returns></returns>
 	auto fromSnorm(std::int32_t argvalue, float argscale) noexcept -> float;
 
-	// A8
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packA8(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackA8(float* argdst, const void* argsrc) noexcept;
 
-	// R8
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packR8(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackR8(float* argdst, const void* argsrc) noexcept;
 
-	// R8S
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packR8S(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackR8S(float* argdst, const void* argsrc) noexcept;
 
-	// R8I
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packR8I(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackR8I(float* argdst, const void* argsrc) noexcept;
 
-	// R8U
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packR8U(void* argdst, const float* argsrc) noexcept;
+	
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackR8U(float* argdst, const void* argsrc) noexcept;
 
-	// RG8
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRg8(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRg8(float* argdst, const void* argsrc) noexcept;
 
-	// RG8S
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRg8S(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRg8S(float* argdst, const void* argsrc) noexcept;
 
-	// RG8I
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRg8I(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRg8I(float* argdst, const void* argsrc) noexcept;
 
-	// RG8U
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRg8U(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRg8U(float* argdst, const void* argsrc) noexcept;
 
-	// RGB8
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgb8(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgb8(float* argdst, const void* argsrc) noexcept;
 
-	// RGB8S
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgb8S(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgb8S(float* argdst, const void* argsrc) noexcept;
 
-	// RGB8I
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgb8I(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgb8I(float* argdst, const void* argsrc) noexcept;
 
-	// RGB8U
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgb8U(void* argdst, const float* argsrc) noexcept;
+	
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgb8U(float* argdst, const void* argsrc) noexcept;
 
-	// RGBA8
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgba8(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgba8(float* argdst, const void* argsrc) noexcept;
 
-	// BGRA8
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packBgra8(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackBgra8(float* argdst, const void* argsrc) noexcept;
 
-	// RGBA8S
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgba8S(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgba8S(float* argdst, const void* argsrc) noexcept;
 
-	// RGBA8I
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgba8I(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgba8I(float* argdst, const void* argsrc) noexcept;
 
-	// RGBA8U
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgba8U(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgba8U(float* argdst, const void* argsrc) noexcept;
 
-	// R16
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packR16(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackR16(float* argdst, const void* argsrc) noexcept;
 
-	// R16S
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packR16S(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackR16S(float* argdst, const void* argsrc) noexcept;
 
-	// R16I
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packR16I(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackR16I(float* argdst, const void* argsrc) noexcept;
 
-	// R16U
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packR16U(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackR16U(float* argdst, const void* argsrc) noexcept;
 
-	// R16F
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packR16F(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackR16F(float* argdst, const void* argsrc) noexcept;
 
-	// RG16
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRg16(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRg16(float* argdst, const void* argsrc) noexcept;
 
-	// RG16S
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRg16S(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRg16S(float* argdst, const void* argsrc) noexcept;
 
-	// RG16I
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRg16I(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRg16I(float* argdst, const void* argsrc) noexcept;
 
-	// RG16U
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRg16U(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRg16U(float* argdst, const void* argsrc) noexcept;
 
-	// RG16F
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRg16F(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRg16F(float* argdst, const void* argsrc) noexcept;
 
-	// RGBA16
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgba16(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgba16(float* argdst, const void* argsrc) noexcept;
 
-	// RGBA16S
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgba16S(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgba16S(float* argdst, const void* argsrc) noexcept;
 
-	// RGBA16I
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgba16I(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgba16I(float* argdst, const void* argsrc) noexcept;
 
-	// RGBA16U
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgba16U(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgba16U(float* argdst, const void* argsrc) noexcept;
 
-	// RGBA16F
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgba16F(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgba16F(float* argdst, const void* argsrc) noexcept;
 
-	// R32I
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packR32I(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackR32I(float* argdst, const void* argsrc) noexcept;
 
-	// R32U
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packR32U(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackR32U(float* argdst, const void* argsrc) noexcept;
 
-	// R32F
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packR32F(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackR32F(float* argdst, const void* argsrc) noexcept;
 
-	// RG32I
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRg32I(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRg32I(float* argdst, const void* argsrc) noexcept;
 
-	// RG32U
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRg32U(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRg32U(float* argdst, const void* argsrc) noexcept;
 
-	// RGB9E5F
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgb9E5F(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgb9E5F(float* argdst, const void* argsrc) noexcept;
 
-	// RGBA32I
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgba32I(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgba32I(float* argdst, const void* argsrc) noexcept;
 
-	// RGBA32U
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgba32U(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgba32U(float* argdst, const void* argsrc) noexcept;
 
-	// RGBA32F
+	/// <summary>
+	/// /
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgba32F(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// /
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgba32F(float* argdst, const void* argsrc) noexcept;
 
-	// R5G6B5
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packR5G6B5(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackR5G6B5(float* argdst, const void* argsrc) noexcept;
 
-	// RGBA4
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgba4(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgba4(float* argdst, const void* argsrc) noexcept;
 
-	// RGBA4
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packBgra4(void* argdst, const float* argsrc) noexcept;
+	
+	/// <summary>
+	/// /
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackBgra4(float* argdst, const void* argsrc) noexcept;
 
-	// RGB5A1
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgb5a1(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgb5a1(float* argdst, const void* argsrc) noexcept;
 
-	// BGR5A1
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packBgr5a1(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackBgr5a1(float* argdst, const void* argsrc) noexcept;
 
-	// RGB10A2
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRgb10A2(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRgb10A2(float* argdst, const void* argsrc) noexcept;
 
-	// RG11B10F
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRG11B10F(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRG11B10F(float* argdst, const void* argsrc) noexcept;
 
-	// RG32F
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void packRg32F(void* argdst, const float* argsrc) noexcept;
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="argdst"></param>
+	/// <param name="argsrc"></param>
+	/// <returns></returns>
 	void unpackRg32F(float* argdst, const void* argsrc) noexcept;
 }

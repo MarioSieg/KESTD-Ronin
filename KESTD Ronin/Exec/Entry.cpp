@@ -6,14 +6,16 @@
 // 31.08.2020 15:10
 // =============================================================
 
-#include "../Backend/Kernel/Kernel.hpp"
+#include "../Kernel/Export/KESTD/Kernel.hpp"
+#include "../Backend/LegacySubsystemBuilder.hpp"
 
 using namespace kestd::kernel;
 
 auto main() -> int
 {
 	KernelDescriptor desc;
-	const auto kernel = Kernel(std::move(desc));
+	auto kernel = Kernel(std::move(desc));
+	PushLegacySubsystens(kernel);
 	kernel.execute();
 	return 0;
 }

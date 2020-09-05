@@ -3,11 +3,10 @@
 // KESTD-Ronin                                                                    
 // Mario
 // Kernel.cpp
-// 31.08.2020 15:09
+// 04.09.2020 20:11
 // =============================================================
 
-#include "Kernel.hpp"
-#include "../LegacySubsystemBuilder.hpp"
+#include "../Export/KESTD/Kernel.hpp"
 #include "../../Frontend/Export/KESTD/Platform.hpp"
 #include "../../Frontend/Export/KESTD/Environment.hpp"
 #include <fmt/core.h>
@@ -29,11 +28,13 @@ namespace kestd::kernel
 		SystemState state = SystemState::Offline;
 		SecurityManager securityManager;
 		Environment env = {};
+		KernelDescriptor descriptor = {};
 	};
 
 	Kernel::Kernel(KernelDescriptor&& desc) : core(std::make_unique<Pimpl>())
 	{
-		core->info = std::make_tuple(std::move(desc.appName), std::move(desc.companyName));
+		core->descriptor = std::move(desc);
+		core->info = std::make_tuple(std::move(core->descriptor.appName), std::move(core->descriptor.companyName));
 
 		// Setup stopwatch:
 		const auto stopwatch = std::chrono::high_resolution_clock::now();
@@ -45,54 +46,14 @@ namespace kestd::kernel
 		// Write engine info to protocol:
 		dumpBootInfo();
 
-		// Allocate subsystems and dispatch onStartup() event:
-		if (desc.pushLegacySubsystems)
-		{
-			PushLegacySubsystens(*this);
-		}
-		else
-		{
-			proto.warning(STR "No legacy subsystem pushed - it was disabled in the boot config!");
-		}
-
-		// Create and initialize subsystems
-
-		// Dispatch onStartup()
-		for (const auto& sys : core->systems)
-		{
-			if (sys->events & Event::OnStartup && !sys->onStartup(core->env))
-			{
-				throw std::runtime_error(
-					STR "Failed to dispatch 'OnStartup' on system: " + std::string(sys->name));
-			}
-		}
-
-		// Calculate boot time and print it:
-		const auto bootTime = std::chrono::duration_cast<std::chrono::milliseconds>(
-			std::chrono::high_resolution_clock::now() - stopwatch).count();
-		proto.success(STR "System online! BootTime: {:.1f}s", bootTime / 1000.f);
-
 		// System is ready now:
 		core->state = SystemState::Ready;
 	}
 
 	auto Kernel::pushSubsystem(std::unique_ptr<ISubsystem>&& ptr) const -> std::size_t
 	{
-		// Begin stopwatch:
-		const auto stopwatch = std::chrono::high_resolution_clock::now();
-
 		// Construct subsystem:
 		core->systems.emplace_back(std::move(ptr));
-
-		// Profile boot time:
-		const auto bootTime = std::chrono::duration_cast<std::chrono::milliseconds>(
-			std::chrono::high_resolution_clock::now() - stopwatch).count() / 1000.f;
-
-		// Log boot time:
-		core->env.getProtocol().success(
-			STR "Subsystem[{}] BootTime: {}s",
-			core->systems.back()->name,
-			bootTime);
 
 		return core->systems.size();
 	}
@@ -110,6 +71,16 @@ namespace kestd::kernel
 			proto.info(STR "Preparing runtime...");
 			const auto stopwatch = std::chrono::high_resolution_clock::now();
 
+			// Dispatch onStartup()
+			for (const auto& sys : core->systems)
+			{
+				if (sys->events & Event::OnStartup && !sys->onStartup(core->env))
+				{
+					throw std::runtime_error(
+						STR "Failed to dispatch 'OnStartup' on system: " + std::string(sys->name));
+				}
+			}
+			
 			// Dispatch onPrepare()
 			for (const auto& sys : core->systems)
 			{
@@ -135,13 +106,10 @@ namespace kestd::kernel
 					sys->events,
 					type);
 			}
-
+			// Calculate boot time and print it:
 			const auto bootTime = std::chrono::duration_cast<std::chrono::milliseconds>(
 				std::chrono::high_resolution_clock::now() - stopwatch).count();
-
-			proto.success(
-				STR "System prepared for executing! PrepareTime: {:.1f}s",
-				bootTime / 1000.f);
+			proto.success(STR "System online! BootTime: {:.1f}s", bootTime / 1000.f);
 			proto.success(STR "Executing runtime...");
 		}
 
@@ -168,13 +136,7 @@ namespace kestd::kernel
 		};
 
 		// Runtime loop:
-		for (;;)
-		{
-			if (!tick())
-			{
-				break;
-			}
-		}
+		while (tick());
 
 		core->state = SystemState::Ready;
 		return core->cycles;

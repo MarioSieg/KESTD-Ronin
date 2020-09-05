@@ -7,7 +7,7 @@
 // =============================================================
 
 #include "LegacySubsystemBuilder.hpp"
-#include "Kernel/Kernel.hpp"
+#include "../Kernel/Export/KESTD/Kernel.hpp"
 
 //-----LegacySubsystems-----//
 #include "Detail/Platform/IPlatformSystem.hpp"

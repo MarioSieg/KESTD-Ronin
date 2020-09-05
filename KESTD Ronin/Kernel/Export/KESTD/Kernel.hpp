@@ -43,6 +43,8 @@ namespace kestd::kernel
 	class KernelDescriptor final
 	{
 	public:
+		int argc;
+		const char* const* argv;
 		std::string appName;
 		std::string companyName;
 		User user = User::Normal;
@@ -91,36 +93,41 @@ namespace kestd::kernel
 		/// <param name="ptr"></param>
 		/// <returns></returns>
 		auto pushSubsystem(std::unique_ptr<ISubsystem>&& ptr) const -> std::size_t;
-
+		
 		/// <summary>
 		/// Executes the kernel and enters the game loop.
 		/// </summary>
 		/// <returns>The number of cycles before interrupt!</returns>
-		[[nodiscard]] auto execute() const -> std::uint32_t;
+		[[nodiscard]]
+		auto execute() const -> std::uint32_t;
 
 		/// <summary>
 		/// Returns the current state of the system.
 		/// </summary>
 		/// <returns></returns>
-		[[nodiscard]] auto getState() const noexcept -> SystemState;
+		[[nodiscard]]
+		auto getState() const noexcept -> SystemState;
 
 		/// <summary>
 		/// Returns the current trap flag of the system.
 		/// </summary>
 		/// <returns></returns>
-		[[nodiscard]] auto getTrapFlag() const noexcept -> bool;
+		[[nodiscard]]
+		auto getTrapFlag() const noexcept -> bool;
 
 		/// <summary>
 		/// Returns all registered subsystems.
 		/// </summary>
 		/// <returns></returns>
-		[[nodiscard]] auto getSystems() const noexcept -> const std::vector<std::unique_ptr<ISubsystem>>&;
+		[[nodiscard]]
+		auto getSystems() const noexcept -> const std::vector<std::unique_ptr<ISubsystem>>&;
 
 		/// <summary>
 		/// Returns the current runtime environment.
 		/// </summary>
 		/// <returns></returns>
-		[[nodiscard]] auto getEnvironment() const noexcept -> const Environment&;
+		[[nodiscard]]
+		auto getEnvironment() const noexcept -> const Environment&;
 
 		/// <summary>
 		/// Interrupts execution, ending the application.

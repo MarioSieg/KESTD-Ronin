@@ -11,11 +11,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/../Bin/Temp/Lib")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/../Bin")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/../Bin")
 
-if(WIN32)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /fp:fast")
-    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON) # Export all symbols for the engine dll without using __declspec(dllexport) or __declspec(dllimport)
-endif()
-
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_CXX_STANDARD 20)
 
 file(GLOB_RECURSE KESTD_SRC
@@ -30,6 +26,9 @@ add_library("KestdRonin" SHARED ${KESTD_SRC})
 
 include("Extern/CMakeLists.txt")
 
+add_subdirectory("Kernel")
+target_link_libraries("KestdRonin" "RonKernel")
+
 # Add AutoTec:
-add_executable("AutoTec" "Frontend/Entry.cpp")
+add_executable("AutoTec" "Exec/Entry.cpp")
 target_link_libraries("AutoTec" "KestdRonin")

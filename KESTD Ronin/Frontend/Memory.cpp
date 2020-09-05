@@ -56,6 +56,7 @@ namespace kestd::mem
 #endif
 	}
 
+#if COM_MSVC
 	extern "C" void _ReadBarrier();
 #pragma intrinsic(_ReadBarrier)
 
@@ -64,6 +65,7 @@ namespace kestd::mem
 
 	extern "C" void _ReadWriteBarrier();
 #pragma intrinsic(_ReadWriteBarrier)
+#endif
 
 	void ReadBarrier() noexcept
 	{
