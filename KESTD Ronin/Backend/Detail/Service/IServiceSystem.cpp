@@ -39,7 +39,7 @@ namespace kestd::detail::service
 				if (std::get<1>(dir) == DirectoryMissingAction::Create)
 				{
 					const auto ok = create_directory(std::get<0>(dir));
-					proto.warning(STR "Missing directory {}, created it? {}", ok);
+					proto.warning(STR "Missing directory {}, created it? {}", ok, std::get<0>(dir).string>());
 				}
 				else
 				{
