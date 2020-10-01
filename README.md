@@ -1,3 +1,6 @@
+![alt](https://img.shields.io/github/repo-size/MarioSieg/KESTD-Ronin)
+![alt](https://img.shields.io/tokei/lines/github/MarioSieg/KESTD-Ronin)
+
 # KESTD-Ronin
 ## What is it?
 KESTD-Ronin is a lightweight, experiment friendly and cross platform game engine developed by Mario Sieg.
